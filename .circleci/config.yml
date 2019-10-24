@@ -49,10 +49,10 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "develop" ] then
               aws s3 sync public s3://gwx-bounty-web-staging --delete
-              aws cloudfront create-invalidation --distribution-id E27K8A8T9UWHLQ --paths /index.html
+              aws cloudfront create-invalidation --distribution-id E2THJMDX4QPYOZ --paths /index.html
             fi
             if [ "${CIRCLE_BRANCH}" == "master" ] then
-              aws s3 sync public s3://gwx-bounty-web --delete
+              aws s3 sync public s3://gwx-bounty-web-production --delete
               aws cloudfront create-invalidation --distribution-id E27K8A8T9UWHLQ --paths /index.html
             fi
 workflows:
