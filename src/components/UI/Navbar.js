@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Sidebar, Segment, Sticky } from 'semantic-ui-react';
+import { Menu } from 'semantic-ui-react';
 import { Link, NavLink } from 'react-router-dom'
 
 const Navbar = ({ children }) => {

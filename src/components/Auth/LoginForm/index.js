@@ -10,7 +10,6 @@ const LoginForm = ({
   errors,
 }) => {
 
-  console.log(errors);
   let submitButton;
 
   if (loading) {

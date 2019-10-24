@@ -7,7 +7,7 @@ const Logout = ({ onAuthLogout }) => {
 
   useEffect(() => {
     onAuthLogout();
-  }, [])
+  }, [onAuthLogout])
 
   return (
     <Redirect to={{

@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/profile';
-import Navbar from '../../components/UI/Navbar';
-import { Container } from 'semantic-ui-react'
 
 const Dashboard = ({
   profiles,
@@ -14,7 +12,7 @@ const Dashboard = ({
 
   useEffect(() => {
     fetchAllProfiles()
-  }, [])
+  }, [fetchAllProfiles])
 
   if (error) {
     if (error.status === 401) {

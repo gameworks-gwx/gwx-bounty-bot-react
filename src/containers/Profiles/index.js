@@ -7,12 +7,12 @@ const Profiles = () => {
 
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState([]);
-
   useEffect(() => {
     axios.get('../../profiles.json')
       .then((response) => {
         setProfiles(profiles.concat(response.data))
       })
+    //eslint-disable-next-line
   }, [])
 
   const transfer = async (gwxAddress, amount) => {
@@ -67,7 +67,6 @@ const Profiles = () => {
 
     return response;
   }
-  let totalAirdrop = 0;
 
   return (
     <>
@@ -89,11 +88,8 @@ const Profiles = () => {
             profiles.map((profile, index) => {
               const fullName = profile.firstName + ' ' + (profile.lastName ? profile.lastName : '');
 
-
               const airdropReward = profile.tasks.length * 600
 
-
-              totalAirdrop += airdropReward
               console.log(loading[profile.gwxAddress]);
 
               return (
