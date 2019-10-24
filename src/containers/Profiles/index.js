@@ -37,7 +37,7 @@ const Profiles = () => {
     const transferTransaction = nem.model.objects.create('transferTransaction')(gwxAddress, 1, null)
 
 
-    const mosaicAttachment = nem.model.objects.create('mosaicAttachment')(namespace, mosaicName, (amount * 1000000))
+    const mosaicAttachment = nem.model.objects.create('mosaicAttachment')(namespace, mosaicName, 1)
     transferTransaction.mosaics.push(mosaicAttachment)
 
     const res = await nem.com.requests.namespace.mosaicDefinitions(endpoint, mosaicAttachment.mosaicId.namespaceId)
