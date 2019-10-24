@@ -17,7 +17,6 @@ const Profiles = () => {
 
   const transfer = async (gwxAddress, amount) => {
 
-
     let loadingButton = loading.slice();
     loadingButton.push(gwxAddress);
 
@@ -92,6 +91,8 @@ const Profiles = () => {
 
 
               const airdropReward = profile.tasks.length * 600
+
+
               totalAirdrop += airdropReward
               console.log(loading[profile.gwxAddress]);
 

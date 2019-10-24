@@ -2,18 +2,18 @@ import * as actionTypes from '../constants/auth';
 import axios from '../../config/axios';
 
 export const authStart = () => {
-  console.log(`ACTIONS AUTH START`);
+//  console.log(`ACTIONS AUTH START`);
   return {
     type: actionTypes.AUTH_START
   }
 }
 
 export const authFail = (error) => {
-  console.log('ACTIONS AUTH FAIL');
+ // console.log('ACTIONS AUTH FAIL');
 
   const { message } = error.response.data;
 
-  console.log(message);
+  //console.log(message);
   return {
     type: actionTypes.AUTH_FAIL,
     payload: message
@@ -21,7 +21,7 @@ export const authFail = (error) => {
 }
 
 export const authSuccess = (response) => {
-  console.log('ACTIONS AUTH SUCCESS');
+  //console.log('ACTIONS AUTH SUCCESS');
   const { token } = response.data;
   return {
     type: actionTypes.AUTH_SUCCESS,

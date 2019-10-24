@@ -18,11 +18,11 @@ const Login = ({
 
   const [errors, setErrors] = useState([]);
 
-  console.log(loginError);
+  //console.log(loginError);
 
   useEffect(() => {
     if (token) {
-      history.push('/');
+      history.push('/profiles');
     }
   })
   const defaultValues = {

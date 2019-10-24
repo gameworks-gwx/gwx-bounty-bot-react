@@ -11,16 +11,17 @@ const Navbar = ({ children }) => {
       inverted
       borderless
     >
-      <Menu.Item as={Link} to="/" header>
+      <Menu.Item as={Link} to="/profiles" header>
         GameWorks
       </Menu.Item>
       <Menu.Menu position="right">
-        <Menu.Item as={NavLink} to="/" exact>
+        {/*<Menu.Item as={NavLink} to="/" exact>
           Dashboard
         </Menu.Item>
         <Menu.Item as={NavLink} to="/admin">
           Admin Settings
-        </Menu.Item>
+        </Menu.Item>*/
+        }
         <Menu.Item as={NavLink} to="/logout">
           Logout
         </Menu.Item>

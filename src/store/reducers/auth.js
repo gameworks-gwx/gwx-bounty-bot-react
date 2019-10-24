@@ -8,21 +8,21 @@ const initialState = {
 }
 
 const authStart = (state, action) => {
-  console.log("REDUCER AUTH_START")
+//  console.log("REDUCER AUTH_START")
   return updateObject(state, {
     loading: true
   })
 }
 
 const authLogout = (state, action) => {
-  console.log("REDUCER AUTH_LOGOUT")
+ // console.log("REDUCER AUTH_LOGOUT")
   return updateObject(state, {
     token: null
   })
 }
 
 const authFail = (state, action) => {
-  console.log("REDUCER AUTH_FAIL")
+  //console.log("REDUCER AUTH_FAIL")
   return updateObject(state, {
     loading: false,
     error: action.payload
@@ -30,8 +30,8 @@ const authFail = (state, action) => {
 }
 
 const authSuccess = (state, action) => {
-  console.log("REDUCER AUTH_SUCCESS")
-  console.log(action.payload);
+  //console.log("REDUCER AUTH_SUCCESS")
+  //console.log(action.payload);
   return updateObject(state, {
     loading: false,
     token: action.payload
