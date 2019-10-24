@@ -1,9 +1,10 @@
 import React from 'react';
 import { Message } from 'semantic-ui-react';
 
-const Error = ({ message }) => {
+const Alert = ({ message, type }) => {
+  console.log(type);
   return (
-    <Message negative>
+    <Message {...type}>
       <Message.Header>
         {message}
       </Message.Header>
@@ -11,4 +12,4 @@ const Error = ({ message }) => {
   )
 }
 
-export default Error;
+export default Alert;

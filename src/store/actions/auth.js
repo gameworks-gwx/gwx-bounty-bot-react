@@ -29,6 +29,13 @@ export const authSuccess = (response) => {
   }
 }
 
+export const authLogout = () => {
+  localStorage.removeItem('token');
+  return {
+    type: actionTypes.AUTH_LOGOUT
+  }
+}
+
 export const auth = (userData, isSignUp) => {
   return dispatch => {
     dispatch(authStart());

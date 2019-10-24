@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid, Segment } from 'semantic-ui-react';
 import LoginForm from '../../components/Auth/LoginForm';
 
-const LoginMobile = () => {
+const LoginMobile = (props) => {
   return (
     <Grid.Row columns="equal" only="mobile">
       <Grid.Column>

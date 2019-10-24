@@ -30,7 +30,7 @@ const profileFetchAllSuccess = (state, action) => {
   return updateObject(state, {
     ...state,
     fetchAllLoading: false,
-    profiles: state.profiles.concat(action.payload)
+    profiles: action.payload
   })
 }
 const reducer = (state = initialState, action) => {

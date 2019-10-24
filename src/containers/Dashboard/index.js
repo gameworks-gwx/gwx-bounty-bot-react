@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/profile';
+import Navbar from '../../components/UI/Navbar';
+import { Container } from 'semantic-ui-react'
 
 const Dashboard = ({
   profiles,
@@ -20,16 +22,13 @@ const Dashboard = ({
       history.replace('/login');
     }
   }
-
-  console.log(profiles);
-  console.log(process.env.SECRET)
   return (
     <>
       {
         loading ? 'wait lang'
           : profiles.map((profile) => {
             return (
-              <p id={process.env.SECRET}>{profile.telegramUsername}</p>
+              <p>{profile.telegramUsername}</p>
             )
           })
       }

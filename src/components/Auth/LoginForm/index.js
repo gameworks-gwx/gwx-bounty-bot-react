@@ -17,9 +17,9 @@ const LoginForm = ({
     submitButton =
       <Button
         type="submit"
-        color="yellow"
         style={{ marginTop: '0.5em' }}
         fluid
+        inverted
         loading
       >
         Submit
@@ -28,9 +28,9 @@ const LoginForm = ({
     submitButton =
       <Button
         type="submit"
-        color="yellow"
         style={{ marginTop: '0.5em' }}
         fluid
+        inverted
       >
         Submit
       </Button>

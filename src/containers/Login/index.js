@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Segment, Container } from 'semantic-ui-react';
 import LoginForm from '../../components/Auth/LoginForm'
-import Error from '../../components/UI/Error';
+import Alert from '../../components/UI/Alert';
 import useForm from '../../util/hooks/useForm';
 import validate from '../../util/LoginValidation';
 import * as actions from '../../store/actions/auth';
@@ -12,10 +12,13 @@ const Login = ({
   loading,
   loginError,
   token,
-  history
+  history,
+  location
 }) => {
 
   const [errors, setErrors] = useState([]);
+
+  console.log(loginError);
 
   useEffect(() => {
     if (token) {
@@ -54,8 +57,9 @@ const Login = ({
         <Grid.Row columns="equal" only="mobile">
           <Grid.Column>
             {
-              loginError ? <Error message={loginError} /> : ''
+              loginError ? <Alert message={loginError} type="negative" /> : ''
             }
+            {location.message}
             <Segment>
               Log In
               {loginForm}
@@ -65,7 +69,7 @@ const Login = ({
         <Grid.Row centered columns="3" only="tablet computer">
           <Grid.Column>
             {
-              loginError ? <Error message={loginError} /> : ''
+              loginError ? <Alert message={loginError} type="negative" /> : ''
             }
             <Segment>
               Log In
