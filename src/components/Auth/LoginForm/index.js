@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button } from 'semantic-ui-react';
+import { Form, Button, Input, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 
 const LoginForm = ({
@@ -8,77 +8,69 @@ const LoginForm = ({
   handleChange,
   loading,
   errors,
+  form
 }) => {
 
   let submitButton;
+  const { getFieldDecorator } = form
 
   if (loading) {
     submitButton =
-      <Button
-        type="submit"
-        style={{ marginTop: '0.5em' }}
-        fluid
-        loading
-      >
-        Submit
-      </Button>
+      <Button type="primary" style={{width: "100%"}} loading>
+        Loading
+    </Button>
   } else {
     submitButton =
-      <Button
-        type="submit"
-        style={{ marginTop: '0.5em' }}
-        fluid
-      >
-        Submit
+      <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
+        Log in
       </Button>
   }
 
   return (
     <Form onSubmit={handleSubmit}>
-      {
-        errors.email
-          ?
-          <Form.Input
-            error={errors.email}
-            label="Email"
-            type="email"
-            name="email"
-            onChange={handleChange}
-            value={values.email}
-          />
-          :
-          <Form.Input
-            label="Email"
-            type="email"
-            name="email"
-            onChange={handleChange}
-            value={values.email}
-          />
-      }
-      {
-        errors.password
-          ?
-          <Form.Input
-            error={errors.password}
-            label="Password"
-            type="password"
-            name="password"
-            onChange={handleChange}
-            value={values.password}
-          />
-          :
-          <Form.Input
-            label="Password"
-            type="password"
-            name="password"
-            onChange={handleChange}
-            value={values.password}
-          />
-      }
-      <Link to="/">Forgot password?</Link>
-      {submitButton}
-    </Form >
+      <Form.Item>
+        {
+          getFieldDecorator('email', {
+            rules: [
+              {
+                required: true,
+                message: 'Please input your email address!',
+              },
+              {
+                type: 'email',
+                message: 'Please enter a valid email address!'
+              }
+            ],
+          })(
+            <Input
+              prefix={<Icon type="user" />}
+              placeholder="Email Address"
+              name="email"
+              onChange={handleChange}
+            />
+          )
+        }
+      </Form.Item>
+      <Form.Item>
+        {
+          getFieldDecorator('password', {
+            rules: [{ required: true, message: 'Please input your password' }],
+          })(
+            <Input
+              prefix={<Icon type="user" />}
+              type="password"
+              placeholder="Password"
+              name="password"
+              onChange={handleChange}
+            />
+          )
+        }
+      </Form.Item>
+      <Form.Item>
+        {submitButton}
+      </Form.Item>
+    </Form>
   )
 }
 
-export default LoginForm;
+export default Form.create({ name: 'normal_login' })(LoginForm);
