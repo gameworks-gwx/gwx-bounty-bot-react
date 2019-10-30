@@ -20,11 +20,35 @@ const App = () => {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Responsive device="mobile">
-
+        <Sider
+          collapsible
+          collapsed={collapse}
+          breakpoint="lg"
+          onCollapse={() => setCollapse(!collapse)}
+          theme="light"
+          collapsedWidth="0"
+          style={{
+            minHeight: '100vh',
+            left: 0
+          }}
+        >
           <Sidebar />
+        </Sider>
       </Responsive>
 
-
+      <Responsive device="pc">
+        <Sider
+          theme="light"
+          collapsedWidth="0"
+          style={{
+            minHeight: '100vh',
+            left: 0,
+            position: 'fixed'
+          }}
+        >
+          <Sidebar />
+        </Sider>
+      </Responsive>
 
       <Layout className="layout-body">
         <Header className="header-container" style={{ background: '#fff' }}>

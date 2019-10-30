@@ -14,9 +14,17 @@ const Responsive = ({ device, children }) => {
       } else {
         setDisplay(true)
       }
+    } else if (device === "pc") {
+      const minWidth = 900;
+
+      if (windowWidth <= minWidth) {
+        setDisplay(false)
+      } else {
+        setDisplay(true)
+      }
     }
   }
-  
+
   useEffect(() => {
     updateDimensions()
     window.addEventListener("resize", updateDimensions);

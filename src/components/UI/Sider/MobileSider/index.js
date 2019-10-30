@@ -7,7 +7,6 @@ const MobileSider = ({ children }) => {
   const [collapse, setCollapse] = useState(false)
   return (
     <Sider
-      className="mobile-sider"
       collapsible
       collapsed={collapse}
       breakpoint="lg"
