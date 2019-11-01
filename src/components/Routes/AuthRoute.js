@@ -6,7 +6,7 @@ export const AuthRoute = ({ component: Component, ...rest }) => (
     !localStorage.getItem('token')
       ? <Component {...props} />
       : <Redirect to={{
-        pathname: '/profiles',
+        pathname: '/',
         state: {
           from: props.location
         }

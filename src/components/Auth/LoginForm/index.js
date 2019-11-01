@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, Input, Icon } from 'antd';
+import { Form, Button, Input, Icon, Checkbox } from 'antd';
 import { Link } from 'react-router-dom';
 
 const LoginForm = ({
@@ -16,7 +16,7 @@ const LoginForm = ({
 
   if (loading) {
     submitButton =
-      <Button type="primary" style={{width: "100%"}} loading>
+      <Button type="primary" style={{ width: "100%" }} loading>
         Loading
     </Button>
   } else {
@@ -27,7 +27,7 @@ const LoginForm = ({
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} style={{ verticalAlign: 'middle' }} >
       <Form.Item>
         {
           getFieldDecorator('email', {
@@ -36,14 +36,10 @@ const LoginForm = ({
                 required: true,
                 message: 'Please input your email address!',
               },
-              {
-                type: 'email',
-                message: 'Please enter a valid email address!'
-              }
             ],
           })(
             <Input
-              prefix={<Icon type="user" />}
+              prefix={<Icon type="mail" />}
               placeholder="Email Address"
               name="email"
               onChange={handleChange}
@@ -57,7 +53,7 @@ const LoginForm = ({
             rules: [{ required: true, message: 'Please input your password' }],
           })(
             <Input
-              prefix={<Icon type="user" />}
+              prefix={<Icon type="lock" />}
               type="password"
               placeholder="Password"
               name="password"
@@ -67,6 +63,15 @@ const LoginForm = ({
         }
       </Form.Item>
       <Form.Item>
+        {
+          getFieldDecorator('remember', {
+            valuePropName: 'checked',
+            initialValue: true,
+          })(<Checkbox>Remember me</Checkbox>)
+        }
+        <Link className="login-form-forgot" to="/">
+          Forgot password
+        </Link>
         {submitButton}
       </Form.Item>
     </Form>

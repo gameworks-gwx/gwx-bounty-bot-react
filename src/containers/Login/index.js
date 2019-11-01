@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Grid, Segment, Container } from 'semantic-ui-react';
+import { Row, Col } from 'antd';
 import LoginForm from '../../components/Auth/LoginForm'
 import Alert from '../../components/UI/Alert';
 import useForm from '../../util/hooks/useForm';
@@ -22,7 +22,7 @@ const Login = ({
 
   useEffect(() => {
     if (token) {
-      history.push('/profiles');
+      history.push('/');
     }
   })
   const defaultValues = {
@@ -52,33 +52,11 @@ const Login = ({
     />
 
   return (
-    <Container style={{ marginTop: '10em' }}>
-      <Grid>
-        <Grid.Row columns="equal" only="mobile">
-          <Grid.Column>
-            {
-              loginError ? <Alert message={loginError} type="negative" /> : ''
-            }
-            {location.message}
-            <Segment>
-              Log In
-              {loginForm}
-            </Segment>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row centered columns="3" only="tablet computer">
-          <Grid.Column>
-            {
-              loginError ? <Alert message={loginError} type="negative" /> : ''
-            }
-            <Segment>
-              Log In
-              {loginForm}
-            </Segment>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </Container>
+    <Row type="flex" justify="center" align="middle" style={{ height: '40rem' }}>
+      <Col xs={20} sm={16} md={12} lg={8} xl={5}>
+        {loginForm}
+      </Col>
+    </Row>
   )
 }
 const mapStateToProps = ({ auth }) => {

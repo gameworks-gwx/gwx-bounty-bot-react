@@ -4,8 +4,10 @@
 }
 
 .header-container {
-  padding: 0px 10px !important;
-  text-align: right;
+  padding: 0px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .footer-container {
@@ -21,13 +23,12 @@
   display: none
 }
 
+.login-form-forgot {
+  float: right
+}
 
 @media only screen and (max-width: 900px) {
   .layout-body {
     margin-left: 0
-  }
-
-  .mobile-sider {
-    display: inline
   }
 }
