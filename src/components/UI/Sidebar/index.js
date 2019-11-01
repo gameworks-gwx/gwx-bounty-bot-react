@@ -5,7 +5,7 @@ const { SubMenu } = Menu;
 
 const Sidebar = ({ pathname }) => {
   return (
-    <Menu selectedKeys={[pathname]} mode="inline">
+    <Menu selectedKeys={[pathname]} mode="inline" style={{height: '100vh'}}>
 
       <Menu.Item key="/">
         <NavLink to={{

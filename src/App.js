@@ -38,7 +38,7 @@ const App = ({ location }) => {
           style={{
             minHeight: '100vh',
             left: 0,
-            position: 'fixed'
+            position: 'fixed',
           }}
         >
           <Sidebar pathname={location.pathname} />
