@@ -56,7 +56,7 @@ const App = ({ location }) => {
               onClose={closeDrawer}
               visible={visible}
             >
-              <Sidebar pathname={location.pathname} />
+              <Sidebar pathname={location.pathname} closeDrawer={closeDrawer} />
             </Drawer>
           </Responsive>
 

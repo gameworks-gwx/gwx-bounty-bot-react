@@ -15,16 +15,26 @@
   padding: 10vh !important;
 }
 
-.layout-body {
-  margin-left: 26vh
-}
-
 .mobile-sider {
   display: none
 }
 
 .login-form-forgot {
   float: right
+}
+
+.statistic-card:hover {
+  background: rgba(231, 231, 231, 0.048)
+}
+
+.layout-body {
+  margin-left: 26vh
+}
+
+@media only screen and (max-width: 1400px) {
+  .layout-body {
+    margin-left: 30vh
+  }
 }
 
 @media only screen and (max-width: 900px) {

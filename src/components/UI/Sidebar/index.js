@@ -3,11 +3,11 @@ import { NavLink } from 'react-router-dom';
 import { Menu, Icon } from 'antd'
 const { SubMenu } = Menu;
 
-const Sidebar = ({ pathname }) => {
+const Sidebar = ({ pathname, closeDrawer }) => {
   return (
-    <Menu selectedKeys={[pathname]} mode="inline" style={{height: '100vh'}}>
+    <Menu selectedKeys={[pathname]} mode="inline" style={{ height: '100vh' }}>
 
-      <Menu.Item key="/">
+      <Menu.Item key="/" onClick={closeDrawer ? closeDrawer : ''}>
         <NavLink to={{
           pathname: '/',
           state: {
@@ -19,7 +19,7 @@ const Sidebar = ({ pathname }) => {
         </NavLink>
       </Menu.Item>
 
-      <Menu.Item key="/verifications">
+      <Menu.Item key="/verifications" onClick={closeDrawer ? closeDrawer : ''}>
         <NavLink to={{
           pathname: '/verifications',
           state: {
@@ -33,7 +33,7 @@ const Sidebar = ({ pathname }) => {
 
       <SubMenu title={<span><Icon type="table" />Dashboard</span>}>
 
-        <Menu.Item key="/dashboard/gwx">
+        <Menu.Item key="/dashboard/gwx" onClick={closeDrawer ? closeDrawer : ''}>
           <NavLink to={{
             pathname: '/dashboard/gwx',
             state: {
@@ -44,7 +44,7 @@ const Sidebar = ({ pathname }) => {
           </NavLink>
         </Menu.Item>
 
-        <Menu.Item key="/dashboard/telegram">
+        <Menu.Item key="/dashboard/telegram" onClick={closeDrawer ? closeDrawer : ''}>
           <NavLink to={{
             pathname: '/dashboard/telegram',
             state: {
@@ -58,7 +58,7 @@ const Sidebar = ({ pathname }) => {
       </SubMenu>
 
       <SubMenu title={<span><Icon type="user" /><span>Admin</span></span>}>
-        <Menu.Item key="/settings">
+        <Menu.Item key="/settings" onClick={closeDrawer ? closeDrawer : ''}>
           <NavLink to={{
             pathname: '/settings',
             state: {
@@ -69,7 +69,7 @@ const Sidebar = ({ pathname }) => {
             Account Settings
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="/user-management">
+        <Menu.Item key="/user-management" onClick={closeDrawer ? closeDrawer : ''}>
           <NavLink to={{
             pathname: '/user-management',
             state: {

@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 const StatisticCard = ({ cardTitle, pathname, statisticData, size }) => {
   let pageTitle;
 
-
   if (pathname === '/') {
     pageTitle = 'Home'
   } else if (pathname === '/dashboard/gwx') {
@@ -25,7 +24,7 @@ const StatisticCard = ({ cardTitle, pathname, statisticData, size }) => {
         pageTitle
       }
     }}>
-      <Card title={cardTitle} size={size ? size : ''} hoverable>
+      <Card className="statistic-card" title={cardTitle} size={size ? size : ''} hoverable>
         {
           statisticData.length
             ? statisticData.map((data, index) => {
