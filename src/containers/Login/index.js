@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Row, Col } from 'antd';
 import LoginForm from '../../components/Auth/LoginForm'
-import Alert from '../../components/UI/Alert';
 import useForm from '../../util/hooks/useForm';
 import validate from '../../util/LoginValidation';
 import * as actions from '../../store/actions/auth';
@@ -22,7 +21,12 @@ const Login = ({
 
   useEffect(() => {
     if (token) {
-      history.push('/');
+      history.push({
+        pathname: '/',
+        state: {
+          pageTitle: 'Home'
+        }
+      });
     }
   })
   const defaultValues = {

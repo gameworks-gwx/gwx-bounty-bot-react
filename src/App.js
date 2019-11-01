@@ -18,9 +18,8 @@ import Profiles from './containers/Profiles';
 
 const { Header, Footer, Sider, Content } = Layout;
 
-const App = ({ history, location }) => {
+const App = ({ location }) => {
   const [visible, setVisible] = useState(false)
-
   const closeDrawer = () => {
     setVisible(false)
   }
@@ -28,7 +27,7 @@ const App = ({ history, location }) => {
   const openDrawer = () => {
     setVisible(true)
   }
-  
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
 
@@ -61,7 +60,7 @@ const App = ({ history, location }) => {
             </Drawer>
           </Responsive>
 
-          <h1>{history.location.state.pageTitle}</h1>
+          <h1>{location.state ? location.state.pageTitle : null}</h1>
           <h1>
             <Link to="/logout">
               Log Out
