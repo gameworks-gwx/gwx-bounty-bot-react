@@ -1,31 +1,26 @@
 import * as actionTypes from '../constants/auth';
+import baseConfig from '../helpers/baseConfig';
 import axios from '../../config/axios';
 
 export const authStart = () => {
-//  console.log(`ACTIONS AUTH START`);
   return {
     type: actionTypes.AUTH_START
   }
 }
 
 export const authFail = (error) => {
- // console.log('ACTIONS AUTH FAIL');
+  console.log(error);
 
-  const { message } = error.response.data;
-
-  //console.log(message);
   return {
     type: actionTypes.AUTH_FAIL,
-    payload: message
+    //payload: message
   }
 }
 
 export const authSuccess = (response) => {
-  //console.log('ACTIONS AUTH SUCCESS');
-  const { token } = response.data;
   return {
     type: actionTypes.AUTH_SUCCESS,
-    payload: token
+    payload: response
   }
 }
 

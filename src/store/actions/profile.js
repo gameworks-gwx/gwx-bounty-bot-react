@@ -1,4 +1,5 @@
 import * as actionTypes from '../constants/profile';
+import { ADD_ERROR } from '../constants/error'
 import axios from '../../config/axios';
 import { authHeader } from '../helpers/authHeader';
 
@@ -12,8 +13,8 @@ export const profileFetchAllStart = () => {
 export const profileFetchAllFail = (error) => {
   console.log(`ACTIONS PROFILE FETCH ALL FAIL`);
   return {
-    type: actionTypes.PROFILE_FETCH_ALL_FAIL,
-    payload: error.response
+    type: ADD_ERROR,
+    payload: error
   }
 }
 
@@ -26,6 +27,7 @@ export const profileFetchAllSuccess = (response) => {
 }
 
 export const profileFetchAll = () => {
+
   return dispatch => {
     dispatch(profileFetchAllStart());
 

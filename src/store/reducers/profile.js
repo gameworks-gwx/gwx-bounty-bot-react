@@ -5,38 +5,28 @@ const initialState = {
   profiles: [],
   specificProfile: {},
   fetchAllLoading: false,
-  fetchAllError: null
+  error: {},
 }
 
 const profileFetchAllStart = (state, action) => {
   return updateObject(state, {
     ...state,
-    fetchAllLoading: true
-  })
-}
-
-const profileFetchAllFail = (state, action) => {
-
-  const { status } = action.payload;
-  const { message } = action.payload.data
-  return updateObject(state, {
-    ...state,
-    fetchAllLoading: false,
-    fetchAllError: { message, status }
+    error: {},
+    fetchAllLoading: true,
   })
 }
 
 const profileFetchAllSuccess = (state, action) => {
   return updateObject(state, {
     ...state,
+    error: {},
     fetchAllLoading: false,
-    profiles: action.payload
+    profiles: action.payload,
   })
 }
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.PROFILE_FETCH_ALL_START: return profileFetchAllStart(state, action)
-    case actionTypes.PROFILE_FETCH_ALL_FAIL: return profileFetchAllFail(state, action)
     case actionTypes.PROFILE_FETCH_ALL_SUCCESS: return profileFetchAllSuccess(state, action)
     default: return state
   }

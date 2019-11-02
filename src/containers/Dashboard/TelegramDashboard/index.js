@@ -1,17 +1,34 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Responsive from '../../../components/UI/Responsive'
 import { withRouter } from 'react-router-dom';
 import { Table, Button, Tooltip, Statistic, Row, Col } from 'antd'
+import { connect } from 'react-redux'
+import { profileFetchAll } from '../../../store/actions/profile'
+import { removeError } from '../../../store/actions/error'
 
-const TelegramDashboard = ({ history }) => {
-  const [profiles, setProfiles] = useState([])
+const TelegramDashboard = ({
+  history,
+  profiles,
+  fetchAllProfiles,
+  error,
+  removeError
+}) => {
+
   useEffect(() => {
-    fetch('../../profiles.json')
-      .then((response) => response.json())
-      .then((data) => {
-        setProfiles(data)
-      })
+    fetchAllProfiles()
   }, [])
+
+  if (error.status === 401) {
+    history.push({
+      pathname: '/logout',
+      state: {
+        message: "You are not authorized to view the page",
+        type: 'Error'
+      }
+    })
+    removeError()
+  }
+
 
   const airdropHandler = (event, test) => {
     event.stopPropagation()
@@ -149,4 +166,18 @@ const TelegramDashboard = ({ history }) => {
   )
 }
 
-export default withRouter(TelegramDashboard)
+const mapStateToProps = ({ profile, error }) => {
+  return {
+    profiles: profile.profiles,
+    error: error.error
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchAllProfiles: () => dispatch(profileFetchAll()),
+    removeError: () => dispatch(removeError())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(TelegramDashboard))

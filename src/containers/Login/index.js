@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Row, Col } from 'antd';
+import { Row, Col, Alert } from 'antd';
 import LoginForm from '../../components/Auth/LoginForm'
 import useForm from '../../util/hooks/useForm';
 import validate from '../../util/LoginValidation';
@@ -16,8 +16,6 @@ const Login = ({
 }) => {
 
   const [errors, setErrors] = useState([]);
-
-  //console.log(loginError);
 
   useEffect(() => {
     if (token) {
@@ -55,9 +53,26 @@ const Login = ({
       errors={errors}
     />
 
+  let alertDialog;
+  if (location.state) {
+    if (location.state.message) {
+      alertDialog =
+        <Alert
+          message={location.state.message}
+          type={location.state.type ? "error" : "success"}
+          showIcon
+          closable
+        />
+    }
+  }
+
   return (
     <Row type="flex" justify="center" align="middle" style={{ height: '40rem' }}>
       <Col xs={20} sm={16} md={12} lg={8} xl={5}>
+        {location.state
+          ? alertDialog
+          : ''
+        }
         {loginForm}
       </Col>
     </Row>

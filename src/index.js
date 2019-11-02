@@ -4,16 +4,17 @@ import { createStore, compose, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk';
 import Routes from './Routes';
-import Drawer from 'rc-drawer'
 
 //!! Reducers
 import authReducer from './store/reducers/auth';
 import profileReducer from './store/reducers/profile';
+import errorReducer from './store/reducers/error';
 
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  profile: profileReducer
+  profile: profileReducer,
+  error: errorReducer,
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

@@ -3,8 +3,17 @@ import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/auth';
 
-const Logout = ({ onAuthLogout }) => {
+const Logout = ({ onAuthLogout, location }) => {
 
+  let message;
+  let type;
+
+  if (location.state) {
+    message = location.state.message
+    type = location.state.type
+  } else {
+    message = "You have successfully logged out"
+  }
   useEffect(() => {
     onAuthLogout();
   }, [onAuthLogout])
@@ -13,7 +22,8 @@ const Logout = ({ onAuthLogout }) => {
     <Redirect to={{
       pathname: '/login',
       state: {
-        message: 'You have been successfully logged out'
+        message,
+        type 
       }
     }} />
   )
