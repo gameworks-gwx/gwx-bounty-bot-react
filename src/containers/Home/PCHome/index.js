@@ -5,7 +5,7 @@ import { Card, Row, Col, Statistic } from 'antd'
 const PCHome = () => {
   return (
     <>
-      <Row gutter={[16, 16]}>
+      <Row gutter={[8, 8]}>
         <Col span={12}>
           <StatisticCard
             cardTitle="GWX Dashboard"

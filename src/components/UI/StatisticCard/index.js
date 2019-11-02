@@ -29,9 +29,8 @@ const StatisticCard = ({ cardTitle, pathname, statisticData, size }) => {
           statisticData.length
             ? statisticData.map((data, index) => {
               return (
-                <Col span={12}>
+                <Col span={12} key={index}>
                   <Statistic
-                    key={index}
                     title={data.title}
                     value={data.value}
                     valueStyle={{ fontSize: '3rem', textAlign: 'center' }}

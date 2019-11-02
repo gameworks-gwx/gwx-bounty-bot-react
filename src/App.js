@@ -69,19 +69,17 @@ const App = ({ location }) => {
         </Header>
 
         <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
-          {/*<div className="content-subcontainer" style={{ background: '#fff' }}>*/}
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/verifications" component={Verifications} />
             <Route exact path="/dashboard" component={Dashboard} />
-            <Route path="/dashboard/:typeof" component={Dashboard} />
+            <Route exact path="/dashboard/:typeof" component={Dashboard} />
             <Route path="/settings" component={Settings} />
             <Route path="/user-management" component={UserManagement} />
             <Route exact path="/logout" component={Logout} />
             <Route exact path="/profiles" component={Profiles} />
             <Route exact path="/admin" component={Admin} />
           </Switch>
-          {/*</div>*/}
         </Content>
         <Footer className="footer-container">Ant Design ©2018 Created by Ant UED</Footer>
       </Layout>
