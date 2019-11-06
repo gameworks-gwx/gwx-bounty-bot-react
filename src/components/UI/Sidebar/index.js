@@ -57,7 +57,7 @@ const Sidebar = ({ pathname, closeDrawer }) => {
 
       </SubMenu>
 
-      <SubMenu title={<span><Icon type="user" /><span>Admin</span></span>}>
+      <SubMenu title={<span><Icon type="user" /><span>Configuration</span></span>}>
         <Menu.Item key="/settings" onClick={closeDrawer ? closeDrawer : ''}>
           <NavLink to={{
             pathname: '/settings',

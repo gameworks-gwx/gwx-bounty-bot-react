@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
 import { Layout, Button, Drawer } from 'antd';
+import { connect } from 'react-redux';
+
+import { removeError } from './store/actions/error'
 
 //!! Components 
 import Sidebar from './components/UI/Sidebar';
@@ -10,7 +13,6 @@ import Responsive from './components/UI/Responsive';
 import Home from './containers/Home';
 import Verifications from './containers/Verifications';
 import Dashboard from './containers/Dashboard';
-import Admin from './containers/Admin';
 import UserManagement from './containers/UserManagement';
 import Settings from './containers/Settings';
 import Logout from './containers/Logout';
@@ -18,8 +20,18 @@ import Profiles from './containers/Profiles';
 
 const { Header, Footer, Sider, Content } = Layout;
 
-const App = ({ location }) => {
+const App = ({ location, history, error, removeError }) => {
   const [visible, setVisible] = useState(false)
+  if (error.status === 401) {
+    history.push({
+      pathname: '/logout',
+      state: {
+        message: "You are not authorized to view the page",
+        type: 'Error'
+      }
+    })
+    removeError()
+  }
   const closeDrawer = () => {
     setVisible(false)
   }
@@ -68,17 +80,17 @@ const App = ({ location }) => {
           </h1>
         </Header>
 
-        <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
+        <Content style={{ margin: '24px 16px', overflow: 'initial' }}>
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/verifications" component={Verifications} />
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/dashboard/:typeof" component={Dashboard} />
             <Route path="/settings" component={Settings} />
-            <Route path="/user-management" component={UserManagement} />
+            <Route exact path="/user-management" component={UserManagement} />
+            <Route exact path="/user-management/:typeof" component={UserManagement} />
             <Route exact path="/logout" component={Logout} />
             <Route exact path="/profiles" component={Profiles} />
-            <Route exact path="/admin" component={Admin} />
           </Switch>
         </Content>
         <Footer className="footer-container">Ant Design ©2018 Created by Ant UED</Footer>
@@ -87,4 +99,15 @@ const App = ({ location }) => {
   );
 }
 
-export default App;
+const mapStateToProps = ({ error }) => {
+  return {
+    error: error.error
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    removeError: () => dispatch(removeError())
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(App);

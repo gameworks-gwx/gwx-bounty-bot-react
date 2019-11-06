@@ -36,16 +36,10 @@ const MobileHome = () => {
             size="small"
             cardTitle="User Management"
             pathname="/user-management"
-            statisticData={[
-              {
-                title: "Total Admins",
-                value: "3"
-              },
-              {
-                title: "Total Staffs",
-                value: "8"
-              },
-            ]}
+            statisticData={{
+              title: "Total Admins",
+              value: "3"
+            }}
           />
         </Col>
         <Col span={12}>

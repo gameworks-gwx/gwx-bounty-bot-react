@@ -1,34 +1,20 @@
 import React, { useEffect } from 'react'
 import Responsive from '../../../components/UI/Responsive'
+import Container from '../../../components/UI/Container'
 import { withRouter } from 'react-router-dom';
 import { Table, Button, Tooltip, Statistic, Row, Col } from 'antd'
 import { connect } from 'react-redux'
 import { profileFetchAll } from '../../../store/actions/profile'
-import { removeError } from '../../../store/actions/error'
 
 const TelegramDashboard = ({
   history,
   profiles,
   fetchAllProfiles,
-  error,
-  removeError
 }) => {
 
   useEffect(() => {
     fetchAllProfiles()
   }, [])
-
-  if (error.status === 401) {
-    history.push({
-      pathname: '/logout',
-      state: {
-        message: "You are not authorized to view the page",
-        type: 'Error'
-      }
-    })
-    removeError()
-  }
-
 
   const airdropHandler = (event, test) => {
     event.stopPropagation()
@@ -94,8 +80,6 @@ const TelegramDashboard = ({
       title: 'Airdrop',
       dataIndex: 'operation',
       key: 'operation',
-      fixed: 'right',
-      width: 100,
       align: 'center',
       render: (_, record) => {
         return (
@@ -117,66 +101,58 @@ const TelegramDashboard = ({
   ]
 
   return (
-    <>
-      <div className="content-subcontainer">
+    <Container>
+      <Row type="flex" justify="space-around" style={{ margin: '1vh 0 1vh 0' }}>
+        <Col>
+          <Statistic title="Total Users" value={profiles.length} valueStyle={{ textAlign: 'center' }} />
+        </Col>
+        <Col>
+          <Statistic title="Total Airdrop" value={6000} valueStyle={{ textAlign: 'center' }} />
+        </Col>
+        <Col>
+          <Button type="primary" shape="round" style={{ marginTop: '1rem' }}>Airdrop all users</Button>
+        </Col>
+      </Row>
+      <Responsive device="mobile">
+        <Table
+          onRow={(record) => {
+            return {
+              onClick: (_) => history.push(`telegram/${record.telegramId}`)
+            }
+          }}
+          dataSource={profiles}
+          columns={columns}
+          scroll={{ x: 1300 }}
+          size="small"
+        />
+      </Responsive>
 
-        <Row type="flex" justify="space-around" style={{ margin: '1vh 0 1vh 0' }}>
-          <Col>
-            <Statistic title="Total Users" value={profiles.length} valueStyle={{ textAlign: 'center' }} />
-          </Col>
-          <Col>
-            <Statistic title="Total Airdrop" value={6000} valueStyle={{ textAlign: 'center' }} />
-          </Col>
-          <Col>
-            <Button type="primary" shape="round" style={{ marginTop: '1rem' }}>Airdrop all users</Button>
-          </Col>
-        </Row>
-        <Responsive device="mobile">
-          <Table
-            onRow={(record) => {
-              return {
-                onClick: (_) => history.push(`telegram/${record.telegramId}`)
-              }
-            }}
-            dataSource={profiles}
-            columns={columns}
-            scroll={{ x: 1300 }}
-            size="small"
-            bordered
-          />
-        </Responsive>
-
-        <Responsive device="pc">
-          <Table
-            onRow={(record) => {
-              return {
-                onClick: (_) => history.push(`telegram/${record.telegramId}`)
-              }
-            }}
-            dataSource={profiles}
-            columns={columns}
-            scroll={{ x: 1300 }}
-            size="middle"
-            bordered
-          />
-        </Responsive>
-
-      </div>
-    </>
+      <Responsive device="pc">
+        <Table
+          onRow={(record) => {
+            return {
+              onClick: (_) => history.push(`telegram/${record.telegramId}`)
+            }
+          }}
+          dataSource={profiles}
+          columns={columns}
+          scroll={{ x: 1300 }}
+          size="middle"
+        />
+      </Responsive>
+    </Container>
   )
 }
 
 const mapStateToProps = ({ profile, error }) => {
   return {
     profiles: profile.profiles,
-    error: error.error
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchAllProfiles: () => dispatch(profileFetchAll()),
-    removeError: () => dispatch(removeError())
   }
 }
 

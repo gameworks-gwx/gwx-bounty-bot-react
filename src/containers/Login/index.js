@@ -33,13 +33,13 @@ const Login = ({
   }
 
   const submitForm = () => {
-    const errorValidate = validate(values);
-    if (Object.keys(errorValidate).length) {
-      setErrors(errorValidate);
-    } else {
-      setErrors([]);
-      onAuth(values)
-    }
+    //const errorValidate = validate(values);
+    //if (Object.keys(errorValidate).length) {
+    //  setErrors(errorValidate);
+    //} else {
+    //  setErrors([]);
+    //}
+    onAuth(values)
   }
 
   const { values, handleChange, handleSubmit } = useForm(submitForm, defaultValues)

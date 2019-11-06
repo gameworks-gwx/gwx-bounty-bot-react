@@ -32,16 +32,10 @@ const PCHome = () => {
           <StatisticCard
             cardTitle="User Management"
             pathname="/user-management"
-            statisticData={[
-              {
-                title: "Total Admins",
-                value: "3"
-              },
-              {
-                title: "Total Staffs",
-                value: "8"
-              },
-            ]}
+            statisticData={{
+              title: "Total Admins",
+              value: 2
+            }}
           />
 
         </Col>

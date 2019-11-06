@@ -1,5 +1,9 @@
-//!! Fetch Profiles
+//!! Fetch profiles
 export const PROFILE_FETCH_ALL_SUCCESS = 'PROFILE_FETCH_ALL_SUCCESS';
 export const PROFILE_FETCH_ALL_FAIL = 'PROFILE_FETCH_ALL_FAIL';
 export const PROFILE_FETCH_ALL_START = 'PROFILE_FETCH_ALL_START';
 
+//!! Fetch pending profiles (for facebook and youtube screenshots)
+export const PROFILE_PENDING_FETCH_SUCCESS = 'PROFILE_PENDING_FETCH_SUCCESS'
+export const PROFILE_PENDING_FETCH_FAIL = 'PROFILE_PENDING_FETCH_FAIL'
+export const PROFILE_PENDING_FETCH_START = 'PROFILE_PENDING_FETCH_START'

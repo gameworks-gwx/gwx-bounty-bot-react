@@ -1,0 +1,135 @@
+import React, { useState } from 'react'
+import { Form, Icon, Input, Button } from 'antd';
+
+const AddUserForm = ({ form, handleSubmit, handleChange }) => {
+  const [confirmDirty, setConfirmDirty] = useState(false);
+  const { getFieldDecorator } = form;
+
+  const formItemLayout = {
+    labelCol: {
+      xs: { span: 24 },
+      sm: { span: 5 }
+    },
+    wrapperCol: {
+      xs: { span: 24 },
+      sm: { span: 12 },
+    }
+  }
+
+  const tailFormItemLayout = {
+    wrapperCol: {
+      xs: {
+        span: 12,
+        offset: 0,
+      },
+      sm: {
+        span: 10,
+        offset: 5
+      }
+    }
+  }
+
+  const handleConfirmBlur = (event) => {
+    const { value } = event.target;
+    setConfirmDirty(confirmDirty || !!value)
+  }
+
+  const compareToFirstPassword = (rule, value, callback) => {
+    if (value && value !== form.getFieldValue('password')) {
+      callback('Passwords don\'t match')
+    } else {
+      callback()
+    }
+  }
+
+  const validateForm = (event) => {
+    event.preventDefault();
+    form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        handleSubmit()
+      }
+    });
+  }
+
+  const validateToNextPassword = (rule, value, callback) => {
+    if (value && confirmDirty) {
+      form.validateFields(['confirm'], { force: true });
+    }
+    callback()
+  }
+
+  return (
+    <Form onSubmit={validateForm} {...formItemLayout} style={{ padding: '20px' }}>
+      <Form.Item label="First Name">
+        {
+          getFieldDecorator('firstName', {
+            rules: [{ required: true, message: 'Please input a first name' }]
+          })(
+            <Input
+              name="firstName"
+              onChange={handleChange}
+            />
+          )
+        }
+      </Form.Item>
+      <Form.Item label="Last Name">
+        {
+          getFieldDecorator('lastName', {
+            rules: [{ required: true, message: 'Please input a last name' }]
+          })(
+            <Input
+              name="lastName"
+              onChange={handleChange}
+            />
+          )
+        }
+      </Form.Item>
+      <Form.Item label="Email Address">
+        {
+          getFieldDecorator('email', {
+            rules: [
+              { required: true, message: 'Please input a last name' },
+              { type: 'email', message: 'Please input a valid email address' },
+            ]
+          })(
+            <Input
+              name="email"
+              onChange={handleChange}
+            />
+          )
+        }
+      </Form.Item>
+      <Form.Item label="Password">
+        {
+          getFieldDecorator('password', {
+            rules: [
+              { required: true, message: 'Please input a password' },
+              { validator: validateToNextPassword }
+            ]
+          })(
+            <Input.Password
+              name="password"
+              onChange={handleChange}
+            />
+          )
+        }
+      </Form.Item>
+      <Form.Item label="Confirm Password">
+        {
+          getFieldDecorator('confirm', {
+            rules: [
+              { required: true, message: 'Please confirm your password!' },
+              { validator: compareToFirstPassword }
+            ]
+          })(<Input.Password onBlur={handleConfirmBlur} />)
+        }
+      </Form.Item>
+      <Form.Item {...tailFormItemLayout}>
+        <Button type="primary" htmlType="submit" size="large" style={{ width: "100%" }}>Add user</Button>
+      </Form.Item>
+    </Form>
+
+  )
+}
+
+export default Form.create({ name: 'add_user' })(AddUserForm)
