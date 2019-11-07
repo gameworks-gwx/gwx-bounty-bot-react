@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import Container from '../../components/UI/Container'
 import { connect } from 'react-redux'
-import { profilePendingFetch } from '../../store/actions/profile'
+import { profilePendingFetch, profileVerifyScreenshot } from '../../store/actions/profile'
 import { Table, Button, Popover } from 'antd'
 
 const Verifications = ({
   pendingProfiles,
   fetchPendingProfiles,
+  verifyProfileScreenshot
 }) => {
 
   useEffect(() => {
@@ -15,6 +16,14 @@ const Verifications = ({
 
   const imagePopup = (imageId, alt) => {
     return <img src={'https://gwx-bounty-bot.s3-ap-southeast-1.amazonaws.com/' + imageId + '.jpg'} alt={alt} />
+  }
+
+  const verifyHandler = (id, taskNumber, verified) => {
+    const body = {
+      taskNumber,
+      verified
+    }
+    verifyProfileScreenshot(id, body);
   }
 
   const columns = [
@@ -27,8 +36,9 @@ const Verifications = ({
 
   const expandedRowRender = (profile) => {
     let profiles = profile.tasks.filter((task) => {
-      return task.taskNumber === 3 || task.taskNumber === 5
+      return (task.taskNumber === 3 && !task.verified) || (task.taskNumber === 5 && !task.verified)
     })
+
     const columns = [
       {
         title: 'Image',
@@ -57,10 +67,9 @@ const Verifications = ({
         key: 'operation',
         render: (_, record) => {
           return (
-            <Button.Group>
-              <Button type="primary" size="small" onClick={() => console.log('Approve', profile.telegramId)} ghost>Approve</Button>
-              <Button type="danger" size="small" onClick={() => console.log('Reject', profile.telegramId)} ghost>Reject</Button>
-            </Button.Group>
+            <>
+              <Button type="primary" size="small" onClick={() => verifyHandler(profile._id, record.taskNumber, true)} ghost>Approve</Button>
+            </>
           )
         },
       },
@@ -95,6 +104,7 @@ const mapStateToProps = ({ profile }) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchPendingProfiles: () => dispatch(profilePendingFetch()),
+    verifyProfileScreenshot: (id, body) => dispatch(profileVerifyScreenshot(id, body)),
   }
 }
 

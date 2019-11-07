@@ -8,12 +8,14 @@ import Routes from './Routes';
 //!! Reducers
 import authReducer from './store/reducers/auth';
 import profileReducer from './store/reducers/profile';
+import userReducer from './store/reducers/user';
 import errorReducer from './store/reducers/error';
 
 
 const rootReducer = combineReducers({
   auth: authReducer,
   profile: profileReducer,
+  user: userReducer,
   error: errorReducer,
 });
 

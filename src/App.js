@@ -17,6 +17,7 @@ import UserManagement from './containers/UserManagement';
 import Settings from './containers/Settings';
 import Logout from './containers/Logout';
 import Profiles from './containers/Profiles';
+import GWXDashboard from './containers/Dashboard/GWXDashboard';
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -86,6 +87,7 @@ const App = ({ location, history, error, removeError }) => {
             <Route exact path="/verifications" component={Verifications} />
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/dashboard/:typeof" component={Dashboard} />
+            <Route path="/dashboard/gwx/:page" component={GWXDashboard} />
             <Route path="/settings" component={Settings} />
             <Route exact path="/user-management" component={UserManagement} />
             <Route exact path="/user-management/:typeof" component={UserManagement} />

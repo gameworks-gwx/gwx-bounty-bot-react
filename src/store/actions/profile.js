@@ -3,6 +3,39 @@ import { ADD_ERROR } from '../constants/error'
 import axios from '../../config/axios';
 import { authHeader } from '../helpers/authHeader';
 
+export const profileVerifyScreenshotStart = () => {
+  return {
+    type: actionTypes.PROFILE_VERIFY_SCREENSHOT_START
+  }
+}
+
+export const profileVerifyScreenshotFail = () => {
+  return {
+    type: ADD_ERROR
+  }
+}
+
+export const profileVerifyScreenshotSuccess = (data, id) => {
+  return {
+    type: actionTypes.PROFILE_VERIFY_SCREENSHOT_SUCCESS,
+    payload: {
+      data,
+      id
+    }
+  }
+}
+
+export const profileVerifyScreenshot = (id, body) => {
+  return dispatch => {
+    dispatch(profileVerifyScreenshotStart())
+
+    axios.put(`/profiles/verify/${id}`, body, {
+      headers: authHeader()
+    }).then((response) => dispatch(profileVerifyScreenshotSuccess(response.data.verifiedData, id)))
+      .catch((error) => dispatch(profileVerifyScreenshotFail(error)))
+  }
+}
+
 export const profilePendingFetchStart = () => {
   return {
     type: actionTypes.PROFILE_PENDING_FETCH_START

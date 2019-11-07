@@ -16,7 +16,6 @@ const Responsive = ({ device, children }) => {
       }
 
     } else if (device === "pc") {
-
       if (windowWidth <= mobileWidth) {
         setDisplay(false)
       } else {
