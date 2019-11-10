@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Row, Col, Alert } from 'antd';
-import LoginForm from '../../components/Auth/LoginForm'
+import LoginForm from '../../components/Forms/LoginForm'
 import useForm from '../../util/hooks/useForm';
-import validate from '../../util/LoginValidation';
 import * as actions from '../../store/actions/auth';
 
 const Login = ({
   onAuth,
   loading,
-  loginError,
   token,
   history,
   location
 }) => {
 
-  const [errors, setErrors] = useState([]);
 
   useEffect(() => {
     if (token) {
@@ -33,12 +30,6 @@ const Login = ({
   }
 
   const submitForm = () => {
-    //const errorValidate = validate(values);
-    //if (Object.keys(errorValidate).length) {
-    //  setErrors(errorValidate);
-    //} else {
-    //  setErrors([]);
-    //}
     onAuth(values)
   }
 
@@ -50,7 +41,6 @@ const Login = ({
       handleSubmit={handleSubmit}
       values={values}
       loading={loading}
-      errors={errors}
     />
 
   let alertDialog;

@@ -1,19 +1,21 @@
 import React from 'react';
 import StatisticCard from '../../../components/UI/StatisticCard'
-import { Card, Row, Col, Statistic } from 'antd'
+import { Card, Row, Col, Skeleton } from 'antd'
 
-const PCHome = () => {
+const PCHome = ({ loading, dashboardData }) => {
+  const { gwxUsersCount, adminCount, telegramUsersCount, pendingCount } = dashboardData
   return (
     <>
-      <Row gutter={[8, 8]}>
+      <Row gutter={[8, 8]} style={{ marginTop: '2rem' }}>
         <Col span={12}>
           <StatisticCard
             cardTitle="GWX Dashboard"
             pathname="/dashboard/gwx"
             statisticData={{
               title: "Total Users",
-              value: "1,429"
+              value: gwxUsersCount
             }}
+            loading={loading}
           />
         </Col>
         <Col span={12}>
@@ -22,20 +24,23 @@ const PCHome = () => {
             pathname="/dashboard/telegram"
             statisticData={{
               title: "Total Users",
-              value: "504"
+              value: telegramUsersCount
             }}
+            loading={loading}
           />
         </Col>
       </Row>
       <Row gutter={[16, 16]}>
+
         <Col span={12}>
           <StatisticCard
             cardTitle="User Management"
             pathname="/user-management"
             statisticData={{
               title: "Total Admins",
-              value: 2
+              value: adminCount
             }}
+            loading={loading}
           />
 
         </Col>
@@ -45,8 +50,9 @@ const PCHome = () => {
             pathname="/verifications"
             statisticData={{
               title: "Pending Screenshots",
-              value: 4
+              value: pendingCount
             }}
+            loading={loading}
           />
         </Col>
       </Row>

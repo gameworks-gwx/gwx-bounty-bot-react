@@ -92,11 +92,11 @@ export const profileFetchAllSuccess = (response) => {
   }
 }
 
-export const profileFetchAll = () => {
+export const profileFetchAll = (page) => {
   return dispatch => {
     dispatch(profileFetchAllStart());
 
-    axios.get('/profiles', {
+    axios.get(`/profiles?page=${page}&limit=20`, {
       headers: authHeader()
     }).then((response) => {
       dispatch(profileFetchAllSuccess(response))

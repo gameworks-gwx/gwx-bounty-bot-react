@@ -10,6 +10,7 @@ import authReducer from './store/reducers/auth';
 import profileReducer from './store/reducers/profile';
 import userReducer from './store/reducers/user';
 import errorReducer from './store/reducers/error';
+import dashboardReducer from './store/reducers/dashboard';
 
 
 const rootReducer = combineReducers({
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   profile: profileReducer,
   user: userReducer,
   error: errorReducer,
+  dashboard: dashboardReducer
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

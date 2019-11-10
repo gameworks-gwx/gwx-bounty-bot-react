@@ -1,25 +1,35 @@
 import React, { useEffect } from 'react'
-import Responsive from '../../../components/UI/Responsive'
 import Container from '../../../components/UI/Container'
 import { withRouter } from 'react-router-dom';
-import { Table, Button, Tooltip, Statistic, Row, Col } from 'antd'
+import { Table, Button, Tooltip, Statistic, Row, Col, Pagination, Skeleton } from 'antd'
 import { connect } from 'react-redux'
 import { profileFetchAll } from '../../../store/actions/profile'
 
 const TelegramDashboard = ({
   history,
-  profiles,
+  profileData,
   fetchAllProfiles,
+  match,
+  loading
 }) => {
 
   useEffect(() => {
-    fetchAllProfiles()
-  }, [])
+
+    if (!match.params.page) {
+      fetchAllProfiles(1)
+    } else {
+      fetchAllProfiles(match.params.page)
+    }
+
+  }, [fetchAllProfiles, match.params.page])
 
   const airdropHandler = (event, test) => {
     event.stopPropagation()
     console.log(test)
   }
+
+  const { profiles = [], total } = profileData;
+
 
   const columns = [
     {
@@ -102,57 +112,66 @@ const TelegramDashboard = ({
 
   return (
     <Container>
-      <Row type="flex" justify="space-around" style={{ margin: '1vh 0 1vh 0' }}>
-        <Col>
-          <Statistic title="Total Users" value={profiles.length} valueStyle={{ textAlign: 'center' }} />
-        </Col>
-        <Col>
-          <Statistic title="Total Airdrop" value={6000} valueStyle={{ textAlign: 'center' }} />
-        </Col>
-        <Col>
-          <Button type="primary" shape="round" style={{ marginTop: '1rem' }}>Airdrop all users</Button>
-        </Col>
-      </Row>
-      <Responsive device="mobile">
-        <Table
-          onRow={(record) => {
-            return {
-              onClick: (_) => history.push(`telegram/${record.telegramId}`)
-            }
-          }}
-          dataSource={profiles}
-          columns={columns}
-          scroll={{ x: 1300 }}
-          size="small"
-        />
-      </Responsive>
+      {
+        loading
+          ?
+          <>
+            <Skeleton active />
+            <Skeleton active />
+            <Skeleton active />
+            <Skeleton active />
+          </>
+          :
+          <>
+            <Row type="flex" justify="space-around" style={{ margin: '1vh 0 1vh 0' }}>
+              <Col>
+                <Statistic title="Total Users" value={total} valueStyle={{ textAlign: 'center' }} />
+              </Col>
+              <Col>
+                <Statistic title="Total Airdrop" value={6000} valueStyle={{ textAlign: 'center' }} />
+              </Col>
+              <Col>
+                <Button type="primary" shape="round" style={{ marginTop: '1rem' }}>Airdrop all users</Button>
+              </Col>
+            </Row>
 
-      <Responsive device="pc">
-        <Table
-          onRow={(record) => {
-            return {
-              onClick: (_) => history.push(`telegram/${record.telegramId}`)
-            }
-          }}
-          dataSource={profiles}
-          columns={columns}
-          scroll={{ x: 1300 }}
-          size="middle"
-        />
-      </Responsive>
+
+            <Table
+              onRow={(record) => {
+                return {
+                  onClick: (_) => history.push(`/profile/${record._id}`)
+                }
+              }}
+              dataSource={profiles}
+              columns={columns}
+              scroll={{ x: 1300, y: 500 }}
+              size="middle"
+              pagination={false}
+            />
+            <Pagination
+              defaultCurrent={match.params.page ? parseInt(match.params.page) : 1}
+              onChange={(page) => history.push(`/dashboard/telegram/${page}`)}
+              defaultPageSize={20}
+              total={total}
+            />
+          </>
+
+      }
+
     </Container>
   )
 }
 
 const mapStateToProps = ({ profile, error }) => {
   return {
-    profiles: profile.profiles,
+    profileData: profile.profiles,
+    loading: profile.fetchAllLoading
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchAllProfiles: () => dispatch(profileFetchAll()),
+    fetchAllProfiles: (page) => dispatch(profileFetchAll(page)),
   }
 }
 

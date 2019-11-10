@@ -2,7 +2,8 @@ import React from 'react';
 import { Card, Row, Col, Statistic } from 'antd'
 import StatisticCard from '../../../components/UI/StatisticCard';
 
-const MobileHome = () => {
+const MobileHome = ({ loading, dashboardData }) => {
+  const {gwxUsersCount, adminCount, telegramUsersCount, pendingCount} = dashboardData
   return (
     <>
       <Row gutter={[16, 16]}>
@@ -13,7 +14,7 @@ const MobileHome = () => {
             pathname="/dashboard/gwx"
             statisticData={{
               title: "Total Users",
-              value: "1,429"
+              value: gwxUsersCount
             }}
           />
 
@@ -25,7 +26,7 @@ const MobileHome = () => {
             pathname="/dashboard/telegram"
             statisticData={{
               title: "Total Users",
-              value: "504"
+              value: telegramUsersCount
             }}
           />
         </Col>
@@ -38,7 +39,7 @@ const MobileHome = () => {
             pathname="/user-management"
             statisticData={{
               title: "Total Admins",
-              value: "3"
+              value: adminCount
             }}
           />
         </Col>
@@ -49,7 +50,7 @@ const MobileHome = () => {
             pathname="/verifications"
             statisticData={{
               title: "Pending Screenshots",
-              value: 4
+              value: pendingCount
             }}
           />
         </Col>

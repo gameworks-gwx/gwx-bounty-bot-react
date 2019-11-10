@@ -1,18 +1,25 @@
 import React from 'react';
 import { Form, Button, Input, Icon, Checkbox } from 'antd';
-import { Link } from 'react-router-dom';
 
 const LoginForm = ({
-  values,
   handleSubmit,
   handleChange,
   loading,
-  errors,
   form
 }) => {
 
   let submitButton;
-  const { getFieldDecorator } = form
+  const { getFieldDecorator, validateFieldsAndScroll } = form
+
+  const validateForm = (event) => {
+    event.preventDefault();
+
+    validateFieldsAndScroll((error, values) => {
+      if (!error) {
+        handleSubmit()
+      }
+    })
+  }
 
   if (loading) {
     submitButton =
@@ -21,20 +28,20 @@ const LoginForm = ({
     </Button>
   } else {
     submitButton =
-      <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
+      <Button type="primary" size="large" shape="round" htmlType="submit" style={{ width: "100%" }}>
         Log in
       </Button>
   }
 
   return (
-    <Form onSubmit={handleSubmit} style={{ verticalAlign: 'middle' }} >
+    <Form onSubmit={validateForm} style={{ verticalAlign: 'middle' }} >
       <Form.Item>
         {
           getFieldDecorator('email', {
             rules: [
               {
                 required: true,
-                message: 'Please input your email address!',
+                message: 'Email address is required',
               },
             ],
           })(
@@ -50,7 +57,7 @@ const LoginForm = ({
       <Form.Item>
         {
           getFieldDecorator('password', {
-            rules: [{ required: true, message: 'Please input your password' }],
+            rules: [{ required: true, message: 'Password is required' }],
           })(
             <Input
               prefix={<Icon type="lock" />}
@@ -69,9 +76,6 @@ const LoginForm = ({
             initialValue: true,
           })(<Checkbox>Remember me</Checkbox>)
         }
-        <Link className="login-form-forgot" to="/">
-          Forgot password
-        </Link>
         {submitButton}
       </Form.Item>
     </Form>

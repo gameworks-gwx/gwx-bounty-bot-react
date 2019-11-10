@@ -1,5 +1,4 @@
 import * as actionTypes from '../constants/auth';
-import baseConfig from '../helpers/baseConfig';
 import axios from '../../config/axios';
 
 export const authStart = () => {

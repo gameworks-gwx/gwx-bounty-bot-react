@@ -63,7 +63,7 @@ const AddUserForm = ({ form, handleSubmit, handleChange }) => {
       <Form.Item label="First Name">
         {
           getFieldDecorator('firstName', {
-            rules: [{ required: true, message: 'Please input a first name' }]
+            rules: [{ required: true, message: 'First name is required' }]
           })(
             <Input
               name="firstName"
@@ -75,7 +75,7 @@ const AddUserForm = ({ form, handleSubmit, handleChange }) => {
       <Form.Item label="Last Name">
         {
           getFieldDecorator('lastName', {
-            rules: [{ required: true, message: 'Please input a last name' }]
+            rules: [{ required: true, message: 'Last name is required ' }]
           })(
             <Input
               name="lastName"
@@ -88,8 +88,8 @@ const AddUserForm = ({ form, handleSubmit, handleChange }) => {
         {
           getFieldDecorator('email', {
             rules: [
-              { required: true, message: 'Please input a last name' },
-              { type: 'email', message: 'Please input a valid email address' },
+              { required: true, message: 'Email address is required' },
+              { type: 'email', message: 'Invalid email address' },
             ]
           })(
             <Input
@@ -103,7 +103,7 @@ const AddUserForm = ({ form, handleSubmit, handleChange }) => {
         {
           getFieldDecorator('password', {
             rules: [
-              { required: true, message: 'Please input a password' },
+              { required: true, message: 'Password is required' },
               { validator: validateToNextPassword }
             ]
           })(
@@ -118,7 +118,7 @@ const AddUserForm = ({ form, handleSubmit, handleChange }) => {
         {
           getFieldDecorator('confirm', {
             rules: [
-              { required: true, message: 'Please confirm your password!' },
+              { required: true, message: 'Confirm your password' },
               { validator: compareToFirstPassword }
             ]
           })(<Input.Password onBlur={handleConfirmBlur} />)

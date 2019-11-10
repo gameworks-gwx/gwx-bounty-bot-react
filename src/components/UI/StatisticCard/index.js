@@ -2,7 +2,9 @@ import React from 'react';
 import { Card, Statistic, Col } from 'antd'
 import { Link } from 'react-router-dom';
 
-const StatisticCard = ({ cardTitle, pathname, statisticData, size }) => {
+const { Meta } = Card;
+
+const StatisticCard = ({ cardTitle, pathname, statisticData, size, loading }) => {
   let pageTitle;
 
   if (pathname === '/') {
@@ -24,7 +26,8 @@ const StatisticCard = ({ cardTitle, pathname, statisticData, size }) => {
         pageTitle
       }
     }}>
-      <Card className="statistic-card" title={cardTitle} size={size ? size : ''} hoverable>
+      <Card className="statistic-card" loading={loading} size={size ? size : ''} hoverable>
+        <Meta title={cardTitle} style={{ marginBottom: '1rem' }} />
         {
           statisticData.length
             ? statisticData.map((data, index) => {
