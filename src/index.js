@@ -12,7 +12,6 @@ import userReducer from './store/reducers/user';
 import errorReducer from './store/reducers/error';
 import dashboardReducer from './store/reducers/dashboard';
 
-
 const rootReducer = combineReducers({
   auth: authReducer,
   profile: profileReducer,

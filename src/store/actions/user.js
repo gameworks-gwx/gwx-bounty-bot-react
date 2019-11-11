@@ -42,6 +42,40 @@ export const fetchGWXUsers = (page) => {
   }
 }
 
+export const fetchUsersStart = () => {
+  return {
+    type: actionTypes.FETCH_USERS_START
+  }
+}
+
+export const fetchUsersFail = () => {
+  return {
+    type: actionTypes.FETCH_USERS_FAIL
+  }
+}
+
+
+export const fetchUsersSuccess = (response) => {
+  return {
+    type: actionTypes.FETCH_USERS_SUCCESS,
+    payload: response
+  }
+}
+
+export const fetchUsers = () => {
+  return dispatch => {
+    dispatch(fetchUsersStart())
+
+    axios.get('/users', {
+      headers: authHeader()
+    }).then((response) => dispatch(fetchUsersSuccess(response.data)))
+      .catch((error) => {
+        dispatch(fetchUsersFail())
+        dispatch(addError(error))
+      })
+  }
+}
+
 export const createUserStart = () => {
   return {
     type: actionTypes.CREATE_USER_START

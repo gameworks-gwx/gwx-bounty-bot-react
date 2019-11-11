@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'http://gwx-bounty-bot-node-staging.ap-northeast-1.elasticbeanstalk.com/api'
+  baseURL: 'https://bounty-staging.gameworks.io/api'
 })
 
 export default instance
