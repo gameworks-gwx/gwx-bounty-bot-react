@@ -1,14 +1,20 @@
 import React, { useState } from 'react'
-import { Form, Icon, Input, Button } from 'antd';
+import { Form, Input, Button, Alert } from 'antd';
 
-const AddUserForm = ({ form, handleSubmit, handleChange }) => {
+const AddUserForm = ({
+  form,
+  handleSubmit,
+  handleChange,
+  messageData,
+  loading
+}) => {
   const [confirmDirty, setConfirmDirty] = useState(false);
   const { getFieldDecorator } = form;
 
   const formItemLayout = {
     labelCol: {
       xs: { span: 24 },
-      sm: { span: 5 }
+      sm: { span: 3 }
     },
     wrapperCol: {
       xs: { span: 24 },
@@ -24,7 +30,7 @@ const AddUserForm = ({ form, handleSubmit, handleChange }) => {
       },
       sm: {
         span: 10,
-        offset: 5
+        offset: 3
       }
     }
   }
@@ -46,6 +52,7 @@ const AddUserForm = ({ form, handleSubmit, handleChange }) => {
     event.preventDefault();
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
+        event.target.reset()
         handleSubmit()
       }
     });
@@ -58,8 +65,40 @@ const AddUserForm = ({ form, handleSubmit, handleChange }) => {
     callback()
   }
 
+  let submitButton;
+
+  if (loading) {
+    submitButton =
+      <Button type="primary" htmlType="submit" size="large" style={{ width: "100%" }} shape="round" loading>Loading</Button>
+  } else {
+    submitButton =
+      <Button type="primary" htmlType="submit" size="large" style={{ width: "100%" }} shape="round">Add user</Button>
+  }
+
   return (
     <Form onSubmit={validateForm} {...formItemLayout} style={{ padding: '20px' }}>
+      {
+        messageData
+          ?
+          messageData.code === 0
+            ?
+            <Alert
+              message={messageData.message}
+              type="success"
+              showIcon
+              closable
+            />
+            :
+            <Alert
+              message={messageData.message}
+              type="error"
+              showIcon
+              closable
+            />
+
+          :
+          null
+      }
       <Form.Item label="First Name">
         {
           getFieldDecorator('firstName', {
@@ -125,7 +164,7 @@ const AddUserForm = ({ form, handleSubmit, handleChange }) => {
         }
       </Form.Item>
       <Form.Item {...tailFormItemLayout}>
-        <Button type="primary" htmlType="submit" size="large" style={{ width: "100%" }}>Add user</Button>
+        {submitButton}
       </Form.Item>
     </Form>
 

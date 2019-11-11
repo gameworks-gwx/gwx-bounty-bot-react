@@ -6,7 +6,8 @@ const initialState = {
   fetchUsersLoading: false,
   gwxUsers: [],
   users: [],
-  user: {}
+  user: {},
+  messageData: '',
 }
 
 const fetchUsersStart = (state, action) => {
@@ -61,7 +62,11 @@ const createUserFail = (state, action) => {
 
 const createUserSuccess = (state, action) => {
   return updateObject(state, {
-    loading: false
+    loading: false,
+    messageData: {
+      code: 0,
+      message: 'User created successfully!'      
+    }
   })
 }
 

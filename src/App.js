@@ -14,6 +14,8 @@ import Home from './containers/Home';
 import Verifications from './containers/Verifications';
 import Dashboard from './containers/Dashboard';
 import UserManagement from './containers/UserManagement';
+import EditUser from './containers/UserManagement/EditUser'
+import AddUser from './containers/UserManagement/AddUser'
 import Settings from './containers/Settings';
 import Logout from './containers/Logout';
 import Profiles from './containers/Profiles';
@@ -92,12 +94,13 @@ const App = ({ location, history, error, removeError }) => {
             <Route path="/dashboard/telegram/:page" component={TelegramDashboard} />
             <Route path="/settings" component={Settings} />
             <Route exact path="/user-management" component={UserManagement} />
-            <Route exact path="/user-management/:typeof" component={UserManagement} />
+            <Route exact path="/user-management/add" component={AddUser} />
+            <Route exact path="/user-management/edit/:id" component={EditUser} />
             <Route exact path="/logout" component={Logout} />
             <Route exact path="/profiles" component={Profiles} />
           </Switch>
         </Content>
-        <Footer className="footer-container">Ant Design ©2018 Created by Ant UED</Footer>
+        <Footer className="footer-container"></Footer>
       </Layout>
     </Layout>
   );

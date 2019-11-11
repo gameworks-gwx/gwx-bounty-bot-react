@@ -20,7 +20,7 @@ jobs:
           name: Build
           command: |
             if [ "${CIRCLE_BRANCH}" == "develop" ]; then
-              yarn build
+              yarn build:staging
             fi
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               yarn build:production

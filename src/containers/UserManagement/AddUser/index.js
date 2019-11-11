@@ -4,9 +4,10 @@ import useForm from '../../../util/hooks/useForm';
 import { Row, Col } from 'antd';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions/user'
+import Container from '../../../components/UI/Container'
 
 
-const AddUser = ({ createUser }) => {
+const AddUser = ({ createUser, loading, messageData }) => {
   const defaultValues = {
     firstName: '',
     lastName: '',
@@ -16,22 +17,32 @@ const AddUser = ({ createUser }) => {
   }
 
   const submitForm = () => {
-    console.log(values)
-    createUser(values)    
+    createUser(values)
   }
 
   const { values, handleChange, handleSubmit } = useForm(submitForm, defaultValues)
 
   return (
-    <Row type="flex" justify="center">
-      <Col span={24}>
-        <AddUserForm
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
-        />
-      </Col>
-    </Row>
+    <Container>
+      <Row type="flex">
+        <Col span={24}>
+          <AddUserForm
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+            loading={loading}
+            messageData={messageData}
+          />
+        </Col>
+      </Row>
+    </Container>
   )
+}
+
+const mapStateToProps = ({ user }) => {
+  return {
+    loading: user.loading,
+    messageData: user.messageData
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -40,4 +51,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(AddUser)
+export default connect(mapStateToProps, mapDispatchToProps)(AddUser)

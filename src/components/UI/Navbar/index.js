@@ -15,24 +15,14 @@ const Navbar = ({ pathname }) => {
           Add User
         </NavLink>
       </Menu.Item>
-      <Menu.Item key="/user-management/edit-user">
+      <Menu.Item key="/user-management/manage-users">
         <NavLink to={{
-          pathname: '/user-management/edit-user',
+          pathname: '/user-management/manage-users',
           state: {
-            pageTitle: 'Edit User'
+            pageTitle: 'Manage Users'
           }
         }}>
-          Edit User
-        </NavLink>
-      </Menu.Item>
-      <Menu.Item key="/user-management/delete-user">
-        <NavLink to={{
-          pathname: '/user-management/delete-user',
-          state: {
-            pageTitle: 'Delete User'
-          }
-        }}>
-          Delete User
+          Manage Users
         </NavLink>
       </Menu.Item>
     </Menu>
