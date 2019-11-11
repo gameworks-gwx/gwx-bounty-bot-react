@@ -19,7 +19,6 @@ const rootReducer = combineReducers({
   error: errorReducer,
   dashboard: dashboardReducer
 });
-console.log(process.env.REACT_APP_URL)
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
