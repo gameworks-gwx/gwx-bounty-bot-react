@@ -8,11 +8,9 @@ export const authStart = () => {
 }
 
 export const authFail = (error) => {
-  console.log(error);
-
   return {
     type: actionTypes.AUTH_FAIL,
-    //payload: message
+    payload: error.data.message
   }
 }
 
@@ -39,7 +37,7 @@ export const auth = (userData, isSignUp) => {
         dispatch(authSuccess(response))
         localStorage.setItem('token', response.data.token);
       }).catch((error) => {
-        dispatch(authFail(error))
+        dispatch(authFail(error.response))
       })
   }
 }
