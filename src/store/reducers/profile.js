@@ -7,7 +7,30 @@ const initialState = {
   specificProfile: {},
   fetchAllLoading: false,
   loadingVerify: false,
+  loading: false,
   error: {},
+}
+
+const fetchProfileStart = (state, action) => {
+  return updateObject(state, {
+    ...state,
+    loading: true
+  })
+}
+
+const fetchProfileSuccess = (state, action) => {
+  return updateObject(state, {
+    ...state,
+    loading: false,
+    specificProfile: action.payload
+  })
+}
+
+const fetchProfileFail = (state, action) => {
+  return updateObject(state, {
+    ...state,
+    loading: false
+  })
 }
 
 const profileVerifyScreenshotStart = (state, action) => {
@@ -55,31 +78,55 @@ const profilePendingFetchSuccess = (state, action) => {
   })
 }
 
+const profilePendingFetchFail = (state, action) => {
+  return updateObject(state, {
+    ...state,
+    fetchAllLoading: false,
+  })
+}
+
 const profileFetchAllStart = (state, action) => {
   return updateObject(state, {
     ...state,
     error: {},
     fetchAllLoading: true,
+    specificProfile: {}
   })
 }
 
 const profileFetchAllSuccess = (state, action) => {
   return updateObject(state, {
     ...state,
-    error: {},
     fetchAllLoading: false,
     profiles: action.payload,
   })
 }
+
+const profileFetchAllFail = (state, action) => {
+  return updateObject(state, {
+    ...state,
+    fetchAllLoading: false,
+  })
+}
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.FETCH_PROFILE_START: return fetchProfileStart(state, action)
+
+    case actionTypes.FETCH_PROFILE_SUCCESS: return fetchProfileSuccess(state, action)
+
+    case actionTypes.FETCH_PROFILE_FAIL: return fetchProfileFail(state, action)
+
     case actionTypes.PROFILE_FETCH_ALL_START: return profileFetchAllStart(state, action)
 
     case actionTypes.PROFILE_FETCH_ALL_SUCCESS: return profileFetchAllSuccess(state, action)
 
+    case actionTypes.PROFILE_FETCH_ALL_FAIL: return profileFetchAllFail(state, action)
+
     case actionTypes.PROFILE_PENDING_FETCH_START: return profilePendingFetchStart(state, action)
 
     case actionTypes.PROFILE_PENDING_FETCH_SUCCESS: return profilePendingFetchSuccess(state, action)
+
+    case actionTypes.PROFILE_PENDING_FETCH_FAIL: return profilePendingFetchFail(state, action)
 
     case actionTypes.PROFILE_VERIFY_SCREENSHOT_START: return profileVerifyScreenshotStart(state, action)
 

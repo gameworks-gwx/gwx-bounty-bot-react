@@ -18,7 +18,7 @@ import EditUser from './containers/UserManagement/EditUser'
 import AddUser from './containers/UserManagement/AddUser'
 import Settings from './containers/Settings';
 import Logout from './containers/Logout';
-import Profiles from './containers/Profiles';
+import Profile from './containers/Profile';
 import GWXDashboard from './containers/Dashboard/GWXDashboard';
 import TelegramDashboard from './containers/Dashboard/TelegramDashboard';
 
@@ -97,7 +97,7 @@ const App = ({ location, history, error, removeError }) => {
             <Route exact path="/user-management/add" component={AddUser} />
             <Route exact path="/user-management/edit/:id" component={EditUser} />
             <Route exact path="/logout" component={Logout} />
-            <Route exact path="/profiles" component={Profiles} />
+            <Route exact path="/profile/:id" component={Profile} />
           </Switch>
         </Content>
         <Footer className="footer-container"></Footer>

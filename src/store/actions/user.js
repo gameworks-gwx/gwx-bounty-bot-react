@@ -54,7 +54,6 @@ export const fetchUsersFail = () => {
   }
 }
 
-
 export const fetchUsersSuccess = (response) => {
   return {
     type: actionTypes.FETCH_USERS_SUCCESS,
@@ -67,6 +66,39 @@ export const fetchUsers = () => {
     dispatch(fetchUsersStart())
 
     axios.get('/users', {
+      headers: authHeader()
+    }).then((response) => dispatch(fetchUsersSuccess(response.data)))
+      .catch((error) => {
+        dispatch(fetchUsersFail())
+        dispatch(addError(error))
+      })
+  }
+}
+
+export const fetchUserStart = () => {
+  return {
+    type: actionTypes.FETCH_USER_START
+  }
+}
+
+export const fetchUserFail = () => {
+  return {
+    type: actionTypes.FETCH_USER_FAIL
+  }
+}
+
+export const fetchUserSuccess = (response) => {
+  return {
+    type: actionTypes.FETCH_USER_SUCCESS,
+    payload: response
+  }
+}
+
+export const fetchUser = (id) => {
+  return dispatch => {
+    dispatch(fetchUsersStart())
+
+    axios.get(`/users/${id}`, {
       headers: authHeader()
     }).then((response) => dispatch(fetchUsersSuccess(response.data)))
       .catch((error) => {
@@ -89,7 +121,6 @@ export const createUserFail = () => {
 }
 
 export const createUserSuccess = (response) => {
-  console.log(response);
   return {
     type: actionTypes.CREATE_USER_SUCCESS
   }

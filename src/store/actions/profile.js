@@ -9,9 +9,16 @@ export const profileVerifyScreenshotStart = () => {
   }
 }
 
+export const addError = (error) => {
+  return {
+    type: ADD_ERROR,
+    payload: error
+  }
+}
+
 export const profileVerifyScreenshotFail = () => {
   return {
-    type: ADD_ERROR
+    type: actionTypes.PROFILE_VERIFY_SCREENSHOT_FAIL
   }
 }
 
@@ -42,16 +49,13 @@ export const profilePendingFetchStart = () => {
   }
 }
 
-export const profilePendingFetchFail = (error) => {
-  console.log(error)
+export const profilePendingFetchFail = () => {
   return {
-    type: ADD_ERROR,
-    payload: error
+    type: actionTypes.PROFILE_PENDING_FETCH_FAIL,
   }
 }
 
 export const profilePendingFetchSuccess = (response) => {
-  console.log(response)
   return {
     type: actionTypes.PROFILE_PENDING_FETCH_SUCCESS,
     payload: response
@@ -65,30 +69,61 @@ export const profilePendingFetch = () => {
     axios.get('/profiles/pending', {
       headers: authHeader()
     }).then((response) => dispatch(profilePendingFetchSuccess(response.data))
-    ).catch((error) => dispatch(profilePendingFetchFail(error)))
+    ).catch((error) => {
+      dispatch(profilePendingFetchFail())
+      dispatch(addError(error))
+    })
+  }
+}
+
+export const fetchProfileStart = () => {
+  return {
+    type: actionTypes.FETCH_PROFILE_START
+  }
+}
+
+export const fetchProfileFail = () => {
+  return {
+    type: actionTypes.FETCH_PROFILE_FAIL,
+  }
+}
+
+export const fetchProfileSuccess = (response) => {
+  return {
+    type: actionTypes.FETCH_PROFILE_SUCCESS,
+    payload: response
+  }
+}
+
+export const fetchProfile = (id) => {
+  return dispatch => {
+    dispatch(fetchProfileStart());
+
+    axios.get(`/profiles/${id}`, {
+      headers: authHeader()
+    }).then((response) => dispatch(fetchProfileSuccess(response.data))).catch((error) => {
+      dispatch(profileFetchAllFail())
+      dispatch(addError(error))
+    })
   }
 }
 
 export const profileFetchAllStart = () => {
-  console.log(`ACTIONS PROFILE FETCH ALL START`);
   return {
     type: actionTypes.PROFILE_FETCH_ALL_START
   }
 }
 
-export const profileFetchAllFail = (error) => {
-  console.log(`ACTIONS PROFILE FETCH ALL FAIL`);
+export const profileFetchAllFail = () => {
   return {
-    type: ADD_ERROR,
-    payload: error
+    type: actionTypes.PROFILE_FETCH_ALL_FAIL,
   }
 }
 
 export const profileFetchAllSuccess = (response) => {
-  console.log(`ACTIONS PROFILE FETCH ALL SUCCESS`);
   return {
     type: actionTypes.PROFILE_FETCH_ALL_SUCCESS,
-    payload: response.data
+    payload: response
   }
 }
 
@@ -99,9 +134,10 @@ export const profileFetchAll = (page) => {
     axios.get(`/profiles?page=${page}&limit=20`, {
       headers: authHeader()
     }).then((response) => {
-      dispatch(profileFetchAllSuccess(response))
+      dispatch(profileFetchAllSuccess(response.data))
     }).catch((error) => {
       dispatch(profileFetchAllFail(error))
+      dispatch(addError(error))
     })
   }
 }

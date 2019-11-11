@@ -139,7 +139,12 @@ const TelegramDashboard = ({
             <Table
               onRow={(record) => {
                 return {
-                  onClick: (_) => history.push(`/profile/${record._id}`)
+                  onClick: (_) => history.push({
+                    pathname: `/profile/${record._id}`,
+                    state: {
+                      pageTitle: 'Profile'
+                    }
+                  })
                 }
               }}
               dataSource={profiles}

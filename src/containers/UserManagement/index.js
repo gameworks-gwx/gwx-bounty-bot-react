@@ -41,7 +41,7 @@ const UserManagement = ({ users, fetchUsers }) => {
             }
           }}>Edit</Link>
           <Divider type="vertical" />
-          <Link>Delete</Link>
+          <Button type="link">Delete</Button>
         </span>
       )
     }
