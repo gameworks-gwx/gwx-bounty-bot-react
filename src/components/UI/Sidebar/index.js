@@ -31,6 +31,18 @@ const Sidebar = ({ pathname, closeDrawer }) => {
         </NavLink>
       </Menu.Item>
 
+      <Menu.Item key="/user-management" onClick={closeDrawer ? closeDrawer : ''}>
+        <NavLink to={{
+          pathname: '/user-management',
+          state: {
+            pageTitle: 'User Management'
+          }
+        }}>
+          <Icon type="idcard" />
+          User Management
+          </NavLink>
+      </Menu.Item>
+
       <SubMenu title={<span><Icon type="table" />Dashboard</span>}>
 
         <Menu.Item key="/dashboard/gwx" onClick={closeDrawer ? closeDrawer : ''}>
@@ -57,30 +69,6 @@ const Sidebar = ({ pathname, closeDrawer }) => {
 
       </SubMenu>
 
-      <SubMenu title={<span><Icon type="user" /><span>Configuration</span></span>}>
-        <Menu.Item key="/settings" onClick={closeDrawer ? closeDrawer : ''}>
-          <NavLink to={{
-            pathname: '/settings',
-            state: {
-              pageTitle: 'Account Settings'
-            }
-          }}>
-            <Icon type="setting" />
-            Account Settings
-          </NavLink>
-        </Menu.Item>
-        <Menu.Item key="/user-management" onClick={closeDrawer ? closeDrawer : ''}>
-          <NavLink to={{
-            pathname: '/user-management',
-            state: {
-              pageTitle: 'User Management'
-            }
-          }}>
-            <Icon type="idcard" />
-            User Management
-          </NavLink>
-        </Menu.Item>
-      </SubMenu>
     </Menu>
   )
 }

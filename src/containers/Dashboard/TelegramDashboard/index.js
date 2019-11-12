@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react'
 import Container from '../../../components/UI/Container'
 import { withRouter } from 'react-router-dom';
-import { Table, Button, Tooltip, Statistic, Row, Col, Pagination, Skeleton } from 'antd'
+import { Table, Button, Tooltip, Statistic, Row, Col, Pagination, Skeleton, Input } from 'antd'
 import { connect } from 'react-redux'
 import { profileFetchAll } from '../../../store/actions/profile'
+
+const { Search } = Input;
 
 const TelegramDashboard = ({
   history,
@@ -135,7 +137,11 @@ const TelegramDashboard = ({
               </Col>
             </Row>
 
-
+            <Search
+              placeholder="Search profiles"
+              style={{ width: '20rem', marginBottom: '1rem' }}
+              size="large"
+            />
             <Table
               onRow={(record) => {
                 return {

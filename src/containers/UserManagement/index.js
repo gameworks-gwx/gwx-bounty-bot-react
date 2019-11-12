@@ -39,7 +39,11 @@ const UserManagement = ({ users, fetchUsers }) => {
             state: {
               pageTitle: 'Edit User'
             }
-          }}>Edit</Link>
+          }}>
+            <Button type="link">
+              Edit
+            </Button>
+          </Link>
           <Divider type="vertical" />
           <Button type="link">Delete</Button>
         </span>
