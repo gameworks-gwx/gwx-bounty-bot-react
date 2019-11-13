@@ -3,7 +3,7 @@ import Container from '../../../components/UI/Container'
 import { withRouter } from 'react-router-dom';
 import { Table, Button, Tooltip, Statistic, Row, Col, Pagination, Skeleton, Input } from 'antd'
 import { connect } from 'react-redux'
-import { profileFetchAll } from '../../../store/actions/profile'
+import { profileFetchAll, searchProfile } from '../../../store/actions/profile'
 
 const { Search } = Input;
 
@@ -12,18 +12,29 @@ const TelegramDashboard = ({
   profileData,
   fetchAllProfiles,
   match,
-  loading
+  loading,
+  searchProfile
 }) => {
 
   useEffect(() => {
-
     if (!match.params.page) {
       fetchAllProfiles(1)
     } else {
       fetchAllProfiles(match.params.page)
     }
 
-  }, [fetchAllProfiles, match.params.page])
+    if (history.location.search && !match.params.page) {
+      const paramsQuery = new URLSearchParams(history.location.search);
+      const query = paramsQuery.get('q')
+
+      if (query) {
+        searchProfile(query)
+      } else {
+        history.push('/dashboard/telegram')
+      }
+    }
+
+  }, [fetchAllProfiles, history, history.location.search, match.params.page, searchProfile])
 
   const airdropHandler = (event, test) => {
     event.stopPropagation()
@@ -60,7 +71,7 @@ const TelegramDashboard = ({
     {
       title: 'Tasks',
       dataIndex: '',
-      key: '',
+      key: 'tasks',
       width: 80,
       align: 'center',
       render: (_, record) => {
@@ -80,7 +91,7 @@ const TelegramDashboard = ({
     {
       title: 'Airdrop Reward',
       dataIndex: '',
-      key: '',
+      key: 'airdropReward',
       width: 70,
       render: (_, record) => {
         return (
@@ -138,9 +149,9 @@ const TelegramDashboard = ({
             </Row>
 
             <Search
-              placeholder="Search profiles"
-              style={{ width: '20rem', marginBottom: '1rem' }}
-              size="large"
+              placeholder="Search by telegram username"
+              style={{ width: '18rem', marginBottom: '1rem' }}
+              onSearch={(query) => history.push(`/dashboard/telegram?q=${query}`)}
             />
             <Table
               onRow={(record) => {
@@ -173,7 +184,7 @@ const TelegramDashboard = ({
   )
 }
 
-const mapStateToProps = ({ profile, error }) => {
+const mapStateToProps = ({ profile }) => {
   return {
     profileData: profile.profiles,
     loading: profile.fetchAllLoading
@@ -183,6 +194,7 @@ const mapStateToProps = ({ profile, error }) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchAllProfiles: (page) => dispatch(profileFetchAll(page)),
+    searchProfile: (query) => dispatch(searchProfile(query))
   }
 }
 

@@ -16,6 +16,7 @@ const MobileHome = ({ loading, dashboardData }) => {
               title: "Total Users",
               value: gwxUsersCount
             }}
+            loading={loading}
           />
 
         </Col>
@@ -28,6 +29,7 @@ const MobileHome = ({ loading, dashboardData }) => {
               title: "Total Users",
               value: telegramUsersCount
             }}
+            loading={loading}
           />
         </Col>
       </Row>
@@ -41,6 +43,7 @@ const MobileHome = ({ loading, dashboardData }) => {
               title: "Total Admins",
               value: adminCount
             }}
+            loading={loading}
           />
         </Col>
         <Col span={12}>
@@ -52,6 +55,7 @@ const MobileHome = ({ loading, dashboardData }) => {
               title: "Pending Screenshots",
               value: pendingCount
             }}
+            loading={loading}
           />
         </Col>
       </Row>

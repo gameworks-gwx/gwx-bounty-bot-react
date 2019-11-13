@@ -31,17 +31,7 @@ const Sidebar = ({ pathname, closeDrawer }) => {
         </NavLink>
       </Menu.Item>
 
-      <Menu.Item key="/user-management" onClick={closeDrawer ? closeDrawer : ''}>
-        <NavLink to={{
-          pathname: '/user-management',
-          state: {
-            pageTitle: 'User Management'
-          }
-        }}>
-          <Icon type="idcard" />
-          User Management
-          </NavLink>
-      </Menu.Item>
+
 
       <SubMenu title={<span><Icon type="table" />Dashboard</span>}>
 
@@ -67,9 +57,34 @@ const Sidebar = ({ pathname, closeDrawer }) => {
           </NavLink>
         </Menu.Item>
 
+        <Menu.Item key="/dashboard/airdrop" onClick={closeDrawer ? closeDrawer : ''}>
+          <NavLink to={{
+            pathname: '/dashboard/airdrop',
+            state: {
+              pageTitle: 'Airdrop Dashboard'
+            }
+          }}>
+            Airdrop Dashboard
+          </NavLink>
+        </Menu.Item>
+
       </SubMenu>
 
-    </Menu>
+      <SubMenu title={<span><Icon type="user" /><span>Configuration</span></span>}>
+
+        <Menu.Item key="/administrators" onClick={closeDrawer ? closeDrawer : ''}>
+          <NavLink to={{
+            pathname: '/administrators',
+            state: {
+              pageTitle: 'Administrators'
+            }
+          }}>
+            Administrators
+          </NavLink>
+        </Menu.Item>
+      </SubMenu>
+
+    </Menu >
   )
 }
 

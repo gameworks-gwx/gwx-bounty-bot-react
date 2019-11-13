@@ -1,0 +1,157 @@
+import React, { useEffect } from 'react'
+import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux';
+import { fetchAirdropDashboardData } from '../../../store/actions/dashboard'
+import Container from '../../../components/UI/Container';
+import { Table, Button, Tooltip, Statistic, Row, Col, Pagination, Skeleton, Input } from 'antd'
+
+const { Search } = Input;
+
+const AirdropDashboard = ({
+  history,
+  match,
+  fetchAirdropDashboardData,
+  usersData,
+  loading
+}) => {
+
+  useEffect(() => {
+    if (!match.params.page) {
+      fetchAirdropDashboardData(1)
+    } else {
+      fetchAirdropDashboardData(match.params.page)
+    }
+  }, [fetchAirdropDashboardData, match.params.page])
+
+  const { users = [], total } = usersData;
+
+  const airdropHandler = (event, test) => {
+    event.stopPropagation()
+    console.log(test)
+  }
+
+  const columns = [
+    {
+      title: 'Email Address',
+      dataIndex: 'email',
+      key: 'email'
+    },
+    {
+      title: 'Wallet Address',
+      dataIndex: 'wallet_address',
+      key: 'wallet_address'
+    },
+    {
+      title: 'Telegram Username',
+      key: 'telegramUsername',
+      render: (_, record) => {
+        if (!record.telegramId) {
+          return <label htmlFor="">NO TELEGRAM PROFILE</label>
+        } else {
+          if (record.telegramUsername) {
+            return <label htmlFor="">{record.telegramUsername}</label>
+          }
+
+          return <label htmlFor="">None</label>
+        }
+      }
+    },
+    {
+      title: 'Tasks',
+      key: 'tasks',
+      render: (_, record) => {
+        return (
+          <>
+            {
+              record.tasks
+                ?
+                record.tasks.length >= 6
+                  ?
+                  <label><h4>{record.tasks.length}/6</h4></label>
+                  :
+                  <label>{record.tasks.length}/6</label>
+                : <label htmlFor="">NO TELEGRAM PROFILE</label>
+            }
+          </>
+        )
+      }
+    },
+    {
+      title: 'Airdrop',
+      dataIndex: 'operation',
+      key: 'operation',
+      align: 'center',
+      render: (_, record) => {
+        return (
+          <>
+            {
+              record.wallet_address
+                ?
+                <Button type="primary" onClick={(event) => airdropHandler(event, record.wallet_address)} shape="round">Airdrop</Button>
+                :
+                <Tooltip placement="topLeft" title="This user has no wallet address registered">
+                  <Button type="primary" shape="round" disabled>Airdrop</Button>
+                </Tooltip>
+
+            }
+          </>
+        )
+      }
+    },
+  ]
+
+  return (
+    <Container>
+      {
+        loading ?
+          <>
+            <Skeleton active />
+            <Skeleton active />
+            <Skeleton active />
+            <Skeleton active />
+          </>
+          :
+          <>
+            <Row type="flex" justify="space-around" style={{ margin: '1vh 0 1vh 0' }}>
+              <Col>
+                <Statistic title="Total Users" value={total} valueStyle={{ textAlign: 'center' }} />
+              </Col>
+              <Col>
+                <Statistic title="Total Airdrop" value={0} valueStyle={{ textAlign: 'center' }} />
+              </Col>
+              <Col>
+                <Button type="primary" shape="round" style={{ marginTop: '1rem' }}>Airdrop all users</Button>
+              </Col>
+            </Row>
+            <Table
+              columns={columns}
+              dataSource={users}
+              pagination={false}
+              scroll={{ y: 500 }}
+            />
+            <Pagination
+              defaultCurrent={match.params.page ? parseInt(match.params.page) : 1}
+              onChange={(page) => history.push(`/dashboard/airdrop/${page}`)}
+              defaultPageSize={20}
+              total={total}
+            />
+          </>
+      }
+    </Container>
+  )
+}
+
+const mapStateToProps = ({ dashboard }) => {
+  return {
+    usersData: dashboard.usersData,
+    loading: dashboard.fetchLoading
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchAirdropDashboardData: (page) => dispatch(fetchAirdropDashboardData(page))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AirdropDashboard))

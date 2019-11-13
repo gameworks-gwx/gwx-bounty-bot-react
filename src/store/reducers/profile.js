@@ -11,6 +11,28 @@ const initialState = {
   error: {},
 }
 
+const searchProfileStart = (state, action) => {
+  return updateObject(state, {
+    ...state,
+    fetchAllLoading: true
+  })
+}
+
+const searchProfileSuccess = (state, action) => {
+  return updateObject(state, {
+    ...state,
+    fetchAllLoading: false,
+    profiles: action.payload
+  })
+}
+
+const searchProfileFail = (state, action) => {
+  return updateObject(state, {
+    ...state,
+    loading: false
+  })
+}
+
 const fetchProfileStart = (state, action) => {
   return updateObject(state, {
     ...state,
@@ -110,6 +132,13 @@ const profileFetchAllFail = (state, action) => {
 }
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+
+    case actionTypes.SEARCH_PROFILE_START: return searchProfileStart(state, action)
+
+    case actionTypes.SEARCH_PROFILE_SUCCESS: return searchProfileSuccess(state, action)
+
+    case actionTypes.SEARCH_PROFILE_FAIL: return searchProfileFail(state, action)
+
     case actionTypes.FETCH_PROFILE_START: return fetchProfileStart(state, action)
 
     case actionTypes.FETCH_PROFILE_SUCCESS: return fetchProfileSuccess(state, action)

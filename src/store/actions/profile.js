@@ -3,6 +3,40 @@ import { ADD_ERROR } from '../constants/error'
 import axios from '../../config/axios';
 import { authHeader } from '../helpers/authHeader';
 
+export const searchProfileStart = () => {
+  return {
+    type: actionTypes.SEARCH_PROFILE_START
+  }
+}
+
+export const searchProfileFail = () => {
+  return {
+    type: actionTypes.SEARCH_PROFILE_FAIL
+  }
+}
+
+export const searchProfileSuccess = (response) => {
+  return {
+    type: actionTypes.SEARCH_PROFILE_SUCCESS,
+    payload: response
+  }
+}
+
+export const searchProfile = (query) => {
+  return dispatch => {
+    dispatch(searchProfileStart());
+
+    axios.get(`/profiles/search?q=${query}&page=1&limit=20`, {
+      headers: authHeader()
+    }).then((response) => dispatch(searchProfileSuccess(response.data)))
+      .catch((error) => {
+        dispatch(searchProfileFail())
+        dispatch(addError(error))
+      })
+  }
+}
+
+
 export const profileVerifyScreenshotStart = () => {
   return {
     type: actionTypes.PROFILE_VERIFY_SCREENSHOT_START
@@ -12,7 +46,7 @@ export const profileVerifyScreenshotStart = () => {
 export const addError = (error) => {
   return {
     type: ADD_ERROR,
-    payload: error
+    payload: error.message
   }
 }
 
@@ -39,7 +73,10 @@ export const profileVerifyScreenshot = (id, body) => {
     axios.put(`/profiles/verify/${id}`, body, {
       headers: authHeader()
     }).then((response) => dispatch(profileVerifyScreenshotSuccess(response.data.verifiedData, id)))
-      .catch((error) => dispatch(profileVerifyScreenshotFail(error)))
+      .catch((error) => {
+        dispatch(profileVerifyScreenshotFail())
+        dispatch(addError(error))
+      })
   }
 }
 
@@ -136,7 +173,7 @@ export const profileFetchAll = (page) => {
     }).then((response) => {
       dispatch(profileFetchAllSuccess(response.data))
     }).catch((error) => {
-      dispatch(profileFetchAllFail(error))
+      dispatch(profileFetchAllFail())
       dispatch(addError(error))
     })
   }

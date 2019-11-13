@@ -13,8 +13,8 @@ const StatisticCard = ({ cardTitle, pathname, statisticData, size, loading }) =>
     pageTitle = 'GWX Dashboard'
   } else if (pathname === '/dashboard/telegram') {
     pageTitle = 'Telegram Dashboard'
-  } else if (pathname === '/user-management') {
-    pageTitle = 'User Management'
+  } else if (pathname === '/administrators') {
+    pageTitle = 'Administrators'
   } else if (pathname === '/verifications') {
     pageTitle = 'Verifications'
   }
@@ -27,7 +27,7 @@ const StatisticCard = ({ cardTitle, pathname, statisticData, size, loading }) =>
       }
     }}>
       <Card className="statistic-card" loading={loading} size={size ? size : ''} hoverable>
-        <Meta title={cardTitle} style={{ marginBottom: '1rem' }} />
+        <Meta title={cardTitle} style={{ marginBottom: '1rem' }} size="small" />
         {
           statisticData.length
             ? statisticData.map((data, index) => {

@@ -21,6 +21,7 @@ import Logout from './containers/Logout';
 import Profile from './containers/Profile';
 import GWXDashboard from './containers/Dashboard/GWXDashboard';
 import TelegramDashboard from './containers/Dashboard/TelegramDashboard';
+import AirdropDashboard from './containers/Dashboard/AirdropDashboard';
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -92,10 +93,11 @@ const App = ({ location, history, error, removeError }) => {
             <Route exact path="/dashboard/:typeof" component={Dashboard} />
             <Route path="/dashboard/gwx/:page" component={GWXDashboard} />
             <Route path="/dashboard/telegram/:page" component={TelegramDashboard} />
+            <Route path="/dashboard/airdrop/:page" component={AirdropDashboard} />
             <Route path="/settings" component={Settings} />
-            <Route exact path="/user-management" component={UserManagement} />
-            <Route exact path="/user-management/add" component={AddUser} />
-            <Route exact path="/user-management/edit/:id" component={EditUser} />
+            <Route exact path="/administrators" component={UserManagement} />
+            <Route exact path="/administrators/add" component={AddUser} />
+            <Route exact path="/administrators/edit/:id" component={EditUser} />
             <Route exact path="/logout" component={Logout} />
             <Route exact path="/profile/:id" component={Profile} />
           </Switch>

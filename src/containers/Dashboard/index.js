@@ -1,6 +1,7 @@
 import React from 'react';
 import GWXDashboard from './GWXDashboard'
 import TelegramDashboard from './TelegramDashboard'
+import AirdropDashboard from './AirdropDashboard'
 
 const Dashboard = ({
   match
@@ -8,7 +9,15 @@ const Dashboard = ({
   return (
     <>
       {
-        match.params.typeof === 'telegram' ? <TelegramDashboard /> : <GWXDashboard />
+        match.params.typeof === 'telegram'
+          ?
+          <TelegramDashboard />
+          :
+          match.params.typeof === 'airdrop'
+            ?
+            <AirdropDashboard />
+            :
+            <GWXDashboard />
       }
     </>
   )

@@ -14,7 +14,13 @@ const Home = ({ fetchDashboardData, dashboardData, loading }) => {
 
   return (
     <>
-      <PCHome dashboardData={dashboardData} loading={loading} />
+      <Responsive device="mobile">
+        <MobileHome dashboardData={dashboardData} loading={loading} />
+      </Responsive>
+
+      <Responsive device="pc">
+        <PCHome dashboardData={dashboardData} loading={loading} />
+      </Responsive>
     </>
   )
 }

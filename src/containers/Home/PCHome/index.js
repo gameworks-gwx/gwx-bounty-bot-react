@@ -1,6 +1,6 @@
 import React from 'react';
 import StatisticCard from '../../../components/UI/StatisticCard'
-import { Card, Row, Col, Skeleton } from 'antd'
+import { Row, Col } from 'antd'
 
 const PCHome = ({ loading, dashboardData }) => {
   const { gwxUsersCount, adminCount, telegramUsersCount, pendingCount } = dashboardData
@@ -34,8 +34,8 @@ const PCHome = ({ loading, dashboardData }) => {
 
         <Col span={12}>
           <StatisticCard
-            cardTitle="User Management"
-            pathname="/user-management"
+            cardTitle="Administrators"
+            pathname="/administrators"
             statisticData={{
               title: "Total Admins",
               value: adminCount

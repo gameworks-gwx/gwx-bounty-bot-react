@@ -35,7 +35,7 @@ const UserManagement = ({ users, fetchUsers }) => {
       render: (_, record) => (
         <span>
           <Link to={{
-            pathname: '/user-management/edit/' + record.id,
+            pathname: '/administrators/edit/' + record.id,
             state: {
               pageTitle: 'Edit User'
             }
@@ -54,7 +54,7 @@ const UserManagement = ({ users, fetchUsers }) => {
   return (
     <Container>
       <Link to={{
-        pathname: '/user-management/add',
+        pathname: '/administrators/add',
         state: {
           pageTitle: 'Add User'
         }
