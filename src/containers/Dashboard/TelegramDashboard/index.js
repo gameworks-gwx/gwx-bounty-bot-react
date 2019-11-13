@@ -94,8 +94,9 @@ const TelegramDashboard = ({
       key: 'airdropReward',
       width: 70,
       render: (_, record) => {
+        const approvedTasks = record.tasks.filter((task) => task.verified !== false)
         return (
-          <label>{record.tasks.length * 600}</label>
+          <label>{approvedTasks.length} / 6</label>
         )
       }
     },

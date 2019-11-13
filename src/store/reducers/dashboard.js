@@ -4,7 +4,54 @@ import { updateObject } from '../utility'
 const initialState = {
   fetchLoading: false,
   dashboardData: {},
-  usersData: []
+  usersData: [],
+  gwxLoading: [],
+  telegramLoading: [],
+  message: null
+}
+
+const airdropUserStart = (state, action) => {
+  const { airdropType, walletAddress } = action.payload
+
+  if (airdropType === 'gwx') {
+    return updateObject(state, {
+      gwxLoading: state.gwxLoading.concat(walletAddress)
+    })
+  } else {
+    return updateObject(state, {
+      telegramLoading: state.telegramLoading.concat(walletAddress)
+    })
+  }
+}
+
+const airdropUserFail = (state, action) => {
+  const { airdropType, walletAddress } = action.payload
+
+  if (airdropType === 'gwx') {
+    return updateObject(state, {
+      gwxLoading: state.gwxLoading.filter((gwxAddress) => gwxAddress !== walletAddress)
+    })
+  } else {
+    return updateObject(state, {
+      telegramLoading: state.telegramLoading.filter((telegramAddress) => telegramAddress !== walletAddress)
+    })
+  }
+}
+
+const airdropUserSuccess = (state, action) => {
+  const { airdropType, walletAddress } = action.payload
+
+  if (airdropType === 'gwx') {
+    return updateObject(state, {
+      gwxLoading: state.gwxLoading.filter((gwxAddress) => gwxAddress !== walletAddress),
+      message: `Successfully airdropped to ${walletAddress}`
+    })
+  } else {
+    return updateObject(state, {
+      telegramLoading: state.telegramLoading.filter((telegramAddress) => telegramAddress !== walletAddress),
+      message: `Successfully airdropped to ${walletAddress}`
+    })
+  }
 }
 
 const fetchAirdropDashboardDataStart = (state, action) => {
@@ -47,6 +94,9 @@ const fetchDashboardDataSuccess = (state, action) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.AIRDROP_USER_START: return airdropUserStart(state, action)
+    case actionTypes.AIRDROP_USER_FAIL: return airdropUserFail(state, action)
+    case actionTypes.AIRDROP_USER_SUCCESS: return airdropUserSuccess(state, action)
     case actionTypes.FETCH_AIRDROP_DASHBOARD_DATA_START: return fetchAirdropDashboardDataStart(state, action)
     case actionTypes.FETCH_AIRDROP_DASHBOARD_DATA_FAIL: return fetchAirdropDashboardDataFail(state, action)
     case actionTypes.FETCH_AIRDROP_DASHBOARD_DATA_SUCCESS: return fetchAirdropDashboardDataSuccess(state, action)

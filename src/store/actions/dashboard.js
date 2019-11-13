@@ -10,6 +10,46 @@ export const addError = (error) => {
   }
 }
 
+export const airdropUserStart = (airdropType, walletAddress) => {
+  return {
+    type: actionTypes.AIRDROP_USER_START,
+    payload: {
+      airdropType,
+      walletAddress
+    }
+  }
+}
+
+export const airdropUserFail = (airdropType, walletAddress) => {
+  return {
+    type: actionTypes.AIRDROP_USER_FAIL,
+    paylaod: {
+      airdropType,
+      walletAddress
+    }
+  }
+}
+
+export const airdropUserSuccess = (response, airdropType, walletAddress) => {
+  return {
+    type: actionTypes.AIRDROP_USER_SUCCESS,
+    payload: {
+      airdropType,
+      walletAddress
+    }
+  }
+}
+
+export const airdropUser = (airdropType, walletAddress) => {
+  return dispatch => {
+    dispatch(airdropUserStart(airdropType, walletAddress))
+
+    setTimeout(() => {
+      dispatch(airdropUserSuccess('boo', airdropType, walletAddress))
+    }, 5000)
+  }
+}
+
 export const fetchAirdropDashboardDataStart = () => {
   return {
     type: actionTypes.FETCH_AIRDROP_DASHBOARD_DATA_START
