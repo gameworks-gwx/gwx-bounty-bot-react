@@ -1,11 +1,26 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import moment from 'moment'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
-import { fetchAirdropDashboardData, airdropUser } from '../../../store/actions/dashboard'
+import { fetchAirdropDashboardData, airdropUser, airdropAllUsers } from '../../../store/actions/dashboard'
 import Container from '../../../components/UI/Container';
-import { Table, Button, Tooltip, Statistic, Row, Col, Pagination, Skeleton, Input, message } from 'antd'
+import {
+  Table,
+  Button,
+  Tooltip,
+  Statistic,
+  Row,
+  Col,
+  Pagination,
+  Skeleton,
+  Input,
+  Modal,
+  Icon,
+  Typography
+} from 'antd'
 
 const { Search } = Input;
+const { Text } = Typography
 
 const AirdropDashboard = ({
   history,
@@ -16,9 +31,14 @@ const AirdropDashboard = ({
   airdropUser,
   gwxLoading,
   telegramLoading,
-  messageData
+  successGwxUsers,
+  failedGwxUsers,
+  successTelegramUsers,
+  failedTelegramUsers,
+  airdropAllUsers
 }) => {
 
+  const [visible, setVisible] = useState(false); //!! For modal
 
   useEffect(() => {
     if (!match.params.page) {
@@ -26,10 +46,7 @@ const AirdropDashboard = ({
     } else {
       fetchAirdropDashboardData(match.params.page)
     }
-    if (messageData) {
-      message.success(messageData)
-    }
-  }, [fetchAirdropDashboardData, match.params.page, messageData])
+  }, [fetchAirdropDashboardData, match.params.page])
 
 
   const { users = [], total } = usersData;
@@ -39,30 +56,53 @@ const AirdropDashboard = ({
     airdropUser(airdropType, walletAddress)
   }
 
+  const showModalHandler = () => {
+    setVisible(true)
+  }
+
+  const airdropAllHandler = (users) => {
+    setVisible(false);
+    airdropAllUsers(users)
+
+  }
+
+  const cancelHandler = () => {
+    setVisible(false);
+  }
 
   const columns = [
     {
       title: 'Email Address',
-      dataIndex: 'email',
-      key: 'email'
+      key: 'email',
+      render: (_, record) => (
+        record.email
+          ?
+          <label htmlFor="">{record.email}</label>
+          :
+          <Text type="secondary" style={{ fontStyle: 'italic' }}>None</Text>
+      )
     },
     {
       title: 'Wallet Address',
-      dataIndex: 'wallet_address',
-      key: 'wallet_address'
+      key: 'wallet_address',
+      render: (_, record) => (
+        record.wallet_address
+          ? <label htmlFor="">{record.wallet_address}</label>
+          : <Text type="secondary" style={{ fontStyle: 'italic' }}>None</Text>
+      )
     },
     {
       title: 'Telegram Username',
       key: 'telegramUsername',
       render: (_, record) => {
         if (!record.telegramId) {
-          return <label htmlFor="">NO TELEGRAM PROFILE</label>
+          return <Text type="secondary" style={{ fontStyle: 'italic' }}>Unregistered</Text>
         } else {
           if (record.telegramUsername) {
             return <label htmlFor="">{record.telegramUsername}</label>
           }
 
-          return <label htmlFor="">None</label>
+          return <Text type="secondary" style={{ fontStyle: 'italic' }}>None</Text>
         }
       }
     },
@@ -84,7 +124,8 @@ const AirdropDashboard = ({
                   <label><h4>{approvedTasks.length}/6</h4></label>
                   :
                   <label>{approvedTasks.length}/6</label>
-                : <label htmlFor="">NO TELEGRAM PROFILE</label>
+                :
+                <Text type="secondary" style={{ fontStyle: 'italic' }}>Unregistered</Text>
             }
           </>
         )
@@ -104,7 +145,20 @@ const AirdropDashboard = ({
                   ?
                   <Button type="primary" shape="round" loading>Loading</Button>
                   :
-                  <Button type="primary" onClick={(event) => airdropHandler(event, 'gwx', record.wallet_address)} shape="round">Airdrop</Button>
+                  successGwxUsers.indexOf(record.wallet_address) !== -1
+                    ?
+                    <Button type="primary" shape="round" disabled>
+                      <Icon type="check" />Airdrop succeeded
+                    </Button>
+                    :
+                    failedGwxUsers.indexOf(record.wallet_address) !== -1
+                      ?
+                      <Button type="danger" shape="round" disabled>
+                        <Icon type="close" />Airdrop failed
+                      </Button>
+
+                      :
+                      <Button type="primary" onClick={(event) => airdropHandler(event, 'gwx', record.wallet_address)} shape="round">Airdrop</Button>
                 :
                 <Tooltip placement="topLeft" title="This user has no wallet address registered">
                   <Button type="primary" shape="round" disabled>Airdrop</Button>
@@ -122,14 +176,39 @@ const AirdropDashboard = ({
         return (
           <>
             {
+
+              record.lastAirdropped ?
+                <>
+                  <Text type="secondary" style={{ fontSize: '10px' }}>Last airdropped</Text>
+                  <br />
+                  <Text type="secondary" style={{ fontSize: '10px' }}>{moment(record.lastAirdropped).format("MM/DD/YYYY h:m a")}</Text>
+                  <br />
+                </>
+                :
+                null
+            }
+            {
               record.wallet_address
                 ?
-                record.telegramId ?
+                record.telegramId
+                  ?
                   telegramLoading.indexOf(record.wallet_address) !== -1
                     ?
                     <Button type="primary" shape="round" loading>Loading</Button>
                     :
-                    <Button type="primary" onClick={(event) => airdropHandler(event, 'telegram', record.wallet_address)} shape="round">Airdrop</Button>
+                    successTelegramUsers.indexOf(record.wallet_address) !== -1
+                      ?
+                      <Button type="primary" shape="round" disabled>
+                        <Icon type="check" />Airdrop succeeded
+                      </Button>
+                      :
+                      failedTelegramUsers.indexOf(record.wallet_address) !== -1
+                        ?
+                        <Button type="danger" shape="round" disabled>
+                          <Icon type="close" />Airdrop failed
+                        </Button>
+                        :
+                        <Button type="primary" onClick={(event) => airdropHandler(event, 'telegram', record.wallet_address)} shape="round">Airdrop</Button>
                   :
                   <Tooltip placement="topLeft" title="This user has no telegram profile yet">
 
@@ -167,14 +246,32 @@ const AirdropDashboard = ({
                 <Statistic title="Total Airdrop" value={0} valueStyle={{ textAlign: 'center' }} />
               </Col>
               <Col>
-                <Button type="primary" shape="round" style={{ marginTop: '1rem' }}>Airdrop all users</Button>
+                <Button
+                  type="primary"
+                  shape="round"
+                  style={{ marginTop: '1rem' }}
+                  onClick={() => showModalHandler()}
+                >
+                  Airdrop all users
+                </Button>
               </Col>
             </Row>
+            <Modal
+              title="Airdrop All Users"
+              visible={visible}
+              onOk={() => airdropAllHandler(users)}
+              onCancel={() => cancelHandler()}
+              okText="Confirm airdrop"
+              okButtonProps={{ shape: 'round' }}
+              cancelButtonProps={{ shape: 'round' }}
+            >
+              <p>boo</p>
+            </Modal>
             <Table
               columns={columns}
               dataSource={users}
               pagination={false}
-              scroll={{ y: 500 }}
+              scroll={{ x: 1300, y: 500 }}
             />
             <Pagination
               defaultCurrent={match.params.page ? parseInt(match.params.page) : 1}
@@ -194,14 +291,20 @@ const mapStateToProps = ({ dashboard }) => {
     loading: dashboard.fetchLoading,
     gwxLoading: dashboard.gwxLoading,
     telegramLoading: dashboard.telegramLoading,
-    messageData: dashboard.message
+    messageData: dashboard.message,
+    successGwxUsers: dashboard.successAirdroppedGwxUsers,
+    failedGwxUsers: dashboard.failedAirdroppedGwxUsers,
+    successTelegramUsers: dashboard.successAirdroppedTelegramUsers,
+    failedTelegramUsers: dashboard.failedAirdroppedTelegramUsers,
+
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchAirdropDashboardData: (page) => dispatch(fetchAirdropDashboardData(page)),
-    airdropUser: (airdropType, walletAddress) => dispatch(airdropUser(airdropType, walletAddress))
+    airdropUser: (airdropType, walletAddress) => dispatch(airdropUser(airdropType, walletAddress)),
+    airdropAllUsers: (users) => dispatch(airdropAllUsers(users))
   }
 }
 

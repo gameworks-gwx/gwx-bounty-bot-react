@@ -20,10 +20,10 @@ export const airdropUserStart = (airdropType, walletAddress) => {
   }
 }
 
-export const airdropUserFail = (airdropType, walletAddress) => {
+export const airdropUserFail = (error, airdropType, walletAddress) => {
   return {
     type: actionTypes.AIRDROP_USER_FAIL,
-    paylaod: {
+    payload: {
       airdropType,
       walletAddress
     }
@@ -43,10 +43,29 @@ export const airdropUserSuccess = (response, airdropType, walletAddress) => {
 export const airdropUser = (airdropType, walletAddress) => {
   return dispatch => {
     dispatch(airdropUserStart(airdropType, walletAddress))
+    const random = Math.floor(Math.random() * 2);
+    console.log(random);
 
     setTimeout(() => {
-      dispatch(airdropUserSuccess('boo', airdropType, walletAddress))
+      if (random) {
+        dispatch(airdropUserSuccess('boo', airdropType, walletAddress))
+      } else {
+        dispatch(airdropUserFail('boo', airdropType, walletAddress))
+      }
     }, 5000)
+  }
+}
+
+export const airdropAllUsers = (users) => {
+  return dispatch => {
+    users.forEach((user) => {
+      if (user.telegramId) {
+        dispatch(airdropUser('telegram', user.wallet_address))
+        dispatch(airdropUser('gwx', user.wallet_address))
+      } else {
+        dispatch(airdropUser('gwx', user.wallet_address))
+      }
+    })
   }
 }
 

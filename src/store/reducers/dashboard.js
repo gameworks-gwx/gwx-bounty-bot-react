@@ -7,6 +7,10 @@ const initialState = {
   usersData: [],
   gwxLoading: [],
   telegramLoading: [],
+  successAirdroppedGwxUsers: [],
+  failedAirdroppedGwxUsers: [],
+  successAirdroppedTelegramUsers: [],
+  failedAirdroppedTelegramUsers: [],
   message: null
 }
 
@@ -29,11 +33,13 @@ const airdropUserFail = (state, action) => {
 
   if (airdropType === 'gwx') {
     return updateObject(state, {
-      gwxLoading: state.gwxLoading.filter((gwxAddress) => gwxAddress !== walletAddress)
+      gwxLoading: state.gwxLoading.filter((gwxAddress) => gwxAddress !== walletAddress),
+      failedAirdroppedGwxUsers: state.failedAirdroppedGwxUsers.concat(walletAddress)
     })
   } else {
     return updateObject(state, {
-      telegramLoading: state.telegramLoading.filter((telegramAddress) => telegramAddress !== walletAddress)
+      telegramLoading: state.telegramLoading.filter((telegramAddress) => telegramAddress !== walletAddress),
+      failedAirdroppedTelegramUsers: state.failedAirdroppedTelegramUsers.concat(walletAddress)
     })
   }
 }
@@ -44,12 +50,14 @@ const airdropUserSuccess = (state, action) => {
   if (airdropType === 'gwx') {
     return updateObject(state, {
       gwxLoading: state.gwxLoading.filter((gwxAddress) => gwxAddress !== walletAddress),
-      message: `Successfully airdropped to ${walletAddress}`
+      message: `Successfully airdropped to ${walletAddress}`,
+      successAirdroppedGwxUsers: state.successAirdroppedGwxUsers.concat(walletAddress)
     })
   } else {
     return updateObject(state, {
       telegramLoading: state.telegramLoading.filter((telegramAddress) => telegramAddress !== walletAddress),
-      message: `Successfully airdropped to ${walletAddress}`
+      message: `Successfully airdropped to ${walletAddress}`,
+      successAirdroppedTelegramUsers: state.successAirdroppedTelegramUsers.concat(walletAddress)
     })
   }
 }
