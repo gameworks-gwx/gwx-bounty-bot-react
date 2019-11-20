@@ -56,6 +56,7 @@ const App = ({ location, history, error, removeError }) => {
             minHeight: '100vh',
             left: 0,
             position: 'fixed',
+            width: '50vh'
           }}
         >
           <Sidebar pathname={location.pathname} />
@@ -72,6 +73,8 @@ const App = ({ location, history, error, removeError }) => {
               closable={false}
               onClose={closeDrawer}
               visible={visible}
+              width={192}
+              bodyStyle={{padding: '1vh'}}
             >
               <Sidebar pathname={location.pathname} closeDrawer={closeDrawer} />
             </Drawer>

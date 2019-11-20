@@ -20,7 +20,7 @@ export const airdropUserStart = (airdropType, walletAddress) => {
   }
 }
 
-export const airdropUserFail = (error, airdropType, walletAddress) => {
+export const airdropUserFail = (airdropType, walletAddress) => {
   return {
     type: actionTypes.AIRDROP_USER_FAIL,
     payload: {
@@ -40,19 +40,18 @@ export const airdropUserSuccess = (response, airdropType, walletAddress) => {
   }
 }
 
-export const airdropUser = (airdropType, walletAddress) => {
+export const airdropUser = (airdropType, body) => {
   return dispatch => {
+    const { walletAddress } = body;
     dispatch(airdropUserStart(airdropType, walletAddress))
-    const random = Math.floor(Math.random() * 2);
-    console.log(random);
 
-    setTimeout(() => {
-      if (random) {
-        dispatch(airdropUserSuccess('boo', airdropType, walletAddress))
-      } else {
-        dispatch(airdropUserFail('boo', airdropType, walletAddress))
-      }
-    }, 5000)
+    axios.put(`/dashboard/airdrop/${airdropType}`, body, {
+      headers: authHeader()
+    }).then((response) => dispatch(airdropUserSuccess(response.data, airdropType, walletAddress))).catch((error) => {
+      dispatch(airdropUserFail(airdropType, walletAddress))
+      dispatch(addError(error))
+    })
+
   }
 }
 

@@ -51,9 +51,17 @@ const AirdropDashboard = ({
 
   const { users = [], total } = usersData;
 
-  const airdropHandler = (event, airdropType, walletAddress) => {
+  const airdropHandler = (event, airdropType, user) => {
     event.stopPropagation()
-    airdropUser(airdropType, walletAddress)
+
+    //airdropUser(airdropType, walletAddress)
+    if (airdropType === 'telegram') {
+      const verifiedTasks = user.tasks.filter((task) => task.verified !== false)
+      const tokensDisbursed = verifiedTasks.length * 600;
+      const date = moment(new Date()).format('DD/MM/YYYY')
+      console.log(tokensDisbursed)
+      console.log(date)
+    }
   }
 
   const showModalHandler = () => {
@@ -208,7 +216,7 @@ const AirdropDashboard = ({
                           <Icon type="close" />Airdrop failed
                         </Button>
                         :
-                        <Button type="primary" onClick={(event) => airdropHandler(event, 'telegram', record.wallet_address)} shape="round">Airdrop</Button>
+                        <Button type="primary" onClick={(event) => airdropHandler(event, 'telegram', record)} shape="round">Airdrop</Button>
                   :
                   <Tooltip placement="topLeft" title="This user has no telegram profile yet">
 
@@ -246,14 +254,27 @@ const AirdropDashboard = ({
                 <Statistic title="Total Airdrop" value={0} valueStyle={{ textAlign: 'center' }} />
               </Col>
               <Col>
-                <Button
-                  type="primary"
-                  shape="round"
-                  style={{ marginTop: '1rem' }}
-                  onClick={() => showModalHandler()}
-                >
-                  Airdrop all users
-                </Button>
+                {
+                  telegramLoading.length || gwxLoading.length
+                    ?
+                    <Button
+                      type="primary"
+                      shape="round"
+                      style={{ marginTop: '1rem' }}
+                      disabled
+                    >
+                      Airdrop all users
+                    </Button>
+                    :
+                    <Button
+                      type="primary"
+                      shape="round"
+                      style={{ marginTop: '1rem' }}
+                      onClick={() => showModalHandler()}
+                    >
+                      Airdrop all users
+                    </Button>
+                }
               </Col>
             </Row>
             <Modal
@@ -275,7 +296,12 @@ const AirdropDashboard = ({
             />
             <Pagination
               defaultCurrent={match.params.page ? parseInt(match.params.page) : 1}
-              onChange={(page) => history.push(`/dashboard/airdrop/${page}`)}
+              onChange={(page) => history.push({
+                pathname: `/dashboard/airdrop/${page}`,
+                state: {
+                  pageTitle: 'Airdrop Dashboard'
+                }
+              })}
               defaultPageSize={20}
               total={total}
             />

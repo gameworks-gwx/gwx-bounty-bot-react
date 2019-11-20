@@ -5,7 +5,7 @@ const { SubMenu } = Menu;
 
 const Sidebar = ({ pathname, closeDrawer }) => {
   return (
-    <Menu selectedKeys={[pathname]} mode="inline" style={{ height: '100vh' }}>
+    <Menu selectedKeys={[pathname]} mode="inline" style={{ height: '100vh', width: '29vh' }}>
 
       <Menu.Item key="/" onClick={closeDrawer ? closeDrawer : ''}>
         <NavLink to={{
@@ -35,7 +35,7 @@ const Sidebar = ({ pathname, closeDrawer }) => {
 
       <SubMenu title={<span><Icon type="table" />Dashboard</span>}>
 
-        <Menu.Item key="/dashboard/gwx" onClick={closeDrawer ? closeDrawer : ''}>
+        {/* <Menu.Item key="/dashboard/gwx" onClick={closeDrawer ? closeDrawer : ''}>
           <NavLink to={{
             pathname: '/dashboard/gwx',
             state: {
@@ -55,7 +55,7 @@ const Sidebar = ({ pathname, closeDrawer }) => {
           }}>
             Telegram Dashboard
           </NavLink>
-        </Menu.Item>
+        </Menu.Item> */}
 
         <Menu.Item key="/dashboard/airdrop" onClick={closeDrawer ? closeDrawer : ''}>
           <NavLink to={{
