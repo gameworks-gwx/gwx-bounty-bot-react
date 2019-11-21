@@ -53,15 +53,28 @@ const AirdropDashboard = ({
 
   const airdropHandler = (event, airdropType, user) => {
     event.stopPropagation()
+    const momentDate = moment(new Date()).format('MM/DD/YYYY')
+    const date = Math.floor(new Date(momentDate).getTime())
+    let tokensDisbursed;
+    const { email, wallet_address } = user;
 
-    //airdropUser(airdropType, walletAddress)
     if (airdropType === 'telegram') {
       const verifiedTasks = user.tasks.filter((task) => task.verified !== false)
-      const tokensDisbursed = verifiedTasks.length * 600;
-      const date = moment(new Date()).format('DD/MM/YYYY')
-      console.log(tokensDisbursed)
-      console.log(date)
+      tokensDisbursed = verifiedTasks.length * 600;
+
+    } else {
+      tokensDisbursed = 600;
     }
+
+    console.log(wallet_address);
+
+    const body = {
+      date,
+      tokensDisbursed,
+      email: email ? email : 'Unregistered',
+      walletAddress: wallet_address
+    }
+    airdropUser(airdropType, body)
   }
 
   const showModalHandler = () => {
@@ -70,7 +83,9 @@ const AirdropDashboard = ({
 
   const airdropAllHandler = (users) => {
     setVisible(false);
-    airdropAllUsers(users)
+    const momentDate = moment(new Date()).format('MM/DD/YYYY')
+    const date = Math.floor(new Date(momentDate).getTime())
+    airdropAllUsers(users, date)
 
   }
 
@@ -166,7 +181,7 @@ const AirdropDashboard = ({
                       </Button>
 
                       :
-                      <Button type="primary" onClick={(event) => airdropHandler(event, 'gwx', record.wallet_address)} shape="round">Airdrop</Button>
+                      <Button type="primary" onClick={(event) => airdropHandler(event, 'gwx', record)} shape="round">Airdrop</Button>
                 :
                 <Tooltip placement="topLeft" title="This user has no wallet address registered">
                   <Button type="primary" shape="round" disabled>Airdrop</Button>
@@ -329,8 +344,8 @@ const mapStateToProps = ({ dashboard }) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchAirdropDashboardData: (page) => dispatch(fetchAirdropDashboardData(page)),
-    airdropUser: (airdropType, walletAddress) => dispatch(airdropUser(airdropType, walletAddress)),
-    airdropAllUsers: (users) => dispatch(airdropAllUsers(users))
+    airdropUser: (airdropType, body) => dispatch(airdropUser(airdropType, body)),
+    airdropAllUsers: (users, date) => dispatch(airdropAllUsers(users, date))
   }
 }
 
