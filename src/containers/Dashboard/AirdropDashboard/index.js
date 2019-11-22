@@ -85,7 +85,8 @@ const AirdropDashboard = ({
     setVisible(false);
     const momentDate = moment(new Date()).format('MM/DD/YYYY')
     const date = Math.floor(new Date(momentDate).getTime())
-    airdropAllUsers(users, date)
+    const filteredUsers = users.filter((user) => user.wallet_address)
+    airdropAllUsers(filteredUsers, date, 0)
 
   }
 
@@ -345,7 +346,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchAirdropDashboardData: (page) => dispatch(fetchAirdropDashboardData(page)),
     airdropUser: (airdropType, body) => dispatch(airdropUser(airdropType, body)),
-    airdropAllUsers: (users, date) => dispatch(airdropAllUsers(users, date))
+    airdropAllUsers: (users, date, count) => dispatch(airdropAllUsers(users, date, count))
   }
 }
 

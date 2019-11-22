@@ -52,31 +52,65 @@ export const airdropUser = (airdropType, body) => {
         dispatch(airdropUserFail(airdropType, walletAddress))
         dispatch(addError(error))
       })
-
   }
 }
 
-export const airdropAllUsers = (users, date) => {
+export const airdropAllUsers = (users, date, count) => {
   return dispatch => {
+    if (users.length > count) {
+      const { email, wallet_address, tasks } = users[count]
 
-    users.forEach((user, index) => {
-      console.log(index);
-      const { email, wallet_address } = user;
+      if (!wallet_address) {
+        airdropAllUsers(users, date, count + 1)
+      }
+
       const body = {
         date,
         email: email ? email : 'Unregistered',
         walletAddress: wallet_address
       }
 
-      if (user.telegramId) {
-        const verifiedTasks = user.tasks.filter((task) => task.verified !== false)
+      if (users[count].telegramId) {
+        const verifiedTasks = tasks.filter((task) => task.verified !== false)
         const verifiedTaskTokens = verifiedTasks.length * 600
-        dispatch(airdropUser('telegram', { ...body, tokensDisbursed: verifiedTaskTokens }))
-        dispatch(airdropUser('gwx', { ...body, tokensDisbursed: 600 }))
+        dispatch(airdropUserStart('telegram', wallet_address))
+
+        axios.put(`/dashboard/airdrop`, { ...body, tokensDisbursed: verifiedTaskTokens, type: 'Telegram' }, {
+          headers: authHeader()
+        }).then((response) => {
+          dispatch(airdropUserSuccess(response.data, 'telegram', wallet_address))
+          dispatch(airdropUserStart('gwx', wallet_address))
+
+          axios.put(`/dashboard/airdrop`, { ...body, tokensDisbursed: 600 }, {
+            headers: authHeader(),
+          }).then((response) => {
+            dispatch(airdropUserSuccess(response.data, 'gwx', wallet_address))
+            dispatch(airdropAllUsers(users, date, count + 1))
+          }).catch((error) => {
+            dispatch(airdropUserFail('gwx', wallet_address))
+            dispatch(airdropAllUsers(users, date, count + 1))
+          })
+
+        }).catch((error) => {
+
+          dispatch(airdropUserFail('telegram', wallet_address))
+          dispatch(airdropAllUsers(users, date, count + 1))
+        })
+
       } else {
-        dispatch(airdropUser('gwx', { ...body, tokensDisbursed: 600 }))
+        dispatch(airdropUserStart('gwx', wallet_address))
+        axios.put(`/dashboard/airdrop`, { ...body, tokensDisbursed: 600 }, {
+          headers: authHeader()
+        }).then((response) => {
+          dispatch(airdropUserSuccess(response.data, 'gwx', wallet_address))
+          dispatch(airdropAllUsers(users, date, count + 1))
+        }).catch((error) => {
+          dispatch(airdropUserFail('gwx', wallet_address))
+          dispatch(airdropAllUsers(users, date, count + 1))
+
+        })
       }
-    })
+    }
   }
 }
 
