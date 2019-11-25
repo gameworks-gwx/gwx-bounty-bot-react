@@ -35,28 +35,6 @@ const Sidebar = ({ pathname, closeDrawer }) => {
 
       <SubMenu title={<span><Icon type="table" />Dashboard</span>}>
 
-        {/* <Menu.Item key="/dashboard/gwx" onClick={closeDrawer ? closeDrawer : ''}>
-          <NavLink to={{
-            pathname: '/dashboard/gwx',
-            state: {
-              pageTitle: 'GWX Dashboard'
-            }
-          }}>
-            GWX Dashboard
-          </NavLink>
-        </Menu.Item>
-
-        <Menu.Item key="/dashboard/telegram" onClick={closeDrawer ? closeDrawer : ''}>
-          <NavLink to={{
-            pathname: '/dashboard/telegram',
-            state: {
-              pageTitle: 'Telegram Dashboard'
-            }
-          }}>
-            Telegram Dashboard
-          </NavLink>
-        </Menu.Item> */}
-
         <Menu.Item key="/dashboard/airdrop" onClick={closeDrawer ? closeDrawer : ''}>
           <NavLink to={{
             pathname: '/dashboard/airdrop',

@@ -16,6 +16,13 @@ const initialState = {
   message: null
 }
 
+
+const searchUsersSuccess = (state, action) => {
+  return updateObject(state, {
+    usersData: action.payload
+  })
+}
+
 const fetchLedgersStart = (state, action) => {
   return updateObject(state, {
     ledgerLoading: true
@@ -123,6 +130,7 @@ const fetchDashboardDataSuccess = (state, action) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.SEARCH_USERS_SUCCESS: return searchUsersSuccess(state, action)
     case actionTypes.FETCH_LEDGERS_START: return fetchLedgersStart(state, action)
     case actionTypes.FETCH_LEDGERS_FAIL: return fetchLedgersFail(state, action)
     case actionTypes.FETCH_LEDGERS_SUCCESS: return fetchLedgersSuccess(state, action)

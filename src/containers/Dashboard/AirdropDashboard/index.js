@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
-import { fetchAirdropDashboardData, airdropUser, airdropAllUsers, fetchLedgers } from '../../../store/actions/dashboard'
+import { fetchAirdropDashboardData, airdropUser, airdropAllUsers, fetchLedgers, searchUsers } from '../../../store/actions/dashboard'
 import Container from '../../../components/UI/Container';
 import {
   Table,
@@ -38,19 +38,26 @@ const AirdropDashboard = ({
   airdropAllUsers,
   fetchLedgers,
   ledgers,
-  ledgerLoading
+  ledgerLoading,
+  searchUsers
 }) => {
 
   const [visible, setVisible] = useState(false); //!! For modal
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
-    if (!match.params.page) {
-      fetchAirdropDashboardData(1)
-    } else {
-      fetchAirdropDashboardData(match.params.page)
+
+    if (!search) {
+      if (!match.params.page) {
+        fetchAirdropDashboardData(1)
+      } else {
+        fetchAirdropDashboardData(match.params.page)
+      }
     }
 
-  }, [fetchAirdropDashboardData, match.params.page])
+    searchUsers(search, match.params.page)
+
+  }, [fetchAirdropDashboardData, match.params.page, search, searchUsers])
 
 
   const { users = [], total } = usersData;
@@ -74,8 +81,10 @@ const AirdropDashboard = ({
       date,
       tokensDisbursed,
       email: email ? email : 'Unregistered',
-      walletAddress: wallet_address
+      walletAddress: wallet_address,
+      isTelegram: airdropType === 'telegram'
     }
+
     airdropUser(airdropType, body)
   }
 
@@ -254,75 +263,90 @@ const AirdropDashboard = ({
 
   return (
     <Container>
-      {
-        loading ?
-          <>
-            <Skeleton active />
-            <Skeleton active />
-            <Skeleton active />
-            <Skeleton active />
-          </>
-          :
-          <>
-            <Row type="flex" justify="space-around" style={{ margin: '1vh 0 1vh 0' }}>
-              <Col>
-                <Statistic title="Total Users" value={total} valueStyle={{ textAlign: 'center' }} />
-              </Col>
-              <Col>
-                <Statistic title="Total Airdrop" value={0} valueStyle={{ textAlign: 'center' }} />
-              </Col>
-              <Col>
-                {
-                  telegramLoading.length || gwxLoading.length
-                    ?
-                    <Button
-                      type="primary"
-                      shape="round"
-                      style={{ marginTop: '1rem' }}
-                      disabled
-                    >
-                      Airdrop all users
+      <>
+        <Row type="flex" justify="space-around" style={{ margin: '1vh 0 1vh 0' }}>
+          <Col>
+            <Statistic title="Total Users" value={total} valueStyle={{ textAlign: 'center' }} />
+          </Col>
+          <Col>
+            <Statistic title="Total Airdrop" value={0} valueStyle={{ textAlign: 'center' }} />
+          </Col>
+          <Col>
+            {
+              telegramLoading.length || gwxLoading.length
+                ?
+                <Button
+                  type="primary"
+                  shape="round"
+                  style={{ marginTop: '1rem' }}
+                  disabled
+                >
+                  Airdrop all users
                     </Button>
-                    :
-                    <Button
-                      type="primary"
-                      shape="round"
-                      style={{ marginTop: '1rem' }}
-                      onClick={() => showModalHandler()}
-                    >
-                      Airdrop all users
-                    </Button>
-                }
-              </Col>
-            </Row>
-            <AirdropAllModal
-              props={{ title: "Airdrop All Users" }}
-              airdropAll={airdropAllHandler}
-              users={users}
-              cancel={cancelHandler}
-              visible={visible}
-              ledgers={ledgers}
-              loading={ledgerLoading}
+                :
+                <Button
+                  type="primary"
+                  shape="round"
+                  style={{ marginTop: '1rem' }}
+                  onClick={() => showModalHandler()}
+                >
+                  Airdrop all users
+                </Button>
+            }
+          </Col>
+        </Row>
+        <AirdropAllModal
+          props={{ title: "Airdrop All Users" }}
+          airdropAll={airdropAllHandler}
+          users={users}
+          cancel={cancelHandler}
+          visible={visible}
+          ledgers={ledgers}
+          loading={ledgerLoading}
+        />
+        {
+          match.params.page === '1' || !match.params.page
+            ?
+            <Search
+              placeholder="Search"
+              style={{ width: '18rem', marginBottom: '1rem' }}
+              onChange={(event) => setSearch(event.target.value)}
             />
-            <Table
-              columns={columns}
-              dataSource={users}
-              pagination={false}
-              scroll={{ x: 1300, y: 500 }}
-            />
-            <Pagination
-              defaultCurrent={match.params.page ? parseInt(match.params.page) : 1}
-              onChange={(page) => history.push({
-                pathname: `/dashboard/airdrop/${page}`,
-                state: {
-                  pageTitle: 'Airdrop Dashboard'
-                }
-              })}
-              defaultPageSize={20}
-              total={total}
-            />
-          </>
-      }
+            :
+            null
+        }
+        {
+          loading
+            ?
+            <>
+              <Skeleton active />
+              <Skeleton active />
+              <Skeleton active />
+              <Skeleton active />
+            </>
+            :
+            <>
+
+              <Table
+                columns={columns}
+                dataSource={users}
+                pagination={false}
+                scroll={{ x: 1300, y: 500 }}
+              />
+              <Pagination
+                defaultCurrent={match.params.page ? parseInt(match.params.page) : 1}
+                onChange={(page) => history.push({
+                  pathname: `/dashboard/airdrop/${page}`,
+                  state: {
+                    pageTitle: 'Airdrop Dashboard'
+                  }
+                })}
+                defaultPageSize={20}
+                total={total}
+              />
+            </>
+        }
+      </>
     </Container>
   )
 }
@@ -348,7 +372,8 @@ const mapDispatchToProps = (dispatch) => {
     fetchAirdropDashboardData: (page) => dispatch(fetchAirdropDashboardData(page)),
     airdropUser: (airdropType, body) => dispatch(airdropUser(airdropType, body)),
     airdropAllUsers: (users, date, count) => dispatch(airdropAllUsers(users, date, count)),
-    fetchLedgers: () => dispatch(fetchLedgers())
+    fetchLedgers: () => dispatch(fetchLedgers()),
+    searchUsers: (query, page) => dispatch(searchUsers(query, page))
   }
 }
 

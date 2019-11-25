@@ -10,6 +10,40 @@ export const addError = (error) => {
   }
 }
 
+export const searchUsersStart = () => {
+  return {
+    type: actionTypes.SEARCH_USERS_START
+  }
+}
+
+export const searchUsersFail = () => {
+  return {
+    type: actionTypes.SEARCH_USERS_FAIL
+  }
+}
+
+export const searchUsersSuccess = (response) => {
+  console.log(response)
+  return {
+    type: actionTypes.SEARCH_USERS_SUCCESS,
+    payload: response
+  }
+}
+
+export const searchUsers = (query, page) => {
+  return dispatch => {
+    dispatch(searchUsersStart())
+
+    axios.get(`/dashboard/search?q=${query}&page=${page}&limit=20`, {
+      headers: authHeader()
+    }).then((response) => dispatch(searchUsersSuccess(response.data)))
+      .catch((error) => {
+        dispatch(searchUsersFail())
+        dispatch(addError(error))
+      })
+  }
+}
+
 export const fetchLedgersStart = () => {
   return {
     type: actionTypes.FETCH_LEDGERS_START
@@ -108,7 +142,7 @@ export const airdropAllUsers = (users, date, count) => {
         const verifiedTaskTokens = verifiedTasks.length * 600
         dispatch(airdropUserStart('telegram', wallet_address))
 
-        axios.put(`/dashboard/airdrop`, { ...body, tokensDisbursed: verifiedTaskTokens, type: 'Telegram' }, {
+        axios.put(`/dashboard/airdrop`, { ...body, tokensDisbursed: verifiedTaskTokens, isTelegram: true }, {
           headers: authHeader()
         }).then((response) => {
           dispatch(airdropUserSuccess(response.data, 'telegram', wallet_address))

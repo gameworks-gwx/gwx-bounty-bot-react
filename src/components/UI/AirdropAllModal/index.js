@@ -62,11 +62,12 @@ const AirdropAllModal = ({ visible, airdropAll, users, cancel, props, ledgers })
               </Paragraph>
               <Paragraph>
                 <Title level={4}>Failed Users</Title>
-                <Table dataSource={ledger.failedUsers} columns={columns} size="small" />
+                <Table dataSource={ledger.failedUsers} columns={columns} size="small" scroll={{ y: 200 }} pagination={false} />
               </Paragraph>
             </Typography>
           ))
-          : <Typography>
+          :
+          <Typography>
             <Title level={4} type="secondary" style={{ fontStyle: 'italic' }}>No previous airdrop data</Title>
           </Typography>
       }
