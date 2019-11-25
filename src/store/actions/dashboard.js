@@ -10,6 +10,39 @@ export const addError = (error) => {
   }
 }
 
+export const fetchLedgersStart = () => {
+  return {
+    type: actionTypes.FETCH_LEDGERS_START
+  }
+}
+
+export const fetchLedgersFail = () => {
+  return {
+    type: actionTypes.FETCH_LEDGERS_FAIL
+  }
+}
+
+export const fetchLedgersSuccess = (response) => {
+  return {
+    type: actionTypes.FETCH_LEDGERS_SUCCESS,
+    payload: response
+  }
+}
+
+export const fetchLedgers = () => {
+  return dispatch => {
+    dispatch(fetchLedgersStart());
+
+    axios.get('/dashboard/airdrop/ledger', {
+      headers: authHeader()
+    }).then((response) => dispatch(fetchLedgersSuccess(response.data)))
+      .catch((error) => {
+        dispatch(fetchLedgersFail())
+        dispatch(addError(error))
+      })
+  }
+}
+
 export const airdropUserStart = (airdropType, walletAddress) => {
   return {
     type: actionTypes.AIRDROP_USER_START,

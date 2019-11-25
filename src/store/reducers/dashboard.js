@@ -11,7 +11,28 @@ const initialState = {
   failedAirdroppedGwxUsers: [],
   successAirdroppedTelegramUsers: [],
   failedAirdroppedTelegramUsers: [],
+  ledgers: [],
+  ledgerLoading: false,
   message: null
+}
+
+const fetchLedgersStart = (state, action) => {
+  return updateObject(state, {
+    ledgerLoading: true
+  })
+}
+
+const fetchLedgersFail = (state, action) => {
+  return updateObject(state, {
+    ledgerLoading: false
+  })
+}
+
+const fetchLedgersSuccess = (state, action) => {
+  return updateObject(state, {
+    ledgerLoading: false,
+    ledgers: action.payload
+  })
 }
 
 const airdropUserStart = (state, action) => {
@@ -102,6 +123,9 @@ const fetchDashboardDataSuccess = (state, action) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.FETCH_LEDGERS_START: return fetchLedgersStart(state, action)
+    case actionTypes.FETCH_LEDGERS_FAIL: return fetchLedgersFail(state, action)
+    case actionTypes.FETCH_LEDGERS_SUCCESS: return fetchLedgersSuccess(state, action)
     case actionTypes.AIRDROP_USER_START: return airdropUserStart(state, action)
     case actionTypes.AIRDROP_USER_FAIL: return airdropUserFail(state, action)
     case actionTypes.AIRDROP_USER_SUCCESS: return airdropUserSuccess(state, action)

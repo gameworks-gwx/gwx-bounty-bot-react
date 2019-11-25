@@ -3,6 +3,13 @@ import { ADD_ERROR } from '../constants/error'
 import axios from '../../config/axios';
 import { authHeader } from '../helpers/authHeader';
 
+export const addError = (error) => {
+  return {
+    type: ADD_ERROR,
+    payload: error
+  }
+}
+
 export const searchProfileStart = () => {
   return {
     type: actionTypes.SEARCH_PROFILE_START
@@ -36,19 +43,12 @@ export const searchProfile = (query) => {
   }
 }
 
-
 export const profileVerifyScreenshotStart = () => {
   return {
     type: actionTypes.PROFILE_VERIFY_SCREENSHOT_START
   }
 }
 
-export const addError = (error) => {
-  return {
-    type: ADD_ERROR,
-    payload: error.message
-  }
-}
 
 export const profileVerifyScreenshotFail = () => {
   return {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
-import { fetchAirdropDashboardData, airdropUser, airdropAllUsers } from '../../../store/actions/dashboard'
+import { fetchAirdropDashboardData, airdropUser, airdropAllUsers, fetchLedgers } from '../../../store/actions/dashboard'
 import Container from '../../../components/UI/Container';
 import {
   Table,
@@ -14,10 +14,10 @@ import {
   Pagination,
   Skeleton,
   Input,
-  Modal,
   Icon,
   Typography
 } from 'antd'
+import AirdropAllModal from '../../../components/UI/AirdropAllModal';
 
 const { Search } = Input;
 const { Text } = Typography
@@ -35,7 +35,10 @@ const AirdropDashboard = ({
   failedGwxUsers,
   successTelegramUsers,
   failedTelegramUsers,
-  airdropAllUsers
+  airdropAllUsers,
+  fetchLedgers,
+  ledgers,
+  ledgerLoading
 }) => {
 
   const [visible, setVisible] = useState(false); //!! For modal
@@ -46,6 +49,7 @@ const AirdropDashboard = ({
     } else {
       fetchAirdropDashboardData(match.params.page)
     }
+
   }, [fetchAirdropDashboardData, match.params.page])
 
 
@@ -66,8 +70,6 @@ const AirdropDashboard = ({
       tokensDisbursed = 600;
     }
 
-    console.log(wallet_address);
-
     const body = {
       date,
       tokensDisbursed,
@@ -79,6 +81,7 @@ const AirdropDashboard = ({
 
   const showModalHandler = () => {
     setVisible(true)
+    fetchLedgers()
   }
 
   const airdropAllHandler = (users) => {
@@ -87,7 +90,6 @@ const AirdropDashboard = ({
     const date = Math.floor(new Date(momentDate).getTime())
     const filteredUsers = users.filter((user) => user.wallet_address)
     airdropAllUsers(filteredUsers, date, 0)
-
   }
 
   const cancelHandler = () => {
@@ -293,17 +295,15 @@ const AirdropDashboard = ({
                 }
               </Col>
             </Row>
-            <Modal
-              title="Airdrop All Users"
+            <AirdropAllModal
+              props={{ title: "Airdrop All Users" }}
+              airdropAll={airdropAllHandler}
+              users={users}
+              cancel={cancelHandler}
               visible={visible}
-              onOk={() => airdropAllHandler(users)}
-              onCancel={() => cancelHandler()}
-              okText="Confirm airdrop"
-              okButtonProps={{ shape: 'round' }}
-              cancelButtonProps={{ shape: 'round' }}
-            >
-              <p>boo</p>
-            </Modal>
+              ledgers={ledgers}
+              loading={ledgerLoading}
+            />
             <Table
               columns={columns}
               dataSource={users}
@@ -338,7 +338,8 @@ const mapStateToProps = ({ dashboard }) => {
     failedGwxUsers: dashboard.failedAirdroppedGwxUsers,
     successTelegramUsers: dashboard.successAirdroppedTelegramUsers,
     failedTelegramUsers: dashboard.failedAirdroppedTelegramUsers,
-
+    ledgers: dashboard.ledgers,
+    ledgerLoading: dashboard.ledgerLoading
   }
 }
 
@@ -346,7 +347,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchAirdropDashboardData: (page) => dispatch(fetchAirdropDashboardData(page)),
     airdropUser: (airdropType, body) => dispatch(airdropUser(airdropType, body)),
-    airdropAllUsers: (users, date, count) => dispatch(airdropAllUsers(users, date, count))
+    airdropAllUsers: (users, date, count) => dispatch(airdropAllUsers(users, date, count)),
+    fetchLedgers: () => dispatch(fetchLedgers())
   }
 }
 
