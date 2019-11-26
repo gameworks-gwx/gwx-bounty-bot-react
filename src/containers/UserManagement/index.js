@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import Container from '../../components/UI/Container';
-import { Table, Divider, Button, Icon } from 'antd';
+import { Table, Divider, Button, Icon, Skeleton } from 'antd';
 import { connect } from 'react-redux';
 import { fetchUsers } from '../../store/actions/user'
 import { Link } from 'react-router-dom'
 
-const UserManagement = ({ users, fetchUsers }) => {
+const UserManagement = ({ users, fetchUsers, loading }) => {
   useEffect(() => {
     fetchUsers()
   }, [])
@@ -56,7 +56,7 @@ const UserManagement = ({ users, fetchUsers }) => {
       <Link to={{
         pathname: '/administrators/add',
         state: {
-          pageTitle: 'Add User'
+          pageTitle: 'Administrators'
         }
       }}>
         <Button type="primary" size="large" shape="round" style={{ marginBottom: '1rem' }}>
@@ -64,14 +64,25 @@ const UserManagement = ({ users, fetchUsers }) => {
           Add new user
         </Button>
       </Link>
-      <Table columns={columns} dataSource={users.users} scroll={{ x: 1200 }} />
+      {
+        loading ?
+          <>
+            <Skeleton active />
+            <Skeleton active />
+            <Skeleton active />
+            <Skeleton active />
+          </>
+          :
+          <Table columns={columns} dataSource={users.users} scroll={{ x: 1200 }} />
+      }
     </Container >
   )
 }
 
 const mapStateToProps = ({ user }) => {
   return {
-    users: user.users
+    users: user.users,
+    loading: user.loading
   }
 }
 

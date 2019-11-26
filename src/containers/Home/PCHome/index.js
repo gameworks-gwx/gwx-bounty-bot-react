@@ -6,33 +6,25 @@ const PCHome = ({ loading, dashboardData }) => {
   const { gwxUsersCount, adminCount, telegramUsersCount, pendingCount } = dashboardData
   return (
     <>
-      <Row gutter={[8, 8]} style={{ marginTop: '2rem' }}>
-        <Col span={12}>
+      <Row gutter={[16, 16]} style={{ marginTop: '6rem' }}>
+        <Col span={8}>
           <StatisticCard
-            cardTitle="GWX Dashboard"
-            pathname="/dashboard/gwx"
-            statisticData={{
-              title: "Total Users",
-              value: gwxUsersCount
-            }}
+            cardTitle="Airdrop dashboard"
+            pathname="/dashboard/airdrop"
+            statisticData={[
+              {
+                title: "Total GWX Users",
+                value: gwxUsersCount
+              },
+              {
+                title: "Total Telegram Users",
+                value: telegramUsersCount
+              }
+            ]}
             loading={loading}
           />
         </Col>
-        <Col span={12}>
-          <StatisticCard
-            cardTitle="Telegram Dashboard"
-            pathname="/dashboard/telegram"
-            statisticData={{
-              title: "Total Users",
-              value: telegramUsersCount
-            }}
-            loading={loading}
-          />
-        </Col>
-      </Row>
-      <Row gutter={[16, 16]}>
-
-        <Col span={12}>
+        <Col span={8}>
           <StatisticCard
             cardTitle="Administrators"
             pathname="/administrators"
@@ -44,7 +36,7 @@ const PCHome = ({ loading, dashboardData }) => {
           />
 
         </Col>
-        <Col span={12}>
+        <Col span={8}>
           <StatisticCard
             cardTitle="Verifications"
             pathname="/verifications"

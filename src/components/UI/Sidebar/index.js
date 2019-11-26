@@ -35,9 +35,9 @@ const Sidebar = ({ pathname, closeDrawer }) => {
 
       <SubMenu title={<span><Icon type="table" />Dashboard</span>}>
 
-        <Menu.Item key="/dashboard/airdrop" onClick={closeDrawer ? closeDrawer : ''}>
+        <Menu.Item key="/dashboard/airdrop/1" onClick={closeDrawer ? closeDrawer : ''}>
           <NavLink to={{
-            pathname: '/dashboard/airdrop',
+            pathname: '/dashboard/airdrop/1',
             state: {
               pageTitle: 'Airdrop Dashboard'
             }

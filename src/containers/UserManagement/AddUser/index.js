@@ -1,7 +1,7 @@
 import React from 'react'
 import AddUserForm from '../../../components/Forms/AddUserForm';
 import useForm from '../../../util/hooks/useForm';
-import { Row, Col } from 'antd';
+import { Row, Col, PageHeader } from 'antd';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions/user'
 import Container from '../../../components/UI/Container'
@@ -24,6 +24,10 @@ const AddUser = ({ createUser, loading, messageData }) => {
 
   return (
     <Container>
+      <PageHeader
+        onBack={() => window.history.back()}
+        title="Add User"
+      />
       <Row type="flex">
         <Col span={24}>
           <AddUserForm

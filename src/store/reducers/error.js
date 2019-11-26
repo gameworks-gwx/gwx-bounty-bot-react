@@ -2,23 +2,29 @@ import * as actionTypes from '../constants/error';
 import { updateObject } from '../utility';
 
 const initialState = {
-  error: {}
+  error: ''
 }
 
 const addError = (state, action) => {
-  const {status, data} = action.payload.response;
-  const message = data.message
-  return updateObject(state, {
-    error: {
-      status,
-      message
-    }
-  })
+  if (action.payload.response) {
+    const { status = '', data = '' } = action.payload.response;
+    const message = data.message
+    return updateObject(state, {
+      error: {
+        status,
+        message
+      }
+    })
+  } else {
+    return updateObject(state, {
+      error: action.payload
+    })
+  }
 }
 
 const removeError = (state, action) => {
   return updateObject(state, {
-    error: {}
+    error: ''
   })
 }
 

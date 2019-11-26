@@ -32,11 +32,11 @@ const StatisticCard = ({ cardTitle, pathname, statisticData, size, loading }) =>
           statisticData.length
             ? statisticData.map((data, index) => {
               return (
-                <Col span={12} key={index}>
+                <Col span={24 / statisticData.length} key={index}>
                   <Statistic
                     title={data.title}
                     value={data.value}
-                    valueStyle={{ fontSize: '3rem', textAlign: 'center' }}
+                    valueStyle={{ fontSize: '4rem', textAlign: 'center' }}
                     style={{ textAlign: 'center' }}
                   />
                 </Col>
@@ -46,7 +46,7 @@ const StatisticCard = ({ cardTitle, pathname, statisticData, size, loading }) =>
             <Statistic
               title={statisticData.title}
               value={statisticData.value}
-              valueStyle={{ fontSize: '3rem', textAlign: 'center' }}
+              valueStyle={{ fontSize: '4rem', textAlign: 'center' }}
               style={{ textAlign: 'center' }}
             />
         }

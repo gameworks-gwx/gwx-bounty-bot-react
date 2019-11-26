@@ -23,7 +23,6 @@ export const searchUsersFail = () => {
 }
 
 export const searchUsersSuccess = (response) => {
-  console.log(response)
   return {
     type: actionTypes.SEARCH_USERS_SUCCESS,
     payload: response
@@ -44,34 +43,34 @@ export const searchUsers = (query, page) => {
   }
 }
 
-export const fetchLedgersStart = () => {
+export const fetchSpecificLedgerStart = () => {
   return {
-    type: actionTypes.FETCH_LEDGERS_START
+    type: actionTypes.FETCH_SPECIFIC_LEDGER_START
   }
 }
 
-export const fetchLedgersFail = () => {
+export const fetchSpecificLedgerFail = () => {
   return {
-    type: actionTypes.FETCH_LEDGERS_FAIL
+    type: actionTypes.FETCH_SPECIFIC_LEDGER_FAIL
   }
 }
 
-export const fetchLedgersSuccess = (response) => {
+export const fetchSpecificLedgerSuccess = (response) => {
   return {
-    type: actionTypes.FETCH_LEDGERS_SUCCESS,
+    type: actionTypes.FETCH_SPECIFIC_LEDGER_SUCCESS,
     payload: response
   }
 }
 
-export const fetchLedgers = () => {
+export const fetchSpecificLedger = (date) => {
   return dispatch => {
-    dispatch(fetchLedgersStart());
+    dispatch(fetchSpecificLedgerStart());
 
-    axios.get('/dashboard/airdrop/ledger', {
+    axios.get(`/dashboard/airdrop/ledger/${date}`, {
       headers: authHeader()
-    }).then((response) => dispatch(fetchLedgersSuccess(response.data)))
+    }).then((response) => dispatch(fetchSpecificLedgerSuccess(response.data)))
       .catch((error) => {
-        dispatch(fetchLedgersFail())
+        dispatch(fetchSpecificLedgerFail())
         dispatch(addError(error))
       })
   }

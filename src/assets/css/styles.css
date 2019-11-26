@@ -28,8 +28,9 @@
 }
 
 .statistic-card:hover {
-  background: rgba(255, 255, 255, 0.507);
-  transition: 0.1s
+  background: rgba(255, 255, 255, 0.945);
+  transition: 0.1s;
+  margin-top: -10px;
 }
 
 .layout-body {

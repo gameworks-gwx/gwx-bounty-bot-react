@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
-import { fetchAirdropDashboardData, airdropUser, airdropAllUsers, fetchLedgers, searchUsers } from '../../../store/actions/dashboard'
+import { fetchAirdropDashboardData, airdropUser, airdropAllUsers, fetchSpecificLedger, searchUsers } from '../../../store/actions/dashboard'
 import Container from '../../../components/UI/Container';
+import useDebounce from '../../../util/hooks/useDebounce'
 import {
   Table,
   Button,
@@ -15,7 +16,7 @@ import {
   Skeleton,
   Input,
   Icon,
-  Typography
+  Typography,
 } from 'antd'
 import AirdropAllModal from '../../../components/UI/AirdropAllModal';
 
@@ -36,36 +37,38 @@ const AirdropDashboard = ({
   successTelegramUsers,
   failedTelegramUsers,
   airdropAllUsers,
-  fetchLedgers,
-  ledgers,
+  fetchSpecificLedger,
+  ledger,
   ledgerLoading,
   searchUsers
 }) => {
 
   const [visible, setVisible] = useState(false); //!! For modal
   const [search, setSearch] = useState('');
+  const debouncedQuery = useDebounce(search, 500);
+  const { users, total } = usersData;
+  const momentDate = moment(new Date()).format('MM/DD/YYYY')
+  const date = Math.floor(new Date(momentDate).getTime())
 
   useEffect(() => {
-
-    if (!search) {
+    if (!debouncedQuery) {
       if (!match.params.page) {
-        fetchAirdropDashboardData(1)
+        history.push({
+          pathname: `/dashboard/airdrop/1`,
+          state: {
+            pageTitle: 'Airdrop Dashboard'
+          }
+        })
       } else {
         fetchAirdropDashboardData(match.params.page)
       }
     }
+    searchUsers(debouncedQuery, match.params.page ? match.params.page : 1)
 
-    searchUsers(search, match.params.page)
-
-  }, [fetchAirdropDashboardData, match.params.page, search, searchUsers])
-
-
-  const { users = [], total } = usersData;
+  }, [fetchAirdropDashboardData, history, match.params.page, debouncedQuery, searchUsers])
 
   const airdropHandler = (event, airdropType, user) => {
     event.stopPropagation()
-    const momentDate = moment(new Date()).format('MM/DD/YYYY')
-    const date = Math.floor(new Date(momentDate).getTime())
     let tokensDisbursed;
     const { email, wallet_address } = user;
 
@@ -90,13 +93,12 @@ const AirdropDashboard = ({
 
   const showModalHandler = () => {
     setVisible(true)
-    fetchLedgers()
+
+    fetchSpecificLedger(date)
   }
 
   const airdropAllHandler = (users) => {
     setVisible(false);
-    const momentDate = moment(new Date()).format('MM/DD/YYYY')
-    const date = Math.floor(new Date(momentDate).getTime())
     const filteredUsers = users.filter((user) => user.wallet_address)
     airdropAllUsers(filteredUsers, date, 0)
   }
@@ -253,7 +255,6 @@ const AirdropDashboard = ({
                 <Tooltip placement="topLeft" title="This user has no wallet address registered">
                   <Button type="primary" shape="round" disabled>Airdrop</Button>
                 </Tooltip>
-
             }
           </>
         )
@@ -289,11 +290,27 @@ const AirdropDashboard = ({
                   shape="round"
                   style={{ marginTop: '1rem' }}
                   onClick={() => showModalHandler()}
+                  size="large"
                 >
                   Airdrop all users
                 </Button>
             }
           </Col>
+          {
+            match.params.page === '1' || !match.params.page
+              ?
+              <Col>
+                <Search
+                  placeholder="Search users"
+                  style={{ width: '18rem', marginTop: '1rem' }}
+                  onChange={(event) => setSearch(event.target.value)}
+                  value={search}
+                  size="large"
+                />
+              </Col>
+              :
+              null
+          }
         </Row>
         <AirdropAllModal
           props={{ title: "Airdrop All Users" }}
@@ -301,20 +318,9 @@ const AirdropDashboard = ({
           users={users}
           cancel={cancelHandler}
           visible={visible}
-          ledgers={ledgers}
+          ledger={ledger}
           loading={ledgerLoading}
         />
-        {
-          match.params.page === '1' || !match.params.page
-            ?
-            <Search
-              placeholder="Search"
-              style={{ width: '18rem', marginBottom: '1rem' }}
-              onChange={(event) => setSearch(event.target.value)}
-            />
-            :
-            null
-        }
         {
           loading
             ?
@@ -362,7 +368,7 @@ const mapStateToProps = ({ dashboard }) => {
     failedGwxUsers: dashboard.failedAirdroppedGwxUsers,
     successTelegramUsers: dashboard.successAirdroppedTelegramUsers,
     failedTelegramUsers: dashboard.failedAirdroppedTelegramUsers,
-    ledgers: dashboard.ledgers,
+    ledger: dashboard.ledger,
     ledgerLoading: dashboard.ledgerLoading
   }
 }
@@ -372,7 +378,7 @@ const mapDispatchToProps = (dispatch) => {
     fetchAirdropDashboardData: (page) => dispatch(fetchAirdropDashboardData(page)),
     airdropUser: (airdropType, body) => dispatch(airdropUser(airdropType, body)),
     airdropAllUsers: (users, date, count) => dispatch(airdropAllUsers(users, date, count)),
-    fetchLedgers: () => dispatch(fetchLedgers()),
+    fetchSpecificLedger: (date) => dispatch(fetchSpecificLedger(date)),
     searchUsers: (query, page) => dispatch(searchUsers(query, page))
   }
 }

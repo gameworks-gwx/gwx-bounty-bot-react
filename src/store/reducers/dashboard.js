@@ -11,34 +11,40 @@ const initialState = {
   failedAirdroppedGwxUsers: [],
   successAirdroppedTelegramUsers: [],
   failedAirdroppedTelegramUsers: [],
-  ledgers: [],
+  ledger: {},
   ledgerLoading: false,
   message: null
 }
 
-
-const searchUsersSuccess = (state, action) => {
+const searchUsersStart = (state, action) => {
   return updateObject(state, {
-    usersData: action.payload
+    fetchLoading: true
   })
 }
 
-const fetchLedgersStart = (state, action) => {
+const searchUsersSuccess = (state, action) => {
+  return updateObject(state, {
+    usersData: action.payload,
+    fetchLoading: false
+  })
+}
+
+const fetchSpecificLedgerStart = (state, action) => {
   return updateObject(state, {
     ledgerLoading: true
   })
 }
 
-const fetchLedgersFail = (state, action) => {
+const fetchSpecificLedgerFail = (state, action) => {
   return updateObject(state, {
     ledgerLoading: false
   })
 }
 
-const fetchLedgersSuccess = (state, action) => {
+const fetchSpecificLedgerSuccess = (state, action) => {
   return updateObject(state, {
     ledgerLoading: false,
-    ledgers: action.payload
+    ledger: action.payload
   })
 }
 
@@ -130,10 +136,11 @@ const fetchDashboardDataSuccess = (state, action) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.SEARCH_USERS_START: return searchUsersStart(state, action)
     case actionTypes.SEARCH_USERS_SUCCESS: return searchUsersSuccess(state, action)
-    case actionTypes.FETCH_LEDGERS_START: return fetchLedgersStart(state, action)
-    case actionTypes.FETCH_LEDGERS_FAIL: return fetchLedgersFail(state, action)
-    case actionTypes.FETCH_LEDGERS_SUCCESS: return fetchLedgersSuccess(state, action)
+    case actionTypes.FETCH_SPECIFIC_LEDGER_START: return fetchSpecificLedgerStart(state, action)
+    case actionTypes.FETCH_SPECIFIC_LEDGER_FAIL: return fetchSpecificLedgerFail(state, action)
+    case actionTypes.FETCH_SPECIFIC_LEDGER_SUCCESS: return fetchSpecificLedgerSuccess(state, action)
     case actionTypes.AIRDROP_USER_START: return airdropUserStart(state, action)
     case actionTypes.AIRDROP_USER_FAIL: return airdropUserFail(state, action)
     case actionTypes.AIRDROP_USER_SUCCESS: return airdropUserSuccess(state, action)

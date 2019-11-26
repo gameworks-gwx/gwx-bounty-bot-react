@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
-import { Layout, Button, Drawer } from 'antd';
+import { Layout, Button, Drawer, message } from 'antd';
 import { connect } from 'react-redux';
 
 import { removeError } from './store/actions/error'
@@ -19,24 +19,28 @@ import AddUser from './containers/UserManagement/AddUser'
 import Settings from './containers/Settings';
 import Logout from './containers/Logout';
 import Profile from './containers/Profile';
-import GWXDashboard from './containers/Dashboard/GWXDashboard';
-import TelegramDashboard from './containers/Dashboard/TelegramDashboard';
 import AirdropDashboard from './containers/Dashboard/AirdropDashboard';
 
 const { Header, Footer, Sider, Content } = Layout;
 
 const App = ({ location, history, error, removeError }) => {
   const [visible, setVisible] = useState(false)
-  if (error.status === 401) {
-    history.push({
-      pathname: '/logout',
-      state: {
-        message: "You are not authorized to view the page",
-        type: 'Error'
-      }
-    })
-    removeError()
+  if (error) {
+    if (error.status === 401) {
+      history.push({
+        pathname: '/logout',
+        state: {
+          message: "You are not authorized to view the page",
+          type: 'Error'
+        }
+      })
+      removeError()
+    } else {
+      removeError()
+      message.error('No internet connection!')
+    }
   }
+  
   const closeDrawer = () => {
     setVisible(false)
   }
@@ -74,7 +78,7 @@ const App = ({ location, history, error, removeError }) => {
               onClose={closeDrawer}
               visible={visible}
               width={192}
-              bodyStyle={{padding: '1vh'}}
+              bodyStyle={{ padding: '1vh' }}
             >
               <Sidebar pathname={location.pathname} closeDrawer={closeDrawer} />
             </Drawer>
@@ -94,8 +98,6 @@ const App = ({ location, history, error, removeError }) => {
             <Route exact path="/verifications" component={Verifications} />
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/dashboard/:typeof" component={Dashboard} />
-            <Route path="/dashboard/gwx/:page" component={GWXDashboard} />
-            <Route path="/dashboard/telegram/:page" component={TelegramDashboard} />
             <Route path="/dashboard/airdrop/:page" component={AirdropDashboard} />
             <Route path="/settings" component={Settings} />
             <Route exact path="/administrators" component={UserManagement} />

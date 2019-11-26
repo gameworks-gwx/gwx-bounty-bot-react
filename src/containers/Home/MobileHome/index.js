@@ -1,52 +1,44 @@
 import React from 'react';
-import { Card, Row, Col, Statistic } from 'antd'
+import { Row, Col } from 'antd'
 import StatisticCard from '../../../components/UI/StatisticCard';
 
 const MobileHome = ({ loading, dashboardData }) => {
-  const {gwxUsersCount, adminCount, telegramUsersCount, pendingCount} = dashboardData
+  const { gwxUsersCount, adminCount, telegramUsersCount, pendingCount } = dashboardData
   return (
     <>
       <Row gutter={[16, 16]}>
-        <Col span={12}>
+        <Col span={24}>
           <StatisticCard
             size="small"
-            cardTitle="GWX Dashboard"
-            pathname="/dashboard/gwx"
-            statisticData={{
-              title: "Total Users",
-              value: gwxUsersCount
-            }}
-            loading={loading}
-          />
-
-        </Col>
-        <Col span={12}>
-          <StatisticCard
-            size="small"
-            cardTitle="Telegram Dashboard"
-            pathname="/dashboard/telegram"
-            statisticData={{
-              title: "Total Users",
-              value: telegramUsersCount
-            }}
+            cardTitle="Airdrop dashboard"
+            pathname="/dashboard/airdrop"
+            statisticData={[
+              {
+                title: "Total GWX Users",
+                value: gwxUsersCount
+              },
+              {
+                title: "Total Telegram Users",
+                value: telegramUsersCount
+              }
+            ]}
             loading={loading}
           />
         </Col>
-      </Row>
-      <Row gutter={[16, 16]}>
-        <Col span={12}>
+        <Col span={24}>
           <StatisticCard
             size="small"
-            cardTitle="User Management"
-            pathname="/user-management"
+            cardTitle="Administrators"
+            pathname="/administrators"
             statisticData={{
               title: "Total Admins",
               value: adminCount
             }}
             loading={loading}
           />
+
         </Col>
-        <Col span={12}>
+        <Col span={24}>
           <StatisticCard
             size="small"
             cardTitle="Verifications"

@@ -4,7 +4,7 @@ import moment from 'moment'
 
 const { Title, Paragraph, Text } = Typography
 
-const AirdropAllModal = ({ visible, airdropAll, users, cancel, props, ledgers }) => {
+const AirdropAllModal = ({ visible, airdropAll, users, cancel, props, ledger }) => {
 
   const columns = [
     {
@@ -40,32 +40,30 @@ const AirdropAllModal = ({ visible, airdropAll, users, cancel, props, ledgers })
       cancelButtonProps={{ shape: 'round' }}
     >
       {
-        ledgers.length
+        ledger
           ?
-          ledgers.map((ledger, index) => (
-            <Typography key={index}>
-              <Title level={4}>Previous Airdrop Summary</Title>
-              <Paragraph>
-                Date Airdropped: <Text strong>
-                  {moment(ledger.date).format('MMMM DD, YYYY')}
-                </Text>
-              </Paragraph>
-              <Paragraph>
-                Tokens Disbursed: <Text strong>
-                  {ledger.tokensDisbursed}
-                </Text>
-              </Paragraph>
-              <Paragraph>
-                Successful Transactions: <Text strong>
-                  {ledger.successUsers}
-                </Text>
-              </Paragraph>
-              <Paragraph>
-                <Title level={4}>Failed Users</Title>
-                <Table dataSource={ledger.failedUsers} columns={columns} size="small" scroll={{ y: 200 }} pagination={false} />
-              </Paragraph>
-            </Typography>
-          ))
+          <Typography>
+            <Title level={4}>Previous Airdrop Summary</Title>
+            <Paragraph>
+              Date Airdropped: <Text strong>
+                {moment(ledger.date).format('MMMM DD, YYYY')}
+              </Text>
+            </Paragraph>
+            <Paragraph>
+              Tokens Disbursed: <Text strong>
+                {ledger.tokensDisbursed}
+              </Text>
+            </Paragraph>
+            <Paragraph>
+              Successful Transactions: <Text strong>
+                {ledger.successUsers}
+              </Text>
+            </Paragraph>
+            <Paragraph>
+              <Title level={4}>Failed Users</Title>
+              <Table dataSource={ledger.failedUsers} columns={columns} size="small" scroll={{ y: 200 }} pagination={false} />
+            </Paragraph>
+          </Typography>
           :
           <Typography>
             <Title level={4} type="secondary" style={{ fontStyle: 'italic' }}>No previous airdrop data</Title>

@@ -2,12 +2,13 @@ import React, { useEffect } from 'react'
 import Container from '../../components/UI/Container'
 import { connect } from 'react-redux'
 import { profilePendingFetch, profileVerifyScreenshot } from '../../store/actions/profile'
-import { Table, Button, Popover } from 'antd'
+import { Table, Button, Popover, Skeleton } from 'antd'
 
 const Verifications = ({
   pendingProfiles,
   fetchPendingProfiles,
-  verifyProfileScreenshot
+  verifyProfileScreenshot,
+  loading
 }) => {
 
   useEffect(() => {
@@ -86,11 +87,22 @@ const Verifications = ({
 
   return (
     <Container>
-      <Table
-        dataSource={pendingProfiles}
-        columns={columns}
-        expandedRowRender={(record) => expandedRowRender(record)}
-      />
+      {
+        loading
+          ?
+          <>
+            <Skeleton active />
+            <Skeleton active />
+            <Skeleton active />
+            <Skeleton active />
+          </>
+          :
+          <Table
+            dataSource={pendingProfiles}
+            columns={columns}
+            expandedRowRender={(record) => expandedRowRender(record)}
+          />
+      }
     </Container>
   )
 }
@@ -98,6 +110,7 @@ const Verifications = ({
 const mapStateToProps = ({ profile }) => {
   return {
     pendingProfiles: profile.pendingProfiles,
+    loading: profile.fetchAllLoading
   }
 }
 
