@@ -2,14 +2,13 @@ import React, { useEffect } from 'react';
 import Container from '../../components/UI/Container';
 import { Table, Divider, Button, Icon, Skeleton } from 'antd';
 import { connect } from 'react-redux';
-import { fetchUsers } from '../../store/actions/user'
+import { fetchUsers, deleteUser } from '../../store/actions/user'
 import { Link } from 'react-router-dom'
 
-const UserManagement = ({ users, fetchUsers, loading }) => {
+const Administrators = ({ users, fetchUsers, loading, deleteUser }) => {
   useEffect(() => {
     fetchUsers()
   }, [])
-
 
   const columns = [
     {
@@ -32,6 +31,7 @@ const UserManagement = ({ users, fetchUsers, loading }) => {
     {
       title: 'Action',
       key: 'action',
+      align: 'center',
       render: (_, record) => (
         <span>
           <Link to={{
@@ -45,7 +45,7 @@ const UserManagement = ({ users, fetchUsers, loading }) => {
             </Button>
           </Link>
           <Divider type="vertical" />
-          <Button type="link">Delete</Button>
+          <Button type="link" onClick={() => deleteUser(record.id)}>Delete</Button>
         </span>
       )
     }
@@ -73,7 +73,7 @@ const UserManagement = ({ users, fetchUsers, loading }) => {
             <Skeleton active />
           </>
           :
-          <Table columns={columns} dataSource={users.users} scroll={{ x: 1200 }} />
+          <Table columns={columns} dataSource={users} scroll={{ x: 1200 }} />
       }
     </Container >
   )
@@ -82,15 +82,16 @@ const UserManagement = ({ users, fetchUsers, loading }) => {
 const mapStateToProps = ({ user }) => {
   return {
     users: user.users,
-    loading: user.loading
+    loading: user.loading,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchUsers: () => dispatch(fetchUsers())
+    fetchUsers: () => dispatch(fetchUsers()),
+    deleteUser: (userId) => dispatch(deleteUser(userId)),
   }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserManagement)
+export default connect(mapStateToProps, mapDispatchToProps)(Administrators)

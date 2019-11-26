@@ -10,7 +10,7 @@ const PCHome = ({ loading, dashboardData }) => {
         <Col span={8}>
           <StatisticCard
             cardTitle="Airdrop dashboard"
-            pathname="/dashboard/airdrop"
+            pathname="/airdrop"
             statisticData={[
               {
                 title: "Total GWX Users",

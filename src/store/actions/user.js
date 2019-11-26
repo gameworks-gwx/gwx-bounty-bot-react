@@ -3,16 +3,50 @@ import { ADD_ERROR } from '../constants/error'
 import axios from '../../config/axios';
 import { authHeader } from '../helpers/authHeader';
 
-export const fetchGWXUsersStart = () => {
-  return {
-    type: actionTypes.FETCH_GWX_USERS_START
-  }
-}
-
 export const addError = (error) => {
   return {
     type: ADD_ERROR,
     payload: error
+  }
+}
+
+export const deleteUserStart = () => {
+  return {
+    type: actionTypes.DELETE_USER_START
+  }
+}
+
+export const deleteUserFail = () => {
+  return {
+    type: actionTypes.DELETE_USER_FAIL
+  }
+}
+
+export const deleteUserSuccess = (userId) => {
+  return {
+    type: actionTypes.DELETE_USER_SUCCESS,
+    payload: userId
+  }
+}
+
+export const deleteUser = (userId) => {
+  return dispatch => {
+    dispatch(deleteUserStart())
+
+    axios.delete(`/users/${userId}`, {
+      headers: authHeader()
+    }).then((response) => dispatch(deleteUserSuccess(userId)))
+      .catch((error) => {
+        console.log(error);
+        dispatch(deleteUserFail())
+        dispatch(addError(error))
+      })
+  }
+}
+
+export const fetchGWXUsersStart = () => {
+  return {
+    type: actionTypes.FETCH_GWX_USERS_START
   }
 }
 

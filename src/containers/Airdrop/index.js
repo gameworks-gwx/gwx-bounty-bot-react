@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
-import { fetchAirdropDashboardData, airdropUser, airdropAllUsers, fetchSpecificLedger, searchUsers } from '../../../store/actions/dashboard'
-import Container from '../../../components/UI/Container';
-import useDebounce from '../../../util/hooks/useDebounce'
+import { fetchAirdropDashboardData, airdropUser, airdropAllUsers, fetchSpecificLedger, searchUsers } from '../../store/actions/dashboard'
+import Container from '../../components/UI/Container';
+import useDebounce from '../../util/hooks/useDebounce'
+import AirdropAllModal from '../../components/UI/AirdropAllModal';
 import {
   Table,
   Button,
@@ -18,12 +19,11 @@ import {
   Icon,
   Typography,
 } from 'antd'
-import AirdropAllModal from '../../../components/UI/AirdropAllModal';
 
 const { Search } = Input;
 const { Text } = Typography
 
-const AirdropDashboard = ({
+const Airdrop = ({
   history,
   match,
   fetchAirdropDashboardData,
@@ -45,16 +45,16 @@ const AirdropDashboard = ({
 
   const [visible, setVisible] = useState(false); //!! For modal
   const [search, setSearch] = useState('');
-  const debouncedQuery = useDebounce(search, 500);
   const { users, total } = usersData;
   const momentDate = moment(new Date()).format('MM/DD/YYYY')
   const date = Math.floor(new Date(momentDate).getTime())
+  const debouncedQuery = useDebounce(search, 300);
 
   useEffect(() => {
     if (!debouncedQuery) {
       if (!match.params.page) {
         history.push({
-          pathname: `/dashboard/airdrop/1`,
+          pathname: `/airdrop/1`,
           state: {
             pageTitle: 'Airdrop Dashboard'
           }
@@ -342,7 +342,7 @@ const AirdropDashboard = ({
               <Pagination
                 defaultCurrent={match.params.page ? parseInt(match.params.page) : 1}
                 onChange={(page) => history.push({
-                  pathname: `/dashboard/airdrop/${page}`,
+                  pathname: `/airdrop/${page}`,
                   state: {
                     pageTitle: 'Airdrop Dashboard'
                   }
@@ -383,4 +383,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AirdropDashboard))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Airdrop))

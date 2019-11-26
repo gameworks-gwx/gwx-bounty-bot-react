@@ -1,5 +1,5 @@
 import * as actionTypes from '../constants/dashboard';
-import { updateObject } from '../utility'
+import { updateObject } from '../helpers/utility'
 
 const initialState = {
   fetchLoading: false,

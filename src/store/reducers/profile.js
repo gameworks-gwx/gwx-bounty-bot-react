@@ -1,5 +1,5 @@
 import * as actionTypes from '../constants/profile';
-import { updateObject } from '../utility';
+import { updateObject } from '../helpers/utility';
 
 const initialState = {
   profiles: [],

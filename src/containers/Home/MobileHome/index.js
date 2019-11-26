@@ -11,7 +11,7 @@ const MobileHome = ({ loading, dashboardData }) => {
           <StatisticCard
             size="small"
             cardTitle="Airdrop dashboard"
-            pathname="/dashboard/airdrop"
+            pathname="/airdrop"
             statisticData={[
               {
                 title: "Total GWX Users",

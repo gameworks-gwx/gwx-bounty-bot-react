@@ -9,10 +9,8 @@ const StatisticCard = ({ cardTitle, pathname, statisticData, size, loading }) =>
 
   if (pathname === '/') {
     pageTitle = 'Home'
-  } else if (pathname === '/dashboard/gwx') {
-    pageTitle = 'GWX Dashboard'
-  } else if (pathname === '/dashboard/telegram') {
-    pageTitle = 'Telegram Dashboard'
+  } else if (pathname === '/airdrop/1') {
+    pageTitle = 'Airdrop Dashboard'
   } else if (pathname === '/administrators') {
     pageTitle = 'Administrators'
   } else if (pathname === '/verifications') {
