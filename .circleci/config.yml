@@ -14,7 +14,7 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{checksum "package.json"}}
-      -run: yarn test --passWithNoTests
+      - run: yarn test --passWithNoTests
 
   build:
     working_directory: ~/repo
@@ -34,7 +34,7 @@ jobs:
           root: ~/repo
           paths:
             - build/*
-            
+
   deploy:
     working_directory: ~/repo
     docker:
@@ -68,7 +68,7 @@ workflows:
       - build:
           requires:
             - test
-          filters: 
+          filters:
             branches:
               only:
                 - develop
