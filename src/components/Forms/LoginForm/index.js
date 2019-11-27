@@ -39,10 +39,8 @@ const LoginForm = ({
         {
           getFieldDecorator('email', {
             rules: [
-              {
-                required: true,
-                message: 'Email address is required',
-              },
+              { required: true, message: 'Email address is required' },
+              { type: 'email', message: 'Invalid email address' },
             ],
           })(
             <Input
@@ -57,7 +55,11 @@ const LoginForm = ({
       <Form.Item>
         {
           getFieldDecorator('password', {
-            rules: [{ required: true, message: 'Password is required' }],
+            rules: [
+              { required: true, message: 'Password is required' },
+              { min: 8, message: 'Password must be at least 8 characters long' },
+            ]
+            ,
           })(
             <Input
               prefix={<Icon type="lock" />}

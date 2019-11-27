@@ -56,12 +56,13 @@ export const profileVerifyScreenshotFail = () => {
   }
 }
 
-export const profileVerifyScreenshotSuccess = (data, id) => {
+export const profileVerifyScreenshotSuccess = (message, id, taskNumber) => {
   return {
     type: actionTypes.PROFILE_VERIFY_SCREENSHOT_SUCCESS,
     payload: {
-      data,
-      id
+      message,
+      id,
+      taskNumber
     }
   }
 }
@@ -72,7 +73,7 @@ export const profileVerifyScreenshot = (id, body) => {
 
     axios.put(`/profiles/verify/${id}`, body, {
       headers: authHeader()
-    }).then((response) => dispatch(profileVerifyScreenshotSuccess(response.data.verifiedData, id)))
+    }).then((response) => dispatch(profileVerifyScreenshotSuccess(response.data, id, body.taskNumber)))
       .catch((error) => {
         dispatch(profileVerifyScreenshotFail())
         dispatch(addError(error))

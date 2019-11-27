@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Container from '../../components/UI/Container'
 import { connect } from 'react-redux'
 import { profilePendingFetch, profileVerifyScreenshot } from '../../store/actions/profile'
-import { Table, Button, Popover, Skeleton, Typography } from 'antd'
+import { Table, Button, Popover, Skeleton, Typography, Divider } from 'antd'
 
 const { Text } = Typography
 const Verifications = ({
@@ -77,6 +77,8 @@ const Verifications = ({
           return (
             <>
               <Button type="primary" size="small" onClick={() => verifyHandler(profile._id, record.taskNumber, true)} ghost>Approve</Button>
+              <Divider type="vertical" />
+              <Button type="danger" size="small" onClick={() => verifyHandler(profile._id, record.taskNumber, false)} ghost>Reject</Button>
             </>
           )
         },

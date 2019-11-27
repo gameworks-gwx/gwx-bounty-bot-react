@@ -79,7 +79,10 @@ const AddUserForm = ({
       <Form.Item label="First Name">
         {
           getFieldDecorator('firstName', {
-            rules: [{ required: true, message: 'First name is required' }]
+            rules: [
+              { required: true, message: 'First name is required' },
+              { min: 2, message: 'First name must be at least 2 characters long' }
+            ]
           })(
             <Input
               name="firstName"
@@ -91,7 +94,10 @@ const AddUserForm = ({
       <Form.Item label="Last Name">
         {
           getFieldDecorator('lastName', {
-            rules: [{ required: true, message: 'Last name is required ' }]
+            rules: [
+              { required: true, message: 'Last name is required ' },
+              { min: 2, message: 'Last name must be at least 2 characters long' }
+            ]
           })(
             <Input
               name="lastName"
@@ -120,7 +126,8 @@ const AddUserForm = ({
           getFieldDecorator('password', {
             rules: [
               { required: true, message: 'Password is required' },
-              { validator: validateToNextPassword }
+              { validator: validateToNextPassword },
+              { min: 8, message: 'Password must be at least 8 characters long' }
             ]
           })(
             <Input.Password
@@ -135,7 +142,7 @@ const AddUserForm = ({
           getFieldDecorator('confirm', {
             rules: [
               { required: true, message: 'Confirm your password' },
-              { validator: compareToFirstPassword }
+              { validator: compareToFirstPassword },
             ]
           })(<Input.Password onBlur={handleConfirmBlur} />)
         }

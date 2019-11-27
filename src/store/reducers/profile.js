@@ -63,14 +63,14 @@ const profileVerifyScreenshotStart = (state, action) => {
 }
 
 const profileVerifyScreenshotSuccess = (state, action) => {
-  const { id, data } = action.payload;
+  const { id, taskNumber } = action.payload;
   return updateObject(state, {
     ...state,
     loadingVerify: false,
     pendingProfiles: state.pendingProfiles.map((profile) => {
       if (profile._id === id) {
         profile.tasks = profile.tasks.filter((task) => {
-          return task.taskNumber !== data.taskNumber
+          return task.taskNumber !== taskNumber
         })
       }
       return profile

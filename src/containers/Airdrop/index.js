@@ -93,7 +93,6 @@ const Airdrop = ({
 
   const showModalHandler = () => {
     setVisible(true)
-
     fetchSpecificLedger(date)
   }
 

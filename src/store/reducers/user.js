@@ -33,7 +33,8 @@ const deleteUserSuccess = (state, action) => {
 
 const fetchUsersStart = (state, action) => {
   return updateObject(state, {
-    loading: true
+    loading: true,
+    messageData: ''
   })
 }
 
@@ -71,7 +72,7 @@ const fetchGWXUsersSuccess = (state, action) => {
 
 const createUserStart = (state, action) => {
   return updateObject(state, {
-    loading: true
+    loading: true,
   })
 }
 

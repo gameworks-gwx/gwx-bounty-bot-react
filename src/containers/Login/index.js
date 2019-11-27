@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Row, Col, Alert, Layout } from 'antd';
+import { Row, Col, Alert, Layout, message } from 'antd';
 import LoginForm from '../../components/Forms/LoginForm'
 import useForm from '../../util/hooks/useForm';
 import { auth } from '../../store/actions/auth';
@@ -15,7 +15,6 @@ const Login = ({
   loginError
 }) => {
 
-
   useEffect(() => {
     if (token) {
       history.push({
@@ -25,7 +24,11 @@ const Login = ({
         }
       });
     }
-  })
+
+    if (loginError) {
+      message.error(loginError)
+    }
+  }, [history, loginError, token])
   const defaultValues = {
     email: '',
     password: '',
@@ -45,16 +48,14 @@ const Login = ({
       loading={loading}
     />
 
-  let alertDialog;
   if (location.state) {
     if (location.state.message) {
-      alertDialog =
-        <Alert
-          message={location.state.message}
-          type={location.state.type ? "error" : "success"}
-          showIcon
-          closable
-        />
+      if (location.state.type === 'Success') {
+        message.success(location.state.message)
+      } else {
+        message.error(location.state.message)
+      }
+      location.state.message = ''
     }
   }
 
@@ -68,23 +69,6 @@ const Login = ({
 
       <Row type="flex" justify="center" align="middle">
         <Col xs={20} sm={16} md={12} lg={8} xl={5}>
-          {
-            loginError
-              ?
-              <Alert
-                message={loginError}
-                type="error"
-                showIcon
-                closable
-              />
-              :
-              null
-          }
-          {
-            location.state
-              ? alertDialog
-              : ''
-          }
           {loginForm}
         </Col>
       </Row>
