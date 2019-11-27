@@ -270,9 +270,6 @@ const Airdrop = ({
             <Statistic title="Total Users" value={total} valueStyle={{ textAlign: 'center' }} />
           </Col>
           <Col>
-            <Statistic title="Total Airdrop" value={0} valueStyle={{ textAlign: 'center' }} />
-          </Col>
-          <Col>
             {
               telegramLoading.length || gwxLoading.length
                 ?
