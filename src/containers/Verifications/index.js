@@ -2,8 +2,9 @@ import React, { useEffect } from 'react'
 import Container from '../../components/UI/Container'
 import { connect } from 'react-redux'
 import { profilePendingFetch, profileVerifyScreenshot } from '../../store/actions/profile'
-import { Table, Button, Popover, Skeleton } from 'antd'
+import { Table, Button, Popover, Skeleton, Typography } from 'antd'
 
+const { Text } = Typography
 const Verifications = ({
   pendingProfiles,
   fetchPendingProfiles,
@@ -30,8 +31,14 @@ const Verifications = ({
   const columns = [
     {
       title: 'Telegram Username',
-      dataIndex: 'telegramUsername',
       key: 'telegramUsername',
+      render: (_, record) => (
+        record.telegramUsername
+          ?
+          record.telegramUsername
+          :
+          <Text type="secondary" style={{ fontStyle: 'italic' }}>No telegram username</Text>
+      )
     },
   ]
 
