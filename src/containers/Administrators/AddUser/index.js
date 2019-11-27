@@ -5,9 +5,10 @@ import { Row, Col, PageHeader, message } from 'antd';
 import { connect } from 'react-redux';
 import { createUser } from '../../../store/actions/user'
 import Container from '../../../components/UI/Container'
+import { Link } from 'react-router-dom'
 
 
-const AddUser = ({ createUser, loading, messageData }) => {
+const AddUser = ({ createUser, loading, messageData, history }) => {
   const defaultValues = {
     firstName: '',
     lastName: '',
@@ -19,8 +20,14 @@ const AddUser = ({ createUser, loading, messageData }) => {
   useEffect(() => {
     if (messageData) {
       message.success(messageData.message)
+      history.push({
+        pathname: '/administrators',
+        state: {
+          pageTitle: 'Administrators'
+        }
+      })
     }
-  }, [messageData])
+  }, [history, messageData])
 
   const submitForm = () => {
     createUser(values)
@@ -30,10 +37,17 @@ const AddUser = ({ createUser, loading, messageData }) => {
 
   return (
     <Container>
-      <PageHeader
-        onBack={() => window.history.back()}
-        title="Add User"
-      />
+      <Link to={{
+        pathname: '/administrators',
+        state: {
+          pageTitle: 'Administrators'
+        }
+      }}>
+        <PageHeader
+          onBack={() => window.history.back()}
+          title="Add User"
+        />
+      </Link>
       <Row type="flex">
         <Col span={24}>
           <AddUserForm

@@ -34,7 +34,7 @@ const Administrators = ({ users, fetchUsers, loading, deleteUser }) => {
       align: 'center',
       render: (_, record) => (
         <span>
-          <Link to={{
+          {/* <Link to={{
             pathname: '/administrators/edit/' + record.id,
             state: {
               pageTitle: 'Edit User'
@@ -44,7 +44,7 @@ const Administrators = ({ users, fetchUsers, loading, deleteUser }) => {
               Edit
             </Button>
           </Link>
-          <Divider type="vertical" />
+          <Divider type="vertical" /> */}
           <Button type="link" onClick={() => deleteUser(record.id)}>Delete</Button>
         </span>
       )

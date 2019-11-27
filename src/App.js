@@ -41,9 +41,11 @@ const App = ({ location, history, error, removeError, init, initData }) => {
       } else {
         message.error('No internet connection!')
       }
+    } else {
+
+      init()
     }
 
-    //init()
   }, [error, history, init, removeError])
 
   const closeDrawer = () => {
