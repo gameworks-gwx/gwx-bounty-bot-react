@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { Row, Col, Alert, Layout } from 'antd';
 import LoginForm from '../../components/Forms/LoginForm'
 import useForm from '../../util/hooks/useForm';
-import * as actions from '../../store/actions/auth';
+import { auth } from '../../store/actions/auth';
+import gwxBountyLogo from '../../assets/img/gwx-bounty-logo.svg';
 
 const Login = ({
   onAuth,
@@ -58,9 +59,14 @@ const Login = ({
   }
 
   return (
-    <Layout style={{ height: '100vh' }}>
+    <Layout style={{ height: '100vh', backgroundColor: '#465983' }}>
+      <Row type="flex" justify="center" align="middle" style={{ height: '10vh', marginTop: '20vh' }}>
+        <Col>
+          <img src={gwxBountyLogo} alt="GWX Bounty" />
+        </Col>
+      </Row>
 
-      <Row type="flex" justify="center" align="middle" style={{ height: '40rem' }}>
+      <Row type="flex" justify="center" align="middle">
         <Col xs={20} sm={16} md={12} lg={8} xl={5}>
           {
             loginError
@@ -94,7 +100,7 @@ const mapStateToProps = ({ auth }) => {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: (userData) => dispatch(actions.auth(userData))
+    onAuth: (userData) => dispatch(auth(userData))
   }
 }
 

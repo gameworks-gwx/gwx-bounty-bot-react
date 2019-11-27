@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Menu, Icon, PageHeader } from 'antd'
 import Responsive from '../Responsive'
+import image from '../../../assets/img/gwx-logo.png'
 const { SubMenu } = Menu;
 
 const Sidebar = ({ pathname, closeDrawer, email }) => {
@@ -9,7 +10,7 @@ const Sidebar = ({ pathname, closeDrawer, email }) => {
     <>
       <Responsive device="pc">
         <Menu selectedKeys={[pathname]} mode="inline" style={{ height: '100vh', width: '29vh' }}>
-          <PageHeader title="Gameworks Bounty" subTitle={email ? 'Logged in as ' + email : null} />
+          <PageHeader avatar={{src: image}} title="Gameworks Bounty" size={{fontSize: 10}} subTitle={email ? 'Logged in as ' + email : null}/>
           <Menu.Item key="/" onClick={closeDrawer ? closeDrawer : ''}>
             <NavLink to={{
               pathname: '/',
