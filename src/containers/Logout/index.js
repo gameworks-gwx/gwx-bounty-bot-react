@@ -13,6 +13,7 @@ const Logout = ({ onAuthLogout, location }) => {
     type = location.state.type
   } else {
     message = "You have successfully logged out"
+    type = "Success"
   }
   useEffect(() => {
     onAuthLogout();
@@ -23,7 +24,7 @@ const Logout = ({ onAuthLogout, location }) => {
       pathname: '/login',
       state: {
         message,
-        type 
+        type
       }
     }} />
   )
