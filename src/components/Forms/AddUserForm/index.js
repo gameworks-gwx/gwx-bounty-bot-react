@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
-import { Form, Input, Button, Alert } from 'antd';
+import { Form, Input, Button } from 'antd';
 
 const AddUserForm = ({
   form,
   handleSubmit,
   handleChange,
-  messageData,
   loading
 }) => {
   const [confirmDirty, setConfirmDirty] = useState(false);
@@ -77,28 +76,6 @@ const AddUserForm = ({
 
   return (
     <Form onSubmit={validateForm} {...formItemLayout} style={{ padding: '20px' }}>
-      {
-        messageData
-          ?
-          messageData.code === 0
-            ?
-            <Alert
-              message={messageData.message}
-              type="success"
-              showIcon
-              closable
-            />
-            :
-            <Alert
-              message={messageData.message}
-              type="error"
-              showIcon
-              closable
-            />
-
-          :
-          null
-      }
       <Form.Item label="First Name">
         {
           getFieldDecorator('firstName', {

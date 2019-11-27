@@ -74,7 +74,7 @@ const LoginForm = ({
           getFieldDecorator('remember', {
             valuePropName: 'checked',
             initialValue: true,
-          })(<Checkbox>Remember me</Checkbox>)
+          })(<Checkbox style={{ color: 'white' }}>Remember me</Checkbox>)
         }
         {submitButton}
       </Form.Item>

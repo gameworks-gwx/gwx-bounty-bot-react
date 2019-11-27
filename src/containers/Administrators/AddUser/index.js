@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import AddUserForm from '../../../components/Forms/AddUserForm';
 import useForm from '../../../util/hooks/useForm';
-import { Row, Col } from 'antd';
+import { Row, Col, PageHeader, message } from 'antd';
 import { connect } from 'react-redux';
-import * as actions from '../../../store/actions/user'
+import { createUser } from '../../../store/actions/user'
 import Container from '../../../components/UI/Container'
 
 
@@ -16,6 +16,12 @@ const AddUser = ({ createUser, loading, messageData }) => {
     role: 'admin'
   }
 
+  useEffect(() => {
+    if (messageData) {
+      message.success(messageData.message)
+    }
+  }, [messageData])
+
   const submitForm = () => {
     createUser(values)
   }
@@ -24,13 +30,16 @@ const AddUser = ({ createUser, loading, messageData }) => {
 
   return (
     <Container>
+      <PageHeader
+        onBack={() => window.history.back()}
+        title="Add User"
+      />
       <Row type="flex">
         <Col span={24}>
           <AddUserForm
             handleChange={handleChange}
             handleSubmit={handleSubmit}
             loading={loading}
-            messageData={messageData}
           />
         </Col>
       </Row>
@@ -47,7 +56,7 @@ const mapStateToProps = ({ user }) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    createUser: (userData) => dispatch(actions.createUser(userData))
+    createUser: (userData) => dispatch(createUser(userData))
   }
 }
 

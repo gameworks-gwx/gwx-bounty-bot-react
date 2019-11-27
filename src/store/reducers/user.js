@@ -1,5 +1,5 @@
 import * as actionTypes from '../constants/user';
-import { updateObject } from '../utility'
+import { updateObject } from '../helpers/utility'
 
 const initialState = {
   loading: false,
@@ -8,6 +8,27 @@ const initialState = {
   users: [],
   user: {},
   messageData: '',
+  deleteLoading: false
+}
+
+const deleteUserStart = (state, action) => {
+  return updateObject(state, {
+    deleteLoading: true,
+    messageData: ''
+  })
+}
+
+const deleteUserFail = (state, action) => {
+  return updateObject(state, {
+    deleteLoading: false
+  })
+}
+
+const deleteUserSuccess = (state, action) => {
+  return updateObject(state, {
+    deleteLoading: false,
+    users: state.users.filter((user) => user.id !== action.payload)
+  })
 }
 
 const fetchUsersStart = (state, action) => {
@@ -25,7 +46,7 @@ const fetchUsersFail = (state, action) => {
 const fetchUsersSuccess = (state, action) => {
   return updateObject(state, {
     loading: false,
-    users: action.payload
+    users: action.payload.users
   })
 }
 
@@ -65,13 +86,16 @@ const createUserSuccess = (state, action) => {
     loading: false,
     messageData: {
       code: 0,
-      message: 'User created successfully!'      
+      message: 'User created successfully!'
     }
   })
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.DELETE_USER_START: return deleteUserStart(state, action)
+    case actionTypes.DELETE_USER_SUCCESS: return deleteUserSuccess(state, action)
+    case actionTypes.DELETE_USER_FAIL: return deleteUserFail(state, action)
     case actionTypes.FETCH_USERS_START: return fetchUsersStart(state, action)
     case actionTypes.FETCH_USERS_SUCCESS: return fetchUsersSuccess(state, action)
     case actionTypes.FETCH_USERS_FAIL: return fetchUsersFail(state, action)
@@ -81,8 +105,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.CREATE_USER_START: return createUserStart(state, action)
     case actionTypes.CREATE_USER_SUCCESS: return createUserSuccess(state, action)
     case actionTypes.CREATE_USER_FAIL: return createUserFail(state, action)
-    default:
-      return state
+    default: return state
   }
 }
 

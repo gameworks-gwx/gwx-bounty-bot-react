@@ -9,12 +9,10 @@ const StatisticCard = ({ cardTitle, pathname, statisticData, size, loading }) =>
 
   if (pathname === '/') {
     pageTitle = 'Home'
-  } else if (pathname === '/dashboard/gwx') {
-    pageTitle = 'GWX Dashboard'
-  } else if (pathname === '/dashboard/telegram') {
-    pageTitle = 'Telegram Dashboard'
-  } else if (pathname === '/user-management') {
-    pageTitle = 'User Management'
+  } else if (pathname === '/airdrop/1') {
+    pageTitle = 'Airdrop Dashboard'
+  } else if (pathname === '/administrators') {
+    pageTitle = 'Administrators'
   } else if (pathname === '/verifications') {
     pageTitle = 'Verifications'
   }
@@ -27,16 +25,16 @@ const StatisticCard = ({ cardTitle, pathname, statisticData, size, loading }) =>
       }
     }}>
       <Card className="statistic-card" loading={loading} size={size ? size : ''} hoverable>
-        <Meta title={cardTitle} style={{ marginBottom: '1rem' }} />
+        <Meta title={cardTitle} style={{ marginBottom: '1rem' }} size="small" />
         {
           statisticData.length
             ? statisticData.map((data, index) => {
               return (
-                <Col span={12} key={index}>
+                <Col span={24 / statisticData.length} key={index}>
                   <Statistic
                     title={data.title}
                     value={data.value}
-                    valueStyle={{ fontSize: '3rem', textAlign: 'center' }}
+                    valueStyle={{ fontSize: '4rem', textAlign: 'center' }}
                     style={{ textAlign: 'center' }}
                   />
                 </Col>
@@ -46,7 +44,7 @@ const StatisticCard = ({ cardTitle, pathname, statisticData, size, loading }) =>
             <Statistic
               title={statisticData.title}
               value={statisticData.value}
-              valueStyle={{ fontSize: '3rem', textAlign: 'center' }}
+              valueStyle={{ fontSize: '4rem', textAlign: 'center' }}
               style={{ textAlign: 'center' }}
             />
         }

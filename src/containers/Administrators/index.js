@@ -1,15 +1,14 @@
 import React, { useEffect } from 'react';
 import Container from '../../components/UI/Container';
-import { Table, Divider, Button, Icon } from 'antd';
+import { Table, Divider, Button, Icon, Skeleton } from 'antd';
 import { connect } from 'react-redux';
-import { fetchUsers } from '../../store/actions/user'
+import { fetchUsers, deleteUser } from '../../store/actions/user'
 import { Link } from 'react-router-dom'
 
-const UserManagement = ({ users, fetchUsers }) => {
+const Administrators = ({ users, fetchUsers, loading, deleteUser }) => {
   useEffect(() => {
     fetchUsers()
   }, [])
-
 
   const columns = [
     {
@@ -32,10 +31,11 @@ const UserManagement = ({ users, fetchUsers }) => {
     {
       title: 'Action',
       key: 'action',
+      align: 'center',
       render: (_, record) => (
         <span>
           <Link to={{
-            pathname: '/user-management/edit/' + record.id,
+            pathname: '/administrators/edit/' + record.id,
             state: {
               pageTitle: 'Edit User'
             }
@@ -45,7 +45,7 @@ const UserManagement = ({ users, fetchUsers }) => {
             </Button>
           </Link>
           <Divider type="vertical" />
-          <Button type="link">Delete</Button>
+          <Button type="link" onClick={() => deleteUser(record.id)}>Delete</Button>
         </span>
       )
     }
@@ -54,9 +54,9 @@ const UserManagement = ({ users, fetchUsers }) => {
   return (
     <Container>
       <Link to={{
-        pathname: '/user-management/add',
+        pathname: '/administrators/add',
         state: {
-          pageTitle: 'Add User'
+          pageTitle: 'Administrators'
         }
       }}>
         <Button type="primary" size="large" shape="round" style={{ marginBottom: '1rem' }}>
@@ -64,22 +64,34 @@ const UserManagement = ({ users, fetchUsers }) => {
           Add new user
         </Button>
       </Link>
-      <Table columns={columns} dataSource={users.users} scroll={{ x: 1200 }} />
+      {
+        loading ?
+          <>
+            <Skeleton active />
+            <Skeleton active />
+            <Skeleton active />
+            <Skeleton active />
+          </>
+          :
+          <Table columns={columns} dataSource={users} scroll={{ x: 1200 }} />
+      }
     </Container >
   )
 }
 
 const mapStateToProps = ({ user }) => {
   return {
-    users: user.users
+    users: user.users,
+    loading: user.loading,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchUsers: () => dispatch(fetchUsers())
+    fetchUsers: () => dispatch(fetchUsers()),
+    deleteUser: (userId) => dispatch(deleteUser(userId)),
   }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserManagement)
+export default connect(mapStateToProps, mapDispatchToProps)(Administrators)

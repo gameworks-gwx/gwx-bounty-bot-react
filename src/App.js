@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
-import { Layout, Button, Drawer } from 'antd';
+import { Layout, Button, Drawer, message } from 'antd';
 import { connect } from 'react-redux';
-
 import { removeError } from './store/actions/error'
+import { authInit } from './store/actions/auth'
 
 //!! Components 
 import Sidebar from './components/UI/Sidebar';
@@ -12,30 +12,38 @@ import Responsive from './components/UI/Responsive';
 //!! Containers (pages)
 import Home from './containers/Home';
 import Verifications from './containers/Verifications';
-import Dashboard from './containers/Dashboard';
-import UserManagement from './containers/UserManagement';
-import EditUser from './containers/UserManagement/EditUser'
-import AddUser from './containers/UserManagement/AddUser'
-import Settings from './containers/Settings';
+import Administrators from './containers/Administrators';
+import EditUser from './containers/Administrators/EditUser'
+import AddUser from './containers/Administrators/AddUser'
 import Logout from './containers/Logout';
-import Profile from './containers/Profile';
-import GWXDashboard from './containers/Dashboard/GWXDashboard';
-import TelegramDashboard from './containers/Dashboard/TelegramDashboard';
+import Airdrop from './containers/Airdrop';
 
 const { Header, Footer, Sider, Content } = Layout;
 
-const App = ({ location, history, error, removeError }) => {
+const App = ({ location, history, error, removeError, init, initData }) => {
   const [visible, setVisible] = useState(false)
-  if (error.status === 401) {
-    history.push({
-      pathname: '/logout',
-      state: {
-        message: "You are not authorized to view the page",
-        type: 'Error'
+  const { email } = initData;
+  useEffect(() => {
+    if (error) {
+      if (error.status === 401) {
+        history.push({
+          pathname: '/logout',
+          state: {
+            message: "You are not authorized to view the page",
+            type: 'Error'
+          }
+        })
+        removeError()
+      } else if (error.status === 409) {
+        message.error(error.message)
+      } else {
+        message.error('No internet connection!')
       }
-    })
-    removeError()
-  }
+    }
+
+    //init()
+  }, [error, history, init, removeError])
+
   const closeDrawer = () => {
     setVisible(false)
   }
@@ -55,14 +63,14 @@ const App = ({ location, history, error, removeError }) => {
             minHeight: '100vh',
             left: 0,
             position: 'fixed',
+            width: '50vh'
           }}
         >
-          <Sidebar pathname={location.pathname} />
+          <Sidebar pathname={location.pathname} email={email} />
         </Sider>
       </Responsive>
 
       <Layout className="layout-body">
-
         <Header className="header-container" style={{ background: '#fff' }}>
           <Responsive device="mobile">
             <Button type="primary" icon="menu" onClick={openDrawer} ghost />
@@ -71,8 +79,10 @@ const App = ({ location, history, error, removeError }) => {
               closable={false}
               onClose={closeDrawer}
               visible={visible}
+              width={250}
+              bodyStyle={{ padding: '0 0 30vh 0vh' }}
             >
-              <Sidebar pathname={location.pathname} closeDrawer={closeDrawer} />
+              <Sidebar pathname={location.pathname} closeDrawer={closeDrawer} email={email} />
             </Drawer>
           </Responsive>
 
@@ -88,16 +98,12 @@ const App = ({ location, history, error, removeError }) => {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/verifications" component={Verifications} />
-            <Route exact path="/dashboard" component={Dashboard} />
-            <Route exact path="/dashboard/:typeof" component={Dashboard} />
-            <Route path="/dashboard/gwx/:page" component={GWXDashboard} />
-            <Route path="/dashboard/telegram/:page" component={TelegramDashboard} />
-            <Route path="/settings" component={Settings} />
-            <Route exact path="/user-management" component={UserManagement} />
-            <Route exact path="/user-management/add" component={AddUser} />
-            <Route exact path="/user-management/edit/:id" component={EditUser} />
+            <Route exact path="/airdrop" component={Airdrop} />
+            <Route path="/airdrop/:page" component={Airdrop} />
+            <Route exact path="/administrators" component={Administrators} />
+            <Route exact path="/administrators/add" component={AddUser} />
+            <Route exact path="/administrators/edit/:id" component={EditUser} />
             <Route exact path="/logout" component={Logout} />
-            <Route exact path="/profile/:id" component={Profile} />
           </Switch>
         </Content>
         <Footer className="footer-container"></Footer>
@@ -106,15 +112,17 @@ const App = ({ location, history, error, removeError }) => {
   );
 }
 
-const mapStateToProps = ({ error }) => {
+const mapStateToProps = ({ error, auth }) => {
   return {
-    error: error.error
+    error: error.error,
+    initData: auth.email
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    removeError: () => dispatch(removeError())
+    removeError: () => dispatch(removeError()),
+    init: () => dispatch(authInit())
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(App);
