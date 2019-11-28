@@ -1,10 +1,10 @@
 import React from 'react'
-import { Modal, Typography, Table } from 'antd'
+import { Modal, Typography, Table, Skeleton } from 'antd'
 import moment from 'moment'
 
 const { Title, Paragraph, Text } = Typography
 
-const AirdropAllModal = ({ visible, airdropAll, users, cancel, props, ledger }) => {
+const AirdropAllModal = ({ visible, airdropAll, users, cancel, props, ledger, loading }) => {
 
   const columns = [
     {
@@ -40,34 +40,45 @@ const AirdropAllModal = ({ visible, airdropAll, users, cancel, props, ledger }) 
       cancelButtonProps={{ shape: 'round' }}
     >
       {
-        ledger
+        loading
           ?
-          <Typography>
-            <Title level={4}>Previous Airdrop Summary</Title>
-            <Paragraph>
-              Date Airdropped: <Text strong>
-                {moment(ledger.date).format('MMMM DD, YYYY')}
-              </Text>
-            </Paragraph>
-            <Paragraph>
-              Tokens Disbursed: <Text strong>
-                {ledger.tokensDisbursed}
-              </Text>
-            </Paragraph>
-            <Paragraph>
-              Successful Transactions: <Text strong>
-                {ledger.successUsers}
-              </Text>
-            </Paragraph>
-            <Paragraph>
-              <Title level={4}>Failed Users</Title>
-              <Table dataSource={ledger.failedUsers} columns={columns} size="small" scroll={{ y: 200 }} pagination={false} />
-            </Paragraph>
-          </Typography>
+          <>
+            <Skeleton active />
+            <Skeleton active />
+            <Skeleton active />
+            <Skeleton active />
+          </>
           :
-          <Typography>
-            <Title level={4} type="secondary" style={{ fontStyle: 'italic' }}>No previous airdrop data</Title>
-          </Typography>
+          ledger
+            ?
+            <Typography>
+              <Title level={4}>Previous Airdrop Summary</Title>
+              <Paragraph>
+                Date Airdropped: <Text strong>
+                  {moment(ledger.date).format('MMMM DD, YYYY')}
+                </Text>
+              </Paragraph>
+              <Paragraph>
+                Tokens Disbursed: <Text strong>
+                  {ledger.tokensDisbursed || 0}
+                </Text>
+              </Paragraph>
+              <Paragraph>
+                Successful Transactions: <Text strong>
+                  {ledger.successUsers || 0}
+                </Text>
+              </Paragraph>
+              <Paragraph>
+                <Paragraph style={{ fontSize: 20 }}>Failed Users: <Text strong>
+                  {ledger.failedUsers ? ledger.failedUsers.length : 0}
+                </Text></Paragraph>
+                <Table dataSource={ledger.failedUsers} columns={columns} size="small" scroll={{ y: 200 }} pagination={false} />
+              </Paragraph>
+            </Typography>
+            :
+            <Typography>
+              <Title level={4} type="secondary" style={{ fontStyle: 'italic' }}>No previous airdrop data</Title>
+            </Typography>
       }
     </Modal>
   )

@@ -134,33 +134,19 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
 
     case actionTypes.SEARCH_PROFILE_START: return searchProfileStart(state, action)
-
     case actionTypes.SEARCH_PROFILE_SUCCESS: return searchProfileSuccess(state, action)
-
     case actionTypes.SEARCH_PROFILE_FAIL: return searchProfileFail(state, action)
-
     case actionTypes.FETCH_PROFILE_START: return fetchProfileStart(state, action)
-
     case actionTypes.FETCH_PROFILE_SUCCESS: return fetchProfileSuccess(state, action)
-
     case actionTypes.FETCH_PROFILE_FAIL: return fetchProfileFail(state, action)
-
     case actionTypes.PROFILE_FETCH_ALL_START: return profileFetchAllStart(state, action)
-
     case actionTypes.PROFILE_FETCH_ALL_SUCCESS: return profileFetchAllSuccess(state, action)
-
     case actionTypes.PROFILE_FETCH_ALL_FAIL: return profileFetchAllFail(state, action)
-
     case actionTypes.PROFILE_PENDING_FETCH_START: return profilePendingFetchStart(state, action)
-
     case actionTypes.PROFILE_PENDING_FETCH_SUCCESS: return profilePendingFetchSuccess(state, action)
-
     case actionTypes.PROFILE_PENDING_FETCH_FAIL: return profilePendingFetchFail(state, action)
-
     case actionTypes.PROFILE_VERIFY_SCREENSHOT_START: return profileVerifyScreenshotStart(state, action)
-
     case actionTypes.PROFILE_VERIFY_SCREENSHOT_SUCCESS: return profileVerifyScreenshotSuccess(state, action)
-
     case actionTypes.PROFILE_VERIFY_SCREENSHOT_FAIL: return profileVerifyScreenshotFail(state, action)
     default: return state
   }
