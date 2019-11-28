@@ -155,26 +155,41 @@ export const airdropAllUsers = (users, date, count) => {
           }).catch((error) => {
             dispatch(airdropUserFail('gwx', wallet_address))
             dispatch(airdropAllUsers(users, date, count + 1))
+            dispatch(addError(error))
           })
 
         }).catch((error) => {
-
+          dispatch(addError(error))
           dispatch(airdropUserFail('telegram', wallet_address))
-          dispatch(airdropAllUsers(users, date, count + 1))
+          dispatch(airdropUserStart('gwx', wallet_address))
+
+          axios.put(`/dashboard/airdrop`, { ...body, tokensDisbursed: 600 }, {
+            headers: authHeader(),
+          }).then((response) => {
+            dispatch(airdropUserSuccess(response.data, 'gwx', wallet_address))
+            dispatch(airdropAllUsers(users, date, count + 1))
+          }).catch((error) => {
+            dispatch(addError(error))
+            dispatch(airdropUserFail('gwx', wallet_address))
+            dispatch(airdropAllUsers(users, date, count + 1))
+          })
+
         })
 
       } else {
         dispatch(airdropUserStart('gwx', wallet_address))
+
         axios.put(`/dashboard/airdrop`, { ...body, tokensDisbursed: 600 }, {
           headers: authHeader()
         }).then((response) => {
           dispatch(airdropUserSuccess(response.data, 'gwx', wallet_address))
           dispatch(airdropAllUsers(users, date, count + 1))
         }).catch((error) => {
+          dispatch(addError(error))
           dispatch(airdropUserFail('gwx', wallet_address))
           dispatch(airdropAllUsers(users, date, count + 1))
-
         })
+
       }
     }
   }
