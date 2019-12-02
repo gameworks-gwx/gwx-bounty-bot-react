@@ -33,16 +33,19 @@ const App = ({ location, history, error, removeError, init, initData }) => {
             type: 'Error'
           }
         })
+        removeError()
       } else if (error.status === 409) {
         message.error(error.message)
+        removeError()
       } else if (error.status === 404) {
         message.error(error.message)
+        removeError()
       } else if (error.status === 400) {
         message.error(error.message)
+        removeError()
       } else {
         message.error('No internet connection!')
       }
-      removeError()
 
     } else {
       init()

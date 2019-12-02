@@ -62,8 +62,9 @@ const Airdrop = ({
       } else {
         fetchAirdropDashboardData(match.params.page)
       }
+    } else {
+      searchUsers(debouncedQuery, match.params.page ? match.params.page : 1)
     }
-    searchUsers(debouncedQuery, match.params.page ? match.params.page : 1)
 
   }, [fetchAirdropDashboardData, history, match.params.page, debouncedQuery, searchUsers])
 
@@ -98,7 +99,7 @@ const Airdrop = ({
 
   const airdropAllHandler = (users) => {
     setVisible(false);
-    const filteredUsers = users.filter((user) => user.wallet_address)
+    const filteredUsers = users.filter((user) => user.wallet_address && !user.air_drop_created_at)
     airdropAllUsers(filteredUsers, date, 0)
   }
 
@@ -175,26 +176,46 @@ const Airdrop = ({
         return (
           <>
             {
+
+              record.air_drop_created_at ?
+                <>
+                  <Text type="secondary" style={{ fontSize: '10px' }}>Last airdropped</Text>
+                  <br />
+                  <Text type="secondary" style={{ fontSize: '10px' }}>{moment(record.air_drop_created_at).format("MM/DD/YYYY h:m a")}</Text>
+                  <br />
+                </>
+                :
+                null
+            }
+            {
               record.wallet_address
                 ?
-                gwxLoading.indexOf(record.wallet_address) !== -1
+                record.air_drop_created_at
                   ?
-                  <Button type="primary" shape="round" loading>Loading</Button>
-                  :
-                  successGwxUsers.indexOf(record.wallet_address) !== -1
-                    ?
+                  <Tooltip placement="topLeft" title="This user has already been airdropped">
                     <Button type="primary" shape="round" disabled>
-                      <Icon type="check" />Airdrop succeeded
+                      <Icon type="check" />
+                      Airdrop succeeded
                     </Button>
+                  </Tooltip>
+                  :
+                  gwxLoading.indexOf(record.wallet_address) !== -1
+                    ?
+                    <Button type="primary" shape="round" loading>Loading</Button>
                     :
-                    failedGwxUsers.indexOf(record.wallet_address) !== -1
+                    successGwxUsers.indexOf(record.wallet_address) !== -1
                       ?
-                      <Button type="danger" shape="round" disabled>
-                        <Icon type="close" />Airdrop failed
+                      <Button type="primary" shape="round" disabled>
+                        <Icon type="check" />Airdrop succeeded
                       </Button>
-
                       :
-                      <Button type="primary" onClick={(event) => airdropHandler(event, 'gwx', record)} shape="round">Airdrop</Button>
+                      failedGwxUsers.indexOf(record.wallet_address) !== -1
+                        ?
+                        <Button type="danger" shape="round" disabled>
+                          <Icon type="close" />Airdrop failed
+                        </Button>
+                        :
+                        <Button type="primary" onClick={(event) => airdropHandler(event, 'gwx', record)} shape="round">Airdrop</Button>
                 :
                 <Tooltip placement="topLeft" title="This user has no wallet address registered">
                   <Button type="primary" shape="round" disabled>Airdrop</Button>
