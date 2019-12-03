@@ -100,7 +100,7 @@ const Airdrop = ({
 
   const airdropAllHandler = (users) => {
     setVisible(false);
-    const filteredUsers = users.filter((user) => user.wallet_address && !user.air_drop_created_at || user.telegramId)
+    const filteredUsers = users.filter((user) => !user.air_drop_created_at || user.telegramId)
 
     airdropAllUsers(filteredUsers, date, 0)
   }
