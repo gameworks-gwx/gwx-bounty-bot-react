@@ -85,7 +85,8 @@ const airdropUserSuccess = (state, action) => {
     return updateObject(state, {
       gwxLoading: state.gwxLoading.filter((gwxAddress) => gwxAddress !== walletAddress),
       message: `Successfully airdropped to ${walletAddress}`,
-      successAirdroppedGwxUsers: state.successAirdroppedGwxUsers.concat(walletAddress)
+      successAirdroppedGwxUsers: state.successAirdroppedGwxUsers.concat(walletAddress),
+
     })
   } else {
     return updateObject(state, {

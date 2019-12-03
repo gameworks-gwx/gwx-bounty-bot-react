@@ -63,7 +63,7 @@ const Airdrop = ({
         fetchAirdropDashboardData(match.params.page)
       }
     } else {
-      searchUsers(debouncedQuery, match.params.page ? match.params.page : 1)
+      searchUsers(debouncedQuery, match.params.page || 1)
     }
 
   }, [fetchAirdropDashboardData, history, match.params.page, debouncedQuery, searchUsers])
@@ -84,9 +84,10 @@ const Airdrop = ({
     const body = {
       date,
       tokensDisbursed,
-      email: email ? email : 'Unregistered',
+      email: email || 'Unregistered',
       walletAddress: wallet_address,
-      isTelegram: airdropType === 'telegram'
+      isTelegram: airdropType === 'telegram',
+      air_drop_created_at: user.air_drop_created_at || ''
     }
 
     airdropUser(airdropType, body)
@@ -99,7 +100,8 @@ const Airdrop = ({
 
   const airdropAllHandler = (users) => {
     setVisible(false);
-    const filteredUsers = users.filter((user) => user.wallet_address && !user.air_drop_created_at)
+    const filteredUsers = users.filter((user) => user.wallet_address && !user.air_drop_created_at || user.telegramId)
+
     airdropAllUsers(filteredUsers, date, 0)
   }
 
@@ -172,64 +174,58 @@ const Airdrop = ({
       title: 'GWX Airdrop',
       key: 'gwxAirdrop',
       align: 'center',
-      render: (_, record) => {
-        return (
-          <>
-            {
+      render: (_, record) => (
+        <>
+          {
 
-              record.air_drop_created_at ?
-                <>
-                  <Text type="secondary" style={{ fontSize: '10px' }}>Last airdropped</Text>
-                  <br />
-                  <Text type="secondary" style={{ fontSize: '10px' }}>{moment(record.air_drop_created_at).format("MM/DD/YYYY h:m a")}</Text>
-                  <br />
-                </>
-                :
-                null
-            }
-            {
-              record.wallet_address
-                ?
-                record.air_drop_created_at
-                  ?
-                  <Tooltip placement="topLeft" title="This user has already been airdropped">
-                    <Button type="primary" shape="round" disabled>
-                      <Icon type="check" />
-                      Airdrop succeeded
+            record.air_drop_created_at ?
+              <>
+                <Text type="secondary" style={{ fontSize: '10px' }}>Last airdropped</Text>
+                <br />
+                <Text type="secondary" style={{ fontSize: '10px' }}>{moment(record.air_drop_created_at).format("MM/DD/YYYY h:m a")}</Text>
+                <br />
+              </>
+              :
+              null
+          }
+          {
+            record.wallet_address
+              ? record.air_drop_created_at
+                ? <Tooltip placement="topLeft" title="This user has already been airdropped">
+                  <Button type="primary" shape="round" disabled>
+                    <Icon type="check" />
+                    Airdrop succeeded
                     </Button>
-                  </Tooltip>
-                  :
-                  gwxLoading.indexOf(record.wallet_address) !== -1
-                    ?
-                    <Button type="primary" shape="round" loading>Loading</Button>
-                    :
-                    successGwxUsers.indexOf(record.wallet_address) !== -1
-                      ?
-                      <Button type="primary" shape="round" disabled>
-                        <Icon type="check" />Airdrop succeeded
-                      </Button>
-                      :
-                      failedGwxUsers.indexOf(record.wallet_address) !== -1
-                        ?
-                        <Button type="danger" shape="round" disabled>
-                          <Icon type="close" />Airdrop failed
-                        </Button>
-                        :
-                        <Button type="primary" onClick={(event) => airdropHandler(event, 'gwx', record)} shape="round">Airdrop</Button>
-                :
-                <Tooltip placement="topLeft" title="This user has no wallet address registered">
-                  <Button type="primary" shape="round" disabled>Airdrop</Button>
                 </Tooltip>
-            }
-          </>
-        )
-      }
+                : gwxLoading.indexOf(record.wallet_address) !== -1
+                  ? <Button type="primary" shape="round" loading>Loading</Button>
+                  : successGwxUsers.indexOf(record.wallet_address) !== -1
+                    ? <Button type="primary" shape="round" disabled>
+                      <Icon type="check" />Airdrop succeeded
+                      </Button>
+                    : failedGwxUsers.indexOf(record.wallet_address) !== -1
+                      ? <Button type="danger" shape="round" disabled>
+                        <Icon type="close" />Airdrop failed
+                        </Button>
+                      : <Button type="primary" onClick={(event) => airdropHandler(event, 'gwx', record)} shape="round">Airdrop</Button>
+              : <Tooltip placement="topLeft" title="This user has no wallet address registered">
+                <Button type="primary" shape="round" disabled>Airdrop</Button>
+              </Tooltip>
+          }
+        </>
+      )
+
     },
     {
       title: 'Telegram Airdrop',
       key: 'telegramAirdrop',
       align: 'center',
       render: (_, record) => {
+        let tokens;
+        if (record.telegramId) {
+          const verifiedTasks = record.tasks.filter((task) => task.verified !== false)
+          tokens = verifiedTasks.length * 600;
+        }
         return (
           <>
             {
@@ -241,34 +237,30 @@ const Airdrop = ({
                   <Text type="secondary" style={{ fontSize: '10px' }}>{moment(record.lastAirdropped).format("MM/DD/YYYY h:m a")}</Text>
                   <br />
                 </>
-                :
-                null
+                : null
             }
             {
               record.wallet_address
-                ?
-                record.telegramId
-                  ?
-                  telegramLoading.indexOf(record.wallet_address) !== -1
-                    ?
-                    <Button type="primary" shape="round" loading>Loading</Button>
-                    :
-                    successTelegramUsers.indexOf(record.wallet_address) !== -1
-                      ?
+                ? record.telegramId
+                  ? record.tokensReceived === tokens
+                    ? <Tooltip placement="topLeft" title="This user has already been airdropped">
                       <Button type="primary" shape="round" disabled>
-                        <Icon type="check" />Airdrop succeeded
+                        <Icon type="check" />
+                        Airdrop succeeded
                       </Button>
-                      :
-                      failedTelegramUsers.indexOf(record.wallet_address) !== -1
-                        ?
-                        <Button type="danger" shape="round" disabled>
-                          <Icon type="close" />Airdrop failed
-                        </Button>
-                        :
-                        <Button type="primary" onClick={(event) => airdropHandler(event, 'telegram', record)} shape="round">Airdrop</Button>
-                  :
-                  <Tooltip placement="topLeft" title="This user has no telegram profile yet">
-
+                    </Tooltip>
+                    : telegramLoading.indexOf(record.wallet_address) !== -1
+                      ? <Button type="primary" shape="round" loading>Loading</Button>
+                      : successTelegramUsers.indexOf(record.wallet_address) !== -1
+                        ? <Button type="primary" shape="round" disabled>
+                          <Icon type="check" />Airdrop succeeded
+                      </Button>
+                        : failedTelegramUsers.indexOf(record.wallet_address) !== -1
+                          ? <Button type="danger" shape="round" disabled>
+                            <Icon type="close" />Airdrop failed
+                            </Button>
+                          : <Button type="primary" onClick={(event) => airdropHandler(event, 'telegram', record)} shape="round">Airdrop</Button>
+                  : <Tooltip placement="topLeft" title="This user has no telegram profile yet">
                     <Button type="primary" shape="round" disabled>Airdrop</Button>
                   </Tooltip>
                 :
@@ -287,7 +279,7 @@ const Airdrop = ({
       <>
         <Row type="flex" justify="space-around" style={{ margin: '1vh 0 1vh 0' }}>
           <Col>
-            <Statistic title="Total Users" value={total} valueStyle={{ textAlign: 'center' }} />
+            <Statistic title="Total users for airdrop" value={total} valueStyle={{ textAlign: 'center' }} />
           </Col>
           <Col>
             {

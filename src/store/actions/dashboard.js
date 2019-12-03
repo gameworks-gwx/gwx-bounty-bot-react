@@ -124,21 +124,18 @@ export const airdropUser = (airdropType, body) => {
 export const airdropAllUsers = (users, date, count) => {
   return dispatch => {
     if (users.length > count) {
-      const { email, wallet_address, tasks } = users[count]
-
-      if (!wallet_address) {
-        airdropAllUsers(users, date, count + 1)
-      }
-
+      const { email, wallet_address, tasks, air_drop_created_at } = users[count]
       const body = {
         date,
         email: email ? email : 'Unregistered',
-        walletAddress: wallet_address
+        walletAddress: wallet_address,
+        air_drop_created_at: air_drop_created_at || ''
       }
 
       if (users[count].telegramId) {
         const verifiedTasks = tasks.filter((task) => task.verified !== false)
         const verifiedTaskTokens = verifiedTasks.length * 600
+
         dispatch(airdropUserStart('telegram', wallet_address))
 
         axios.put(`/dashboard/airdrop`, { ...body, tokensDisbursed: verifiedTaskTokens, isTelegram: true }, {
