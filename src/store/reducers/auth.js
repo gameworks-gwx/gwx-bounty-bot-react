@@ -27,7 +27,8 @@ const authInitSuccess = (state, action) => {
 
 const authStart = (state, action) => {
   return updateObject(state, {
-    loading: true
+    loading: true,
+    error: ''
   })
 }
 

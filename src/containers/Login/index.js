@@ -26,6 +26,7 @@ const Login = ({
     }
 
     if (loginError) {
+      message.config({ maxCount: 1 })
       message.error(loginError)
     }
   }, [history, loginError, token])

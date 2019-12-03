@@ -25,24 +25,36 @@ const App = ({ location, history, error, removeError, init, initData }) => {
   const { email } = initData;
   useEffect(() => {
     if (error) {
-      if (error.status === 401) {
-        history.push({
-          pathname: '/logout',
-          state: {
-            message: "You are not authorized to view the page",
-            type: 'Error'
-          }
-        })
-      } else if (error.status === 409) {
-        message.error(error.message)
-      } else if (error.status === 404) {
-        message.error(error.message)
-      } else if (error.status === 400) {
-        message.error(error.message)
-      } else {
-        message.error('No internet connection!')
+      switch (error.status) {
+        case 400:
+          message.error(error.message)
+          break;
+        case 401:
+          history.push({
+            pathname: '/logout',
+            state: {
+              message: "You are not authorized to view the page",
+              type: 'Error'
+            }
+          })
+          removeError()
+          break;
+        case 404:
+          message.error(error.message)
+          removeError()
+          break;
+        case 409:
+          message.error(error.message)
+          removeError()
+          break;
+        case 422:
+          message.error('There was an error!')
+          removeError()
+          break;
+        default:
+          message.error('No internet connection')
+          break;
       }
-      removeError()
 
     } else {
       init()
