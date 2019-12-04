@@ -320,6 +320,17 @@ const Airdrop = ({
               :
               null
           }
+          <Col>
+            <Tooltip placement="topLeft" title="Refresh list">
+              <Button
+                icon="reload"
+                style={{ marginTop: '1rem' }}
+                size="large"
+                shape="circle"
+                onClick={() => fetchAirdropDashboardData(match.params.page || 1)}
+              />
+            </Tooltip>
+          </Col>
         </Row>
         <AirdropAllModal
           props={{ title: "Airdrop All Users" }}
