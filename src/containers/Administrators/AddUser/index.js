@@ -45,7 +45,7 @@ const AddUser = ({ createUser, loading, messageData, history }) => {
       }}>
         <PageHeader
           onBack={() => window.history.back()}
-          title="Add User"
+          title="Add administrator"
         />
       </Link>
       <Row type="flex">

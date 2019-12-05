@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
-import { Layout, Button, Drawer, message } from 'antd';
+import { Layout, Button, Drawer, message, Typography } from 'antd';
 import { connect } from 'react-redux';
 import { removeError } from './store/actions/error'
 import { authInit } from './store/actions/auth'
@@ -19,6 +19,7 @@ import Logout from './containers/Logout';
 import Airdrop from './containers/Airdrop';
 
 const { Header, Footer, Sider, Content } = Layout;
+const { Title } = Typography
 
 const App = ({ location, history, error, removeError, init, initData }) => {
   const [visible, setVisible] = useState(false)
@@ -104,7 +105,7 @@ const App = ({ location, history, error, removeError, init, initData }) => {
             </Drawer>
           </Responsive>
 
-          <h1>{location.state ? location.state.pageTitle : null}</h1>
+          <Title level={4}>{location.state ? location.state.pageTitle : null}</Title>
           <h1>
             <Link to="/logout">
               Log Out
