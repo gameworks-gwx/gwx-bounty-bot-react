@@ -14,7 +14,7 @@ const Verifications = ({
 
   useEffect(() => {
     fetchPendingProfiles()
-  }, [])
+  }, [fetchPendingProfiles])
 
   const imagePopup = (imageId, alt) => {
     return <img src={'https://gwx-bounty-bot.s3-ap-southeast-1.amazonaws.com/' + imageId + '.jpg'} alt={alt} />

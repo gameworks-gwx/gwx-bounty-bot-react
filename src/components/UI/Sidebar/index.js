@@ -9,9 +9,9 @@ const Sidebar = ({ pathname, closeDrawer, email }) => {
   return (
     <>
       <Responsive device="pc">
-        <Menu selectedKeys={[pathname]} mode="inline" style={{ height: '100vh', width: '29vh' }}>
-          <PageHeader avatar={{src: image}} title="Gameworks Bounty" size={{fontSize: 10}} subTitle={email ? 'Logged in as ' + email : null}/>
-          <Menu.Item key="/" onClick={closeDrawer ? closeDrawer : ''}>
+        <Menu data-test="menuComponent" selectedKeys={[pathname]} mode="inline" style={{ height: '100vh', width: '29vh' }}>
+          <PageHeader avatar={{ src: image }} title="Gameworks Bounty" size={{ fontSize: 10 }} subTitle={email ? 'Logged in as ' + email : null} />
+          <Menu.Item data-test="pcMenuItem" key="/" onClick={closeDrawer ? closeDrawer : ''}>
             <NavLink to={{
               pathname: '/',
               state: {
@@ -23,7 +23,7 @@ const Sidebar = ({ pathname, closeDrawer, email }) => {
         </NavLink>
           </Menu.Item>
 
-          <Menu.Item key="/verifications" onClick={closeDrawer ? closeDrawer : ''}>
+          <Menu.Item data-test="pcMenuItem" key="/verifications" onClick={closeDrawer ? closeDrawer : ''}>
             <NavLink to={{
               pathname: '/verifications',
               state: {
@@ -35,7 +35,7 @@ const Sidebar = ({ pathname, closeDrawer, email }) => {
         </NavLink>
           </Menu.Item>
           <SubMenu title={<span><Icon type="table" />Dashboard</span>}>
-            <Menu.Item key="/airdrop/1" onClick={closeDrawer ? closeDrawer : ''}>
+            <Menu.Item data-test="pcMenuItem" key="/airdrop/1" onClick={closeDrawer ? closeDrawer : ''}>
               <NavLink to={{
                 pathname: '/airdrop/1',
                 state: {
@@ -50,7 +50,7 @@ const Sidebar = ({ pathname, closeDrawer, email }) => {
 
           <SubMenu title={<span><Icon type="user" /><span>Configuration</span></span>}>
 
-            <Menu.Item key="/administrators" onClick={closeDrawer ? closeDrawer : ''}>
+            <Menu.Item data-test="pcMenuItem" key="/administrators" onClick={closeDrawer ? closeDrawer : ''}>
               <NavLink to={{
                 pathname: '/administrators',
                 state: {
@@ -67,8 +67,8 @@ const Sidebar = ({ pathname, closeDrawer, email }) => {
 
       <Responsive device="mobile">
         <Menu selectedKeys={[pathname]} mode="inline" style={{ height: '100vh', width: '16rem' }}>
-          <PageHeader title="Gameworks Bounty" subTitle={ email ? 'Logged in as ' + email : null} />
-          <Menu.Item key="/" onClick={closeDrawer ? closeDrawer : ''}>
+          <PageHeader title="Gameworks Bounty" subTitle={email ? 'Logged in as ' + email : null} />
+          <Menu.Item data-test="mobileMenuItem" key="/" onClick={closeDrawer ? closeDrawer : ''}>
             <NavLink to={{
               pathname: '/',
               state: {
@@ -80,7 +80,7 @@ const Sidebar = ({ pathname, closeDrawer, email }) => {
         </NavLink>
           </Menu.Item>
 
-          <Menu.Item key="/verifications" onClick={closeDrawer ? closeDrawer : ''}>
+          <Menu.Item data-test="mobileMenuItem" key="/verifications" onClick={closeDrawer ? closeDrawer : ''}>
             <NavLink to={{
               pathname: '/verifications',
               state: {
@@ -92,7 +92,7 @@ const Sidebar = ({ pathname, closeDrawer, email }) => {
         </NavLink>
           </Menu.Item>
           <SubMenu title={<span><Icon type="table" />Dashboard</span>}>
-            <Menu.Item key="/airdrop/1" onClick={closeDrawer ? closeDrawer : ''}>
+            <Menu.Item data-test="mobileMenuItem" key="/airdrop/1" onClick={closeDrawer ? closeDrawer : ''}>
               <NavLink to={{
                 pathname: '/airdrop/1',
                 state: {
@@ -107,7 +107,7 @@ const Sidebar = ({ pathname, closeDrawer, email }) => {
 
           <SubMenu title={<span><Icon type="user" /><span>Configuration</span></span>}>
 
-            <Menu.Item key="/administrators" onClick={closeDrawer ? closeDrawer : ''}>
+            <Menu.Item data-test="mobileMenuItem" key="/administrators" onClick={closeDrawer ? closeDrawer : ''}>
               <NavLink to={{
                 pathname: '/administrators',
                 state: {

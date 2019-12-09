@@ -35,6 +35,9 @@ const LoginForm = ({
 
   return (
     <Form onSubmit={validateForm} style={{ verticalAlign: 'middle' }} >
+      <div className="boo">
+        
+      </div>
       <Form.Item>
         {
           getFieldDecorator('email', {
