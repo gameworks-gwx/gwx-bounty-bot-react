@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Row, Col, Alert, Layout, message } from 'antd';
+import { Row, Col, Layout, message } from 'antd';
 import LoginForm from '../../components/Forms/LoginForm'
 import useForm from '../../util/hooks/useForm';
 import { auth } from '../../store/actions/auth';

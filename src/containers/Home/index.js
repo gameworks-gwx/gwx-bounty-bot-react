@@ -9,7 +9,7 @@ const Home = ({ fetchDashboardData, dashboardData, loading }) => {
 
   useEffect(() => {
     fetchDashboardData()
-  }, [])
+  }, [fetchDashboardData])
 
 
   return (
