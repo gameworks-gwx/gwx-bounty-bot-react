@@ -422,10 +422,10 @@ const Airdrop = ({
         />
         {loading ? (
           <>
-            <Skeleton active />
-            <Skeleton active />
-            <Skeleton active />
-            <Skeleton active />
+            <Skeleton active data-test="loading" />
+            <Skeleton active data-test="loading" />
+            <Skeleton active data-test="loading" />
+            <Skeleton active data-test="loading" />
           </>
         ) : (
           <>
