@@ -1,88 +1,85 @@
-import React, { useState, useEffect } from 'react';
-import { Route, Switch, Link } from 'react-router-dom';
-import { Layout, Button, Drawer, message, Typography } from 'antd';
-import { connect } from 'react-redux';
-import { removeError } from './store/actions/error'
-import { authInit } from './store/actions/auth'
+import React, { useState, useEffect } from "react";
+import { Route, Switch, Link } from "react-router-dom";
+import { Layout, Button, Drawer, message, Typography } from "antd";
+import { connect } from "react-redux";
+import { removeError } from "./store/actions/error";
+import { authInit } from "./store/actions/auth";
 
-//!! Components 
-import Sidebar from './components/UI/Sidebar';
-import Responsive from './components/UI/Responsive';
+//!! Components
+import Sidebar from "./components/UI/Sidebar";
+import Responsive from "./components/UI/Responsive";
 
 //!! Containers (pages)
-import Home from './containers/Home';
-import Verifications from './containers/Verifications';
-import Administrators from './containers/Administrators';
-import EditUser from './containers/Administrators/EditUser'
-import AddUser from './containers/Administrators/AddUser'
-import Logout from './containers/Logout';
-import Airdrop from './containers/Airdrop';
+import Home from "./containers/Home";
+import Verifications from "./containers/Verifications";
+import Administrators from "./containers/Administrators";
+import EditUser from "./containers/Administrators/EditUser";
+import AddUser from "./containers/Administrators/AddUser";
+import Logout from "./containers/Logout";
+import Airdrop from "./containers/Airdrop";
 
 const { Header, Footer, Sider, Content } = Layout;
-const { Title } = Typography
+const { Title } = Typography;
 
 const App = ({ location, history, error, removeError, init, initData }) => {
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
   const { email } = initData;
   useEffect(() => {
     if (error) {
       switch (error.status) {
         case 400:
-          message.error(error.message)
+          message.error(error.message);
           break;
         case 401:
           history.push({
-            pathname: '/logout',
+            pathname: "/logout",
             state: {
               message: "You are not authorized to view the page",
-              type: 'Error'
+              type: "Error"
             }
-          })
-          removeError()
+          });
+          removeError();
           break;
         case 404:
-          message.error(error.message)
-          removeError()
+          message.error(error.message);
+          removeError();
           break;
         case 409:
-          message.error(error.message)
-          removeError()
+          message.error(error.message);
+          removeError();
           break;
         case 422:
-          message.error('There was an error!')
-          removeError()
+          message.error("There was an error!");
+          removeError();
           break;
         default:
-          message.error('No internet connection')
+          message.error("No internet connection");
           break;
       }
-
     } else {
-      init()
+      init();
     }
-
-  }, [error, history, init, removeError])
+  }, [error, history, init, removeError]);
 
   const closeDrawer = () => {
-    setVisible(false)
-  }
+    setVisible(false);
+  };
 
   const openDrawer = () => {
-    setVisible(true)
-  }
+    setVisible(true);
+  };
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-
+    <Layout style={{ minHeight: "100vh" }}>
       <Responsive device="pc">
         <Sider
           theme="light"
           collapsedWidth="0"
           style={{
-            minHeight: '100vh',
+            minHeight: "100vh",
             left: 0,
-            position: 'fixed',
-            width: '50vh'
+            position: "fixed",
+            width: "50vh"
           }}
         >
           <Sidebar pathname={location.pathname} email={email} />
@@ -90,7 +87,7 @@ const App = ({ location, history, error, removeError, init, initData }) => {
       </Responsive>
 
       <Layout className="layout-body">
-        <Header className="header-container" style={{ background: '#fff' }}>
+        <Header className="header-container" style={{ background: "#fff" }}>
           <Responsive device="mobile">
             <Button type="primary" icon="menu" onClick={openDrawer} ghost />
             <Drawer
@@ -99,21 +96,25 @@ const App = ({ location, history, error, removeError, init, initData }) => {
               onClose={closeDrawer}
               visible={visible}
               width={250}
-              bodyStyle={{ padding: '0 0 30vh 0vh' }}
+              bodyStyle={{ padding: "0 0 30vh 0vh" }}
             >
-              <Sidebar pathname={location.pathname} closeDrawer={closeDrawer} email={email} />
+              <Sidebar
+                pathname={location.pathname}
+                closeDrawer={closeDrawer}
+                email={email}
+              />
             </Drawer>
           </Responsive>
 
-          <Title level={4}>{location.state ? location.state.pageTitle : null}</Title>
+          <Title level={4}>
+            {location.state ? location.state.pageTitle : null}
+          </Title>
           <h1>
-            <Link to="/logout">
-              Log Out
-            </Link>
+            <Link to="/logout">Log Out</Link>
           </h1>
         </Header>
 
-        <Content style={{ margin: '24px 16px', overflow: 'initial' }}>
+        <Content style={{ margin: "24px 16px", overflow: "initial" }}>
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/verifications" component={Verifications} />
@@ -129,19 +130,19 @@ const App = ({ location, history, error, removeError, init, initData }) => {
       </Layout>
     </Layout>
   );
-}
+};
 
 const mapStateToProps = ({ error, auth }) => {
   return {
     error: error.error,
     initData: auth.email
-  }
-}
+  };
+};
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     removeError: () => dispatch(removeError()),
     init: () => dispatch(authInit())
-  }
-}
+  };
+};
 export default connect(mapStateToProps, mapDispatchToProps)(App);

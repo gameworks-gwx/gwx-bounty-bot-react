@@ -30,10 +30,11 @@ jobs:
           name: Build
           command: |
             if [ "${CIRCLE_BRANCH}" == "develop" ]; then
+              export REACT_APP_URL=https://bounty-staging-api.gameworks.io/api
               yarn build
             fi
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              yarn build:production
+              yarn build
             fi
       - persist_to_workspace:
           root: ~/repo
