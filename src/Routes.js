@@ -5,6 +5,9 @@ import { AuthRoute } from './components/Routes/AuthRoute';
 import AppRoutes from './App';
 import AuthRoutes from './Auth'
 
+import 'antd/dist/antd.css';
+import './assets/css/styles.css';
+
 const Routes = ({ history }) => {
   return (
     <BrowserRouter history={history}>

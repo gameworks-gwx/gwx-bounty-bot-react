@@ -1,31 +1,65 @@
 import * as actionTypes from '../constants/auth';
 import axios from '../../config/axios';
+import { ADD_ERROR } from '../constants/error'
+import { authHeader } from '../helpers/authHeader';
+
+export const addError = (error) => {
+  return {
+    type: ADD_ERROR,
+    payload: error
+  }
+}
+
+export const authInitStart = () => {
+  return {
+    type: actionTypes.AUTH_INIT_START
+  }
+}
+
+export const authInitFail = () => {
+  return {
+    type: actionTypes.AUTH_INIT_FAIL
+  }
+}
+
+export const authInitSuccess = (response) => {
+  return {
+    type: actionTypes.AUTH_INIT_SUCCESS,
+    payload: response
+  }
+}
+
+export const authInit = () => {
+  return dispatch => {
+    dispatch(authInitStart())
+
+    axios.get(`/auth/init`, {
+      headers: authHeader()
+    }).then((response) => dispatch(authInitSuccess(response.data)))
+      .catch((error) => {
+        dispatch(authInitFail())
+        dispatch(addError(error))
+      })
+  }
+}
 
 export const authStart = () => {
-  console.log(`ACTIONS AUTH START`);
   return {
     type: actionTypes.AUTH_START
   }
 }
 
 export const authFail = (error) => {
-  console.log('ACTIONS AUTH FAIL');
-
-  const { message } = error.response.data;
-
-  console.log(message);
   return {
     type: actionTypes.AUTH_FAIL,
-    payload: message
+    payload: error.data.message
   }
 }
 
 export const authSuccess = (response) => {
-  console.log('ACTIONS AUTH SUCCESS');
-  const { token } = response.data;
   return {
     type: actionTypes.AUTH_SUCCESS,
-    payload: token
+    payload: response
   }
 }
 
@@ -45,7 +79,7 @@ export const auth = (userData, isSignUp) => {
         dispatch(authSuccess(response))
         localStorage.setItem('token', response.data.token);
       }).catch((error) => {
-        dispatch(authFail(error))
+        dispatch(authFail(error.response))
       })
   }
 }

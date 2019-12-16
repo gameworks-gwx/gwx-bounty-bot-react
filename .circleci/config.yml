@@ -1,0 +1,90 @@
+version: 2
+jobs:
+  test:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
+      - run: yarn install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: yarn test --passWithNoTests
+
+  build:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+      - run:
+          name: Build
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "develop" ]; then
+              export REACT_APP_URL=https://bounty-staging-api.gameworks.io/api
+              yarn build
+            fi
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              export REACT_APP_URL=https://bounty-api.gameworks.io/api
+              yarn build
+            fi
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+            - build/*
+
+  deploy:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - run: sudo apt-get update && sudo apt-get install -y python-dev
+      - run: sudo curl -O https://bootstrap.pypa.io/get-pip.py
+      - run: sudo python get-pip.py
+      - run: sudo pip install awscli --upgrade
+      - run: aws --version
+      - attach_workspace:
+          at: ~/repo
+      - run: ls -aslh
+      - run:
+          name: Deploy
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "develop" ]; then
+              aws s3 sync build s3://gwx-bounty-web-staging/ --delete
+              aws cloudfront create-invalidation --distribution-id E2THJMDX4QPYOZ --paths /index.html
+            fi
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              aws s3 sync build s3://gwx-bounty-web-production/ --delete
+              aws cloudfront create-invalidation --distribution-id E3AN2XY9NOE8KG --paths /index.html
+            fi
+
+workflows:
+  version: 2
+  test-build-deploy:
+    jobs:
+      - test
+      - build:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - develop
+                - master
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - develop
+                - master

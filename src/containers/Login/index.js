@@ -1,43 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Grid, Segment, Container } from 'semantic-ui-react';
-import LoginForm from '../../components/Auth/LoginForm'
-import Alert from '../../components/UI/Alert';
+import { Row, Col, Layout, message } from 'antd';
+import LoginForm from '../../components/Forms/LoginForm'
 import useForm from '../../util/hooks/useForm';
-import validate from '../../util/LoginValidation';
-import * as actions from '../../store/actions/auth';
+import { auth } from '../../store/actions/auth';
+import gwxBountyLogo from '../../assets/img/gwx-bounty-logo.svg';
 
 const Login = ({
   onAuth,
   loading,
-  loginError,
   token,
   history,
-  location
+  location,
+  loginError
 }) => {
-
-  const [errors, setErrors] = useState([]);
-
-  console.log(loginError);
 
   useEffect(() => {
     if (token) {
-      history.push('/');
+      history.push({
+        pathname: '/',
+        state: {
+          pageTitle: 'Home'
+        }
+      });
     }
-  })
+
+    if (loginError) {
+      message.config({ maxCount: 1 })
+      message.error(loginError)
+    }
+  }, [history, loginError, token])
   const defaultValues = {
     email: '',
     password: '',
   }
 
   const submitForm = () => {
-    const errorValidate = validate(values);
-    if (Object.keys(errorValidate).length) {
-      setErrors(errorValidate);
-    } else {
-      setErrors([]);
-      onAuth(values)
-    }
+    onAuth(values)
   }
 
   const { values, handleChange, handleSubmit } = useForm(submitForm, defaultValues)
@@ -48,37 +47,33 @@ const Login = ({
       handleSubmit={handleSubmit}
       values={values}
       loading={loading}
-      errors={errors}
     />
 
+  if (location.state) {
+    if (location.state.message) {
+      if (location.state.type === 'Success') {
+        message.success(location.state.message)
+      } else {
+        message.error(location.state.message)
+      }
+      location.state.message = ''
+    }
+  }
+
   return (
-    <Container style={{ marginTop: '10em' }}>
-      <Grid>
-        <Grid.Row columns="equal" only="mobile">
-          <Grid.Column>
-            {
-              loginError ? <Alert message={loginError} type="negative" /> : ''
-            }
-            {location.message}
-            <Segment>
-              Log In
-              {loginForm}
-            </Segment>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row centered columns="3" only="tablet computer">
-          <Grid.Column>
-            {
-              loginError ? <Alert message={loginError} type="negative" /> : ''
-            }
-            <Segment>
-              Log In
-              {loginForm}
-            </Segment>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </Container>
+    <Layout style={{ height: '100vh', backgroundColor: '#465983' }}>
+      <Row type="flex" justify="center" align="middle" style={{ height: '10vh', marginTop: '20vh' }}>
+        <Col>
+          <img src={gwxBountyLogo} alt="GWX Bounty" />
+        </Col>
+      </Row>
+
+      <Row type="flex" justify="center" align="middle">
+        <Col xs={20} sm={16} md={12} lg={8} xl={5}>
+          {loginForm}
+        </Col>
+      </Row>
+    </Layout>
   )
 }
 const mapStateToProps = ({ auth }) => {
@@ -90,7 +85,7 @@ const mapStateToProps = ({ auth }) => {
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: (userData) => dispatch(actions.auth(userData))
+    onAuth: (userData) => dispatch(auth(userData))
   }
 }
 
