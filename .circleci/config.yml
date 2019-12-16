@@ -64,7 +64,7 @@ jobs:
             fi
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               aws s3 sync build s3://gwx-bounty-web-production/ --delete
-              aws cloudfront create-invalidation --distribution-id E27K8A8T9UWHLQ --paths /index.html
+              aws cloudfront create-invalidation --distribution-id E3AN2XY9NOE8KG --paths /index.html
             fi
 
 workflows:
