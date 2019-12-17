@@ -13,7 +13,7 @@ const Sidebar = ({ pathname, closeDrawer, email }) => {
           data-test="menuComponent"
           selectedKeys={[pathname]}
           mode="inline"
-          style={{ height: "100vh", width: "35vh" }}
+          style={{ height: "100vh", width: "38vh" }}
         >
           <PageHeader
             avatar={{ src: image, size: "small" }}
