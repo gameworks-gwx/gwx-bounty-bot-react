@@ -11,9 +11,15 @@ const PCHome = ({ loading, dashboardData }) => {
   } = dashboardData;
   return (
     <>
-      <Row gutter={[16, 16]} style={{ marginTop: "6rem" }}>
-        <Col span={8}>
+      <Row
+        gutter={[32, 32]}
+        type="flex"
+        justify="center"
+        style={{ marginTop: "6rem" }}
+      >
+        <Col span={12}>
           <StatisticCard
+            className="statistic-card"
             cardTitle="Airdrop dashboard"
             pathname="/airdrop"
             data-test="pcStatisticCard"
@@ -30,8 +36,11 @@ const PCHome = ({ loading, dashboardData }) => {
             loading={loading}
           />
         </Col>
-        <Col span={8}>
+      </Row>
+      <Row gutter={[16, 32]} type="flex" justify="center">
+        <Col span={6}>
           <StatisticCard
+            className="statistic-card"
             cardTitle="Administrators"
             pathname="/administrators"
             data-test="pcStatisticCard"
@@ -42,8 +51,9 @@ const PCHome = ({ loading, dashboardData }) => {
             loading={loading}
           />
         </Col>
-        <Col span={8}>
+        <Col span={6}>
           <StatisticCard
+            className="statistic-card"
             cardTitle="Verifications"
             pathname="/verifications"
             data-test="pcStatisticCard"

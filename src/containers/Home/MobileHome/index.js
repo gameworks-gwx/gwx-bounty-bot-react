@@ -14,6 +14,7 @@ const MobileHome = ({ loading, dashboardData }) => {
       <Row gutter={[16, 16]}>
         <Col span={24}>
           <StatisticCard
+            className="statistic-card"
             size="small"
             cardTitle="Airdrop dashboard"
             pathname="/airdrop"
@@ -33,6 +34,7 @@ const MobileHome = ({ loading, dashboardData }) => {
         </Col>
         <Col span={24}>
           <StatisticCard
+            className="statistic-card"
             size="small"
             cardTitle="Administrators"
             pathname="/administrators"
@@ -46,6 +48,7 @@ const MobileHome = ({ loading, dashboardData }) => {
         </Col>
         <Col span={24}>
           <StatisticCard
+            className="statistic-card"
             size="small"
             cardTitle="Verifications"
             pathname="/verifications"
